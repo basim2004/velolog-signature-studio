@@ -1885,3 +1885,247 @@ input:checked + .slider:before {
   align-items: center;
 }
 
+/* ========================================================
+   CREATIVE 3D BOOK MOCKUP & SHOWCASE
+   ======================================================== */
+.book-showcase-section {
+  margin: 40px 0 50px 0;
+}
+
+.book-showcase-card {
+  background: linear-gradient(135deg, #f8fafc 0%, #ffffff 50%, #f0f7ff 100%);
+  border: 1.5px solid #cbd5e1;
+  border-radius: 18px;
+  padding: 36px 40px;
+  box-shadow: 0 10px 30px rgba(16, 47, 103, 0.08), 0 1px 3px rgba(0,0,0,0.05);
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  gap: 48px;
+  align-items: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.book-showcase-card::before {
+  content: '';
+  position: absolute;
+  top: -80px;
+  right: -80px;
+  width: 240px;
+  height: 240px;
+  background: radial-gradient(circle, rgba(33, 84, 163, 0.08) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+/* 3D Book Wrapper & Object */
+.book-mockup-wrap {
+  perspective: 1100px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10px;
+}
+
+.book-3d {
+  position: relative;
+  width: 220px;
+  height: 310px;
+  background: linear-gradient(135deg, #0b132b 0%, #102f67 45%, #1d4ed8 100%);
+  border-radius: 4px 10px 10px 4px;
+  transform-style: preserve-3d;
+  transform: rotateY(-22deg) rotateX(3deg);
+  transition: transform 0.45s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.45s ease;
+  box-shadow: 
+    -14px 16px 28px rgba(11, 19, 43, 0.42),
+    -4px 4px 12px rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+  text-decoration: none;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 18px 18px 16px 22px;
+  color: #ffffff;
+  overflow: hidden;
+}
+
+.book-3d:hover {
+  transform: rotateY(-10deg) rotateX(1deg) translateY(-8px);
+  box-shadow: 
+    -20px 24px 38px rgba(11, 19, 43, 0.52),
+    -6px 6px 16px rgba(33, 84, 163, 0.35);
+}
+
+/* Spine on left */
+.book-3d::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 14px;
+  height: 100%;
+  background: linear-gradient(to right, rgba(0,0,0,0.55) 0%, rgba(255,255,255,0.18) 35%, rgba(0,0,0,0.4) 75%, transparent 100%);
+  border-radius: 4px 0 0 4px;
+  z-index: 5;
+}
+
+/* Realistic stacked paper thickness on right edge */
+.book-3d::after {
+  content: '';
+  position: absolute;
+  top: 4px;
+  right: -9px;
+  width: 9px;
+  height: calc(100% - 8px);
+  background: repeating-linear-gradient(to right, #ffffff 0px, #e2e8f0 1.5px, #cbd5e1 3px);
+  border-radius: 0 2px 2px 0;
+  transform: rotateY(50deg);
+  transform-origin: left;
+  box-shadow: 2px 2px 5px rgba(0,0,0,0.3);
+}
+
+/* Diagonal Glossy Sheen */
+.book-shine {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(130deg, rgba(255,255,255,0.22) 0%, rgba(255,255,255,0.04) 40%, transparent 60%);
+  pointer-events: none;
+  z-index: 4;
+}
+
+.book-tag {
+  display: inline-block;
+  font-size: 7.5px;
+  font-weight: 800;
+  color: #fbbf24;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+  margin-bottom: 6px;
+  border-bottom: 1.5px solid #fbbf24;
+  padding-bottom: 2px;
+}
+
+.book-title {
+  font-size: 22px;
+  font-weight: 900;
+  line-height: 1.05;
+  color: #ffffff;
+  letter-spacing: -0.5px;
+  margin-bottom: 4px;
+}
+
+.book-sub {
+  font-size: 8.5px;
+  color: #94a3b8;
+  line-height: 1.35;
+  margin-bottom: 12px;
+}
+
+.book-pills {
+  display: flex;
+  gap: 4px;
+  flex-wrap: wrap;
+}
+
+.book-pill {
+  font-size: 7px;
+  padding: 2px 6px;
+  background: rgba(255,255,255,0.12);
+  border-radius: 4px;
+  color: #e2e8f0;
+  font-weight: 600;
+}
+
+.book-footer-stats {
+  margin-top: auto;
+  padding-top: 10px;
+  border-top: 1px solid rgba(255,255,255,0.18);
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  font-size: 7.5px;
+  color: #94a3b8;
+}
+
+.book-footer-stats strong {
+  color: #ffffff;
+  font-size: 11px;
+  display: block;
+  line-height: 1;
+}
+
+/* Info side */
+.book-info-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: #dbeafe;
+  color: #1e40af;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 4px 10px;
+  border-radius: 20px;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  margin-bottom: 10px;
+}
+
+.book-info-title {
+  font-size: 26px;
+  font-weight: 800;
+  color: #102f67;
+  letter-spacing: -0.5px;
+  margin-bottom: 10px;
+  line-height: 1.2;
+}
+
+.book-info-desc {
+  font-size: 14px;
+  color: #475569;
+  line-height: 1.6;
+  margin-bottom: 20px;
+  max-width: 620px;
+}
+
+.book-features-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px 20px;
+  margin-bottom: 24px;
+}
+
+.book-feature-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  font-size: 13px;
+  color: #1e293b;
+  line-height: 1.4;
+}
+
+.book-feature-item svg {
+  color: #16a34a;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.book-cta-row {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+@media (max-width: 900px) {
+  .book-showcase-card {
+    grid-template-columns: 1fr;
+    gap: 32px;
+    padding: 28px 20px;
+  }
+  .book-features-grid {
+    grid-template-columns: 1fr;
+  }
+}
+

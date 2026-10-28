@@ -141,6 +141,26 @@ const server = http.createServer(async (req, res) => {
     return;
   }
 
+  if (req.method === 'POST' && pathname === '/api/save-cover-image') {
+    try {
+      const data = await parseBody(req);
+      const b64 = data.image;
+      const matches = b64.match(/^data:image\/png;base64,(.+)$/);
+      if (matches) {
+        fs.writeFileSync(path.join(__dirname, 'assets', 'help_desk_cover.png'), Buffer.from(matches[1], 'base64'));
+        res.writeHead(200, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify({ success: true }));
+        return;
+      }
+      res.writeHead(400, { 'Content-Type': 'application/json' });
+      res.end(JSON.stringify({ success: false, error: 'Invalid image data' }));
+    } catch (err) {
+      res.writeHead(500, { 'Content-Type': 'application/json' });
+      res.end(JSON.stringify({ success: false, error: err.message }));
+    }
+    return;
+  }
+
   // --- API: Get All Employees ---
   if (req.method === 'GET' && pathname === '/api/employees') {
     try {
