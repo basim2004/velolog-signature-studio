@@ -135,14 +135,8 @@
           <button class="dept-pill" data-dept="accounts">Accounts</button>
         </div>
 
-        <div style="display: flex; gap: 10px; align-items: center;">
-          <div class="team-search">
-            <input type="text" id="team-search-input" placeholder="Search staff by name or designation..." aria-label="Search staff">
-          </div>
-          <button class="btn btn-secondary btn-sm" id="btn-admin-auth" title="Authorized photo management">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align: -2px;"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-            <span id="admin-auth-label">Staff Photo Admin</span>
-          </button>
+        <div class="team-search">
+          <input type="text" id="team-search-input" placeholder="Search staff by name or designation..." aria-label="Search staff">
         </div>
       </div>
 
@@ -502,25 +496,27 @@
     const btnPinCancel = document.getElementById('btn-pin-cancel');
     const pinModalClose = document.getElementById('pin-modal-close');
 
-    btnAdminAuth.addEventListener('click', () => {
-      if (isAdmin) {
-        showToast('Admin mode is already active.');
-        return;
-      }
-      pinInput.value = '';
-      pinErrorMsg.style.display = 'none';
-      pinModal.classList.add('show');
-      setTimeout(() => pinInput.focus(), 100);
-    });
-
-    function closePinModal() {
-      pinModal.classList.remove('show');
-      pinInput.value = '';
-      pinErrorMsg.style.display = 'none';
+    if (btnAdminAuth) {
+      btnAdminAuth.addEventListener('click', () => {
+        if (isAdmin) {
+          showToast('Admin mode is already active.');
+          return;
+        }
+        pinInput.value = '';
+        pinErrorMsg.style.display = 'none';
+        pinModal.classList.add('show');
+        setTimeout(() => pinInput.focus(), 100);
+      });
     }
 
-    pinModalClose.addEventListener('click', closePinModal);
-    btnPinCancel.addEventListener('click', closePinModal);
+    function closePinModal() {
+      if (pinModal) pinModal.classList.remove('show');
+      if (pinInput) pinInput.value = '';
+      if (pinErrorMsg) pinErrorMsg.style.display = 'none';
+    }
+
+    if (pinModalClose) pinModalClose.addEventListener('click', closePinModal);
+    if (btnPinCancel) btnPinCancel.addEventListener('click', closePinModal);
 
     function submitPin() {
       const enteredPin = pinInput.value.trim();
@@ -536,26 +532,29 @@
       }
     }
 
-    btnPinSubmit.addEventListener('click', submitPin);
-    pinInput.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter') submitPin();
-      else if (e.key === 'Escape') closePinModal();
-    });
+    if (btnPinSubmit) btnPinSubmit.addEventListener('click', submitPin);
+    if (pinInput) {
+      pinInput.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') submitPin();
+        else if (e.key === 'Escape') closePinModal();
+      });
+    }
 
-    btnAdminLogout.addEventListener('click', () => {
-      isAdmin = false;
-      sessionStorage.removeItem('velolog_admin_auth');
-      updateAdminUI();
-      showToast('Admin locked. Controls hidden from public view.');
-    });
+    if (btnAdminLogout) {
+      btnAdminLogout.addEventListener('click', () => {
+        isAdmin = false;
+        sessionStorage.removeItem('velolog_admin_auth');
+        updateAdminUI();
+        showToast('Admin locked. Controls hidden from public view.');
+      });
+    }
 
     function updateAdminUI() {
-      if (isAdmin) {
-        adminBanner.style.display = 'flex';
-        adminAuthLabel.textContent = 'Admin Active';
-      } else {
-        adminBanner.style.display = 'none';
-        adminAuthLabel.textContent = 'Staff Photo Admin';
+      if (adminBanner) {
+        adminBanner.style.display = isAdmin ? 'flex' : 'none';
+      }
+      if (adminAuthLabel) {
+        adminAuthLabel.textContent = isAdmin ? 'Admin Active' : 'Staff Photo Admin';
       }
       renderTeamGrid();
     }
