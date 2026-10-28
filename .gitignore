@@ -1,0 +1,4 @@
+node_modules/
+scratch/edge_temp/
+.DS_Store
+Thumbs.db

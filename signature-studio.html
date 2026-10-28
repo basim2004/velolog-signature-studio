@@ -1,0 +1,1259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Signature Studio | VELOLOG Email Signature Generator</title>
+  <meta name="description" content="Generate official, text-based, email-safe HTML signatures for all 9 VELOLOG logistics staff members with ISO 9001 and JCTRANS verified seals.">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="icon" type="image/png" href="logo/file -03.png">
+  <style>
+    .studio-action-row {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .btn-copy-highlight {
+      background: #16a34a !important;
+      border-color: #16a34a !important;
+      color: #ffffff !important;
+    }
+    .btn-copy-highlight:hover {
+      background: #15803d !important;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Shared Global Header -->
+  <header class="header">
+    <div class="container header-content">
+      <a class="brand-wrapper" href="/">
+        <img src="logo/file -03.png" alt="VELOLOG Logo" class="brand-logo-img">
+      </a>
+
+      <nav>
+        <ul class="nav-menu" id="nav-menu-list">
+          <li><a class="nav-link" href="/">Home</a></li>
+          <li><a class="nav-link" href="/about">About Us</a></li>
+          <li><a class="nav-link" href="/team">Our Team</a></li>
+          <li><a class="nav-link" href="/services">Services</a></li>
+          <li><a class="nav-link" href="/contact">Contact</a></li>
+        </ul>
+      </nav>
+
+      <div class="header-actions">
+        <a href="/signature-studio" class="btn btn-primary btn-sm">
+          Signature Studio
+        </a>
+        <a href="/contact" class="btn btn-outline btn-sm">
+          Get in Touch
+        </a>
+        <button class="mobile-menu-toggle" id="mobile-menu-toggle" aria-label="Toggle Navigation">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main class="main-content">
+    
+    <!-- SECTION 1 — HERO BANNER -->
+    <section class="page-hero-banner" style="background-image: url('images/home_hero_velolog_truck.png');">
+      <div class="container">
+        <span class="page-hero-badge">Staff Email Suite • Verified Signatures</span>
+        <h1 class="page-hero-title">Signature Studio</h1>
+        <p class="page-hero-sub">VELOLOG Official HTML Email Signature Generator</p>
+      </div>
+    </section>
+
+    <div class="container">
+      
+      <!-- STUDIO WORKSPACE LAYOUT -->
+      <div class="studio-layout">
+        
+        <!-- LEFT COLUMN: CONTROLS & STAFF SELECTOR -->
+        <div class="controls-card">
+          <div class="controls-header">
+            <div class="controls-title">⚙️ Staff & Signature Settings</div>
+            <button class="btn btn-outline btn-sm" id="btn-reset-fields" style="font-size: 11px; padding: 4px 8px;">
+              Reset
+            </button>
+          </div>
+
+          <div class="controls-body">
+            
+            <!-- Employee Selector -->
+            <div class="form-group">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+                <label class="form-label" for="field-staff-select" style="margin-bottom: 0;">
+                  <span id="staff-select-label">Select Team Member</span>
+                </label>
+                <button type="button" id="btn-add-staff-modal-open" class="btn btn-sm" style="font-size: 11px; padding: 3px 8px; background: #e0f2fe; color: #0284c7; border: 1px solid #bae6fd; font-weight: 700; border-radius: 4px; cursor: pointer; display: inline-flex; align-items: center; gap: 4px;">
+                  <span style="font-size: 13px; font-weight: 900; line-height: 1;">+</span> Add Staff
+                </button>
+              </div>
+              <select id="field-staff-select" class="form-select">
+                <!-- Populated dynamically from data.js -->
+              </select>
+            </div>
+
+            <!-- Profile Photo & Avatar Setting -->
+            <div style="background: #f8fafc; border: 1.5px solid var(--border-card); border-radius: var(--radius-sm); padding: 12px 14px; margin-bottom: 16px;">
+              <div style="font-size: 11px; font-weight: 700; color: var(--primary-dark); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center;">
+                <span>Official Staff Photo</span>
+                <span id="photo-status-badge" style="font-size: 10px; padding: 2px 8px; border-radius: 12px; background: #e0f2fe; color: #0369a1; font-weight: 700;">Default Gender Icon</span>
+              </div>
+              <div style="display: flex; align-items: center; gap: 12px;">
+                <div id="studio-avatar-wrap" style="width: 52px; height: 52px; border-radius: 50%; overflow: hidden; border: 2px solid #2056a5; flex-shrink: 0; background: #ffffff; display: flex; align-items: center; justify-content: center; box-shadow: 0 1px 3px rgba(32,86,165,0.2);">
+                  <!-- Dynamically populated -->
+                </div>
+                <div style="flex: 1; min-width: 0;">
+                  <div style="display: flex; gap: 6px; flex-wrap: wrap;">
+                    <button type="button" id="btn-studio-upload-photo" class="btn btn-secondary btn-sm" style="font-size: 11px; padding: 4px 10px; font-weight: 700; border-color: var(--primary); color: var(--primary);">
+                      📷 Upload Photo
+                    </button>
+                    <button type="button" id="btn-studio-remove-photo" class="btn btn-sm" style="font-size: 11px; padding: 4px 10px; font-weight: 700; background: #fee2e2; color: #b91c1c; border: 1px solid #fecaca; display: none;">
+                      Remove
+                    </button>
+                  </div>
+                  <input type="file" id="studio-photo-file-input" accept="image/png, image/jpeg, image/webp" style="display: none;">
+                  <div style="font-size: 11px; color: var(--text-muted); margin-top: 5px; line-height: 1.35;">
+                    Synced to team profile directory. (Signature retains approved layout without photo).
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Editable Fields -->
+            <div class="form-group">
+              <label class="form-label" for="field-name">Employee Full Name:</label>
+              <input type="text" id="field-name" class="form-input">
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="field-title">Official Designation:</label>
+              <input type="text" id="field-title" class="form-input">
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="field-dept">Department:</label>
+              <input type="text" id="field-dept" class="form-input">
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="field-phone">Direct Phone Number(s):</label>
+              <input type="text" id="field-phone" class="form-input">
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="field-email">Email Address:</label>
+              <input type="email" id="field-email" class="form-input">
+            </div>
+
+            <hr style="border: 0; border-top: 1px solid var(--border-card); margin: 6px 0;">
+
+            <!-- Formatting & Component Toggles -->
+            <div class="toggle-group">
+              <div>
+                <div class="toggle-label">Include Greeting</div>
+                <div class="toggle-desc">Tightly attached above card</div>
+              </div>
+              <label class="switch">
+                <input type="checkbox" id="toggle-regards" checked>
+                <span class="slider"></span>
+              </label>
+            </div>
+
+            <div class="form-group" id="regards-input-container">
+              <input type="text" id="field-regards" class="form-input" value="Best regards," placeholder="Greeting text">
+            </div>
+
+            <div class="toggle-group">
+              <div>
+                <div class="toggle-label">Self-Contained Base64 Logos</div>
+                <div class="toggle-desc">Embedded inline for email compatibility</div>
+              </div>
+              <label class="switch">
+                <input type="checkbox" id="toggle-base64" checked>
+                <span class="slider"></span>
+              </label>
+            </div>
+
+            <div class="toggle-group">
+              <div>
+                <div class="toggle-label">Social Media Links</div>
+                <div class="toggle-desc">Disabled by default (optional toggle)</div>
+              </div>
+              <label class="switch">
+                <input type="checkbox" id="toggle-social">
+                <span class="slider"></span>
+              </label>
+            </div>
+
+            <!-- Social Media URLs (hidden by default) -->
+            <div id="social-inputs-container" style="display: none; flex-direction: column; gap: 8px; background: #f8fafc; padding: 12px; border-radius: var(--radius-sm); border: 1px solid var(--border-card);">
+              <div class="form-group">
+                <label class="form-label" for="field-linkedin">LinkedIn URL:</label>
+                <input type="text" id="field-linkedin" class="form-input" value="https://www.linkedin.com/company/velolog">
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="field-whatsapp">WhatsApp URL / Number:</label>
+                <input type="text" id="field-whatsapp" class="form-input" value="https://wa.me/966546979474">
+              </div>
+            </div>
+
+            <!-- Batch Download All Staff Signatures -->
+            <div style="margin-top: 8px; padding-top: 12px; border-top: 1px solid var(--border-card);">
+              <button class="btn btn-outline" id="btn-batch-download" style="width: 100%; font-size: 12px; justify-content: center;">
+                <span>📦 Download All Staff Signatures (10)</span>
+              </button>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- RIGHT COLUMN: LIVE PREVIEW & EXPORT ACTIONS -->
+        <div class="preview-card">
+          
+          <!-- Preview Toolbar -->
+          <div class="preview-toolbar">
+            <div class="preview-modes">
+              <button class="mode-btn active" data-mode="gmail">
+                <span style="display: inline-flex; align-items: center; gap: 6px;">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" stroke="#ea4335" stroke-width="2"/><polyline points="22,6 12,13 2,6" stroke="#ea4335" stroke-width="2"/></svg>
+                  Gmail Web View
+                </span>
+              </button>
+              <button class="mode-btn" data-mode="outlook">
+                <span style="display: inline-flex; align-items: center; gap: 6px;">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><rect x="2" y="4" width="20" height="16" rx="2" stroke="#0078d4" stroke-width="2"/><path d="M10 8h4v8h-4z" fill="#0078d4"/></svg>
+                  Outlook 365 View
+                </span>
+              </button>
+            </div>
+
+            <div class="studio-action-row">
+              <button class="btn btn-primary btn-copy-highlight" id="btn-copy-signature" title="Copy rich HTML signature to clipboard">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+                <span>Copy HTML</span>
+              </button>
+
+              <button class="btn btn-secondary" id="btn-copy-image" title="Copy PNG image to clipboard">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+                <span>Copy Image</span>
+              </button>
+
+              <button class="btn btn-outline" id="btn-download-png" title="Download signature as high-res PNG image">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                <span>PNG</span>
+              </button>
+
+              <button class="btn btn-outline" id="btn-download-html" title="Download standalone HTML file">
+                <span>HTML</span>
+              </button>
+
+              <button class="btn btn-outline" id="btn-view-source" title="Inspect raw HTML table code">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+                <span>Code</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Simulator Viewport -->
+          <div class="simulator-viewport" id="simulator-viewport" style="background: #eef2f6;">
+            
+            <!-- 1. GMAIL WEB COMPOSE SIMULATOR (Default Active) -->
+            <div class="gmail-compose-window" id="simulator-gmail">
+              <!-- Top Window Bar -->
+              <div class="gmail-top-bar">
+                <div class="gmail-window-title">New Message</div>
+                <div class="gmail-window-controls">
+                  <span title="Minimize">−</span>
+                  <span title="Full screen">⤢</span>
+                  <span title="Save &amp; Close">✕</span>
+                </div>
+              </div>
+
+              <!-- Header Rows -->
+              <div class="gmail-header-row">
+                <span class="gmail-header-label">From</span>
+                <span class="gmail-from-val" id="mock-from-val" style="font-size: 13px; color: #1e293b; font-weight: 500;">Mohammed Sudeer &lt;sudeer@velologsa.com&gt;</span>
+              </div>
+              <div class="gmail-header-row">
+                <span class="gmail-header-label">Recipients</span>
+                <span class="gmail-recipient-pill">procurement@client-logistics.com <span style="font-size: 10px; cursor: pointer;">✕</span></span>
+              </div>
+              <div class="gmail-header-row">
+                <span class="gmail-header-label">Subject</span>
+                <span class="gmail-subject-text">VELOLOG Freight Quotation &amp; Supply Chain Coordination</span>
+              </div>
+
+              <!-- Message Body -->
+              <div class="gmail-message-body">
+                <p style="margin-top: 0; margin-bottom: 12px;">Dear Partner,</p>
+                <p style="margin-bottom: 12px;">
+                  Thank you for your inquiry. Please find attached our scheduled overland and maritime freight proposal tailored for your regional cargo movement.
+                </p>
+                <p style="margin-bottom: 20px;">
+                  Should you have any questions or require custom container drayage schedules, feel free to reach out directly.
+                </p>
+
+                <!-- LIVE SIGNATURE CONTAINER (GMAIL) -->
+                <div id="signature-render-area" class="signature-render-target">
+                  <!-- Live email signature table generated by generator.js -->
+                </div>
+              </div>
+
+              <!-- Gmail Bottom Action Toolbar -->
+              <div class="gmail-bottom-toolbar">
+                <div class="gmail-send-group">
+                  <button type="button" class="gmail-btn-send">Send</button>
+                  <button type="button" class="gmail-btn-send-dropdown">▾</button>
+                </div>
+
+                <div class="gmail-tools-icons">
+                  <span class="gmail-tool-item" title="Formatting options" style="font-weight: 700; text-decoration: underline;">A</span>
+                  <span class="gmail-tool-item" title="Attach files">📎</span>
+                  <span class="gmail-tool-item" title="Insert link">🔗</span>
+                  <span class="gmail-tool-item" title="Insert emoji">😊</span>
+                  <span class="gmail-tool-item" title="Insert files using Drive">▲</span>
+                  <span class="gmail-tool-item" title="Insert photo">🖼️</span>
+                  <span class="gmail-tool-item" title="Toggle confidential mode">🔒</span>
+                  <span class="gmail-tool-item" title="Insert signature">✍️</span>
+                </div>
+
+                <div style="margin-left: auto;">
+                  <span class="gmail-tool-item" title="Discard draft" style="font-size: 16px;">🗑️</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- 2. OUTLOOK 365 COMPOSE SIMULATOR (Hidden initially) -->
+            <div class="outlook-compose-window" id="simulator-outlook" style="display: none;">
+              <!-- Ribbon Bar -->
+              <div class="outlook-ribbon-bar">
+                <div class="outlook-ribbon-tabs">
+                  <span class="outlook-tab active">Message</span>
+                  <span class="outlook-tab">Insert</span>
+                  <span class="outlook-tab">Options</span>
+                  <span class="outlook-tab">Format Text</span>
+                  <span class="outlook-tab">Review</span>
+                </div>
+                <div class="outlook-action-buttons">
+                  <button type="button" class="outlook-btn-send">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
+                    Send
+                  </button>
+                  <button type="button" class="outlook-btn-action">📎 Attach File</button>
+                  <button type="button" class="outlook-btn-action">🔒 Encrypt</button>
+                  <button type="button" class="outlook-btn-action">✕ Discard</button>
+                </div>
+              </div>
+
+              <!-- Header Fields -->
+              <div class="outlook-header-box">
+                <div class="outlook-field-row">
+                  <span class="outlook-field-btn">From:</span>
+                  <span class="outlook-field-val" id="outlook-from-val">Mohammed Sudeer &lt;sudeer@velologsa.com&gt;</span>
+                </div>
+                <div class="outlook-field-row">
+                  <span class="outlook-field-btn">To:</span>
+                  <span class="outlook-field-val">logistics.procurement@enterprise.com</span>
+                </div>
+                <div class="outlook-field-row">
+                  <span class="outlook-field-btn">Cc:</span>
+                  <span class="outlook-field-val">ops.ksa@velologsa.com</span>
+                </div>
+                <div class="outlook-field-row">
+                  <span class="outlook-field-btn">Subject:</span>
+                  <span class="outlook-field-val" style="font-weight: 600; color: #0f172a;">VELOLOG Freight Quotation &amp; Supply Chain Coordination</span>
+                </div>
+              </div>
+
+              <!-- Message Body -->
+              <div class="outlook-message-body">
+                <p style="margin-top: 0; margin-bottom: 12px;">Dear Partner,</p>
+                <p style="margin-bottom: 12px;">
+                  Thank you for your inquiry. Please find attached our scheduled overland and maritime freight proposal tailored for your regional cargo movement.
+                </p>
+                <p style="margin-bottom: 20px;">
+                  Should you have any questions or require custom container drayage schedules, feel free to reach out directly.
+                </p>
+
+                <!-- LIVE SIGNATURE CONTAINER (OUTLOOK) -->
+                <div id="signature-render-area-outlook" class="signature-render-target">
+                  <!-- Live email signature table generated by generator.js -->
+                </div>
+              </div>
+
+              <!-- Outlook Status Bar -->
+              <div class="outlook-status-bar">
+                <span>Microsoft 365 • Connected to Microsoft Exchange • All folders up to date</span>
+                <span>100%</span>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- Compatibility Guarantee Footer -->
+          <div class="compat-banner">
+            <div>
+              <strong>100% Tested Email Client Compatibility:</strong> Selectable real text, inline CSS, tables only.
+            </div>
+            <div class="compat-badges">
+              <span class="compat-tag">Gmail Web & App</span>
+              <span class="compat-tag">Outlook 365 / 2021</span>
+              <span class="compat-tag">Apple Mail</span>
+              <span class="compat-tag">Thunderbird</span>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+      <!-- STEP-BY-STEP EMAIL SETUP GUIDE -->
+      <div class="guide-section">
+        <h2 style="font-size: 18px; font-weight: 700; color: var(--primary-dark); margin-bottom: 6px;">
+          How to Install Your VELOLOG Email Signature
+        </h2>
+        <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 20px;">
+          Follow the quick steps below for your preferred email client:
+        </p>
+
+        <div class="guide-tabs">
+          <button class="guide-tab-btn active" data-tab="gmail">
+            <span>✉️ Gmail Web</span>
+          </button>
+          <button class="guide-tab-btn" data-tab="outlook-desktop">
+            <span>💻 Outlook Desktop</span>
+          </button>
+          <button class="guide-tab-btn" data-tab="outlook-web">
+            <span>🌐 Outlook Web (Office 365)</span>
+          </button>
+          <button class="guide-tab-btn" data-tab="apple">
+            <span>🍎 Apple Mail</span>
+          </button>
+        </div>
+
+        <div class="guide-content active" id="tab-gmail">
+          <ol class="guide-steps">
+            <li>Click the green <strong>"Copy Signature"</strong> button above.</li>
+            <li>In Gmail, open <strong>Settings (gear icon)</strong> &gt; <strong>See all settings</strong>.</li>
+            <li>Scroll down to the <strong>Signature</strong> section and click <strong>Create new</strong> (or edit your existing signature).</li>
+            <li>Paste directly into the text box using <kbd>Ctrl+V</kbd> (Windows) or <kbd>Cmd+V</kbd> (Mac).</li>
+            <li>Set your default signature for <em>"For new emails use"</em> and <em>"On reply/forward use"</em>.</li>
+            <li>Scroll to the bottom and click <strong>Save Changes</strong>.</li>
+          </ol>
+        </div>
+
+        <div class="guide-content" id="tab-outlook-desktop">
+          <ol class="guide-steps">
+            <li>Click <strong>"Copy Signature"</strong> above.</li>
+            <li>Open Outlook and click <strong>File</strong> &gt; <strong>Options</strong> &gt; <strong>Mail</strong> &gt; <strong>Signatures...</strong></li>
+            <li>Click <strong>New</strong> and give your signature a name (e.g. <em>VELOLOG Official</em>).</li>
+            <li>In the <em>Edit signature</em> box, paste the signature using <kbd>Ctrl+V</kbd>.</li>
+            <li>Under <em>Choose default signature</em>, select your account and choose the new signature for New messages and Replies.</li>
+            <li>Click <strong>OK</strong> to save.</li>
+          </ol>
+        </div>
+
+        <div class="guide-content" id="tab-outlook-web">
+          <ol class="guide-steps">
+            <li>Click <strong>"Copy Signature"</strong> above.</li>
+            <li>In Outlook Web / Office 365, click the <strong>Settings gear</strong> in the top right.</li>
+            <li>Go to <strong>Mail</strong> &gt; <strong>Compose and reply</strong>.</li>
+            <li>Under <em>Email signature</em>, click <strong>+ New signature</strong> and paste using <kbd>Ctrl+V</kbd>.</li>
+            <li>Select default options for new messages and replies, then click <strong>Save</strong>.</li>
+          </ol>
+        </div>
+
+        <div class="guide-content" id="tab-apple">
+          <ol class="guide-steps">
+            <li>Click <strong>"Copy Signature"</strong> above.</li>
+            <li>Open Apple Mail, navigate to <strong>Mail</strong> &gt; <strong>Settings...</strong> &gt; <strong>Signatures</strong>.</li>
+            <li>Select your account and click the <strong>+</strong> button to add a signature.</li>
+            <li>Uncheck <em>"Always match my default message font"</em>.</li>
+            <li>Paste your signature into the editor window using <kbd>Cmd+V</kbd>.</li>
+          </ol>
+        </div>
+
+      </div>
+
+    </div>
+  </main>
+
+  <!-- HTML Source Code Modal -->
+  <div class="modal-overlay" id="source-modal">
+    <div class="modal-card">
+      <div class="modal-header">
+        <div class="modal-title">HTML Email Signature Table Code</div>
+        <button class="modal-close" id="modal-close-btn">&times;</button>
+      </div>
+      <div class="modal-body">
+        <p style="font-size: 13px; color: #475569; margin-bottom: 12px;">
+          Clean, email-client-ready HTML table code with inline CSS:
+        </p>
+        <pre class="code-block" id="raw-code-display"></pre>
+        <div style="display: flex; justify-content: flex-end; gap: 8px; margin-top: 14px;">
+          <button class="btn btn-secondary btn-sm" id="btn-copy-raw-code">Copy HTML Code</button>
+          <button class="btn btn-primary btn-sm" id="btn-close-source-modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal: Add New Staff Member -->
+  <div class="modal-overlay" id="add-staff-modal">
+    <div class="modal-card" style="max-width: 540px;">
+      <div class="modal-header">
+        <div class="modal-title">Add New VELOLOG Team Member</div>
+        <button class="modal-close" id="btn-close-add-staff-modal">&times;</button>
+      </div>
+      <div class="modal-body">
+        <p style="font-size: 13px; color: #475569; margin-bottom: 16px;">
+          Add a new employee to the VELOLOG directory. Their official email signature will be generated immediately with the approved company template.
+        </p>
+
+        <form id="add-staff-form" onsubmit="return false;">
+          <div class="form-group">
+            <label class="form-label" for="new-staff-name">Employee Full Name: <span style="color: #dc2626;">*</span></label>
+            <input type="text" id="new-staff-name" class="form-input" placeholder="e.g. Salman Al-Otaibi" required>
+          </div>
+
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+            <div class="form-group">
+              <label class="form-label" for="new-staff-title">Designation: <span style="color: #dc2626;">*</span></label>
+              <input type="text" id="new-staff-title" class="form-input" placeholder="e.g. Operations Coordinator" required>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="new-staff-dept">Department: <span style="color: #dc2626;">*</span></label>
+              <select id="new-staff-dept" class="form-select">
+                <option value="Operations">Operations</option>
+                <option value="Sales & Business Development">Sales & Business Development</option>
+                <option value="Management">Management</option>
+                <option value="Accounts">Accounts</option>
+                <option value="Logistics & Pricing">Logistics & Pricing</option>
+                <option value="Customer Service">Customer Service</option>
+              </select>
+            </div>
+          </div>
+
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+            <div class="form-group">
+              <label class="form-label" for="new-staff-phone">Direct Phone: (optional)</label>
+              <input type="text" id="new-staff-phone" class="form-input" placeholder="e.g. +966 5X XXX XXXX">
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="new-staff-email">Official Email: <span style="color: #dc2626;">*</span></label>
+              <input type="email" id="new-staff-email" class="form-input" placeholder="e.g. name@velologsa.com" required>
+            </div>
+          </div>
+
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+            <div class="form-group">
+              <label class="form-label" for="new-staff-gender">Gender Identity:</label>
+              <select id="new-staff-gender" class="form-select">
+                <option value="male" selected>Male (Assigns Male Blue Avatar)</option>
+                <option value="female">Female (Assigns Female Avatar)</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Profile Photo: (optional)</label>
+              <input type="file" id="new-staff-photo-file" accept="image/png, image/jpeg, image/webp" class="form-input" style="font-size: 11px; padding: 6px;">
+            </div>
+          </div>
+
+          <div style="display: flex; justify-content: flex-end; gap: 8px; margin-top: 18px;">
+            <button type="button" class="btn btn-secondary" id="btn-cancel-add-staff">Cancel</button>
+            <button type="button" class="btn btn-primary" id="btn-submit-add-staff">Save &amp; Generate Signature</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification -->
+  <div class="toast" id="toast-notification">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+    <span id="toast-message">Notification</span>
+  </div>
+
+  <!-- Shared Global Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div>
+          <img src="logo/file -03.png" alt="VELOLOG" style="height: 32px; width: auto; margin-bottom: 12px; display: block;">
+          <p style="font-size: 13px; color: #475569; line-height: 1.6; max-width: 380px;">
+            VELOLOG is a modern logistics and freight management company delivering reliable road, ocean, and air cargo solutions across the GCC and worldwide.
+          </p>
+          <div style="margin-top: 14px;">
+            <img src="logo/ISO Certified Seal and JCTRANS Logo.png" alt="ISO 9001 and JCTRANS" style="height: 34px; width: auto;">
+          </div>
+        </div>
+
+        <div>
+          <div class="footer-col-title">Navigation</div>
+          <ul class="footer-links">
+            <li><a href="/">Home</a></li>
+            <li><a href="/about">About Us</a></li>
+            <li><a href="/team">Our Team</a></li>
+            <li><a href="/services">Services</a></li>
+            <li><a href="/contact">Contact</a></li>
+            <li><a href="/signature-studio">Signature Studio</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <div class="footer-col-title">Headquarters</div>
+          <div style="font-size: 13px; color: #475569; line-height: 1.7;">
+            <strong>An Nawras, King Saud Road</strong><br>
+            Dammam, Building 4612 Office 102<br>
+            Kingdom of Saudi Arabia<br>
+            Phone: <a href="tel:+966546979474" style="color: var(--primary); text-decoration: none;">+966 546979474</a><br>
+            Email: <a href="mailto:info@velologsa.com" style="color: var(--primary); text-decoration: none;">info@velologsa.com</a><br>
+            Website: <a href="https://www.velologsa.com/" target="_blank" style="color: var(--primary); text-decoration: none;">www.velologsa.com</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <div>
+          © 2026 VELOLOG. All rights reserved. Across Miles. Beyond Limits.
+        </div>
+        <div>
+          ISO 9001:2015 Certified Company | JCTRANS Member ID 159403
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="common.js"></script>
+  <script src="data.js"></script>
+  <script src="generator.js"></script>
+  <script src="html2canvas.min.js"></script>
+  <script>
+    // Signature Studio Controller
+    let currentEmployee = null;
+    let currentGeneratedHtml = '';
+
+    const staffSelect = document.getElementById('field-staff-select');
+    const fieldName = document.getElementById('field-name');
+    const fieldTitle = document.getElementById('field-title');
+    const fieldDept = document.getElementById('field-dept');
+    const fieldPhone = document.getElementById('field-phone');
+    const fieldEmail = document.getElementById('field-email');
+    const toggleRegards = document.getElementById('toggle-regards');
+    const fieldRegards = document.getElementById('field-regards');
+    const regardsInputContainer = document.getElementById('regards-input-container');
+    const toggleBase64 = document.getElementById('toggle-base64');
+    const toggleSocial = document.getElementById('toggle-social');
+    const socialInputsContainer = document.getElementById('social-inputs-container');
+    const fieldLinkedin = document.getElementById('field-linkedin');
+    const fieldWhatsapp = document.getElementById('field-whatsapp');
+    const btnReset = document.getElementById('btn-reset-fields');
+    const btnBatchDownload = document.getElementById('btn-batch-download');
+
+    // Photo Settings Elements
+    const studioAvatarWrap = document.getElementById('studio-avatar-wrap');
+    const photoStatusBadge = document.getElementById('photo-status-badge');
+    const btnStudioUploadPhoto = document.getElementById('btn-studio-upload-photo');
+    const btnStudioRemovePhoto = document.getElementById('btn-studio-remove-photo');
+    const studioPhotoFileInput = document.getElementById('studio-photo-file-input');
+    let studioUploadedPhotos = {};
+
+    async function fetchStudioPhotos() {
+      try {
+        const res = await fetch('/api/employee-photos');
+        if (res.ok) {
+          const data = await res.json();
+          if (data.success && data.photos) {
+            studioUploadedPhotos = data.photos;
+          }
+        }
+      } catch (e) {
+        console.warn('Failed loading photo index in studio:', e);
+      }
+      updateStudioAvatarUI();
+    }
+
+    function getGenderSvg(gender) {
+      const isFemale = (gender || '').toLowerCase() === 'female';
+      return isFemale ? `
+        <svg viewBox="0 0 48 48" width="100%" height="100%" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect width="48" height="48" fill="#fdf2f8"/>
+          <circle cx="24" cy="16" r="7.5" fill="#db2777"/>
+          <path d="M12 40c0-6.627 5.373-12 12-12s12 5.373 12 12v1H12v-1z" fill="#db2777"/>
+          <path d="M16 16c0 4.5 3.5 8 8 8s8-3.5 8-8" stroke="#ffffff" stroke-width="1.8" stroke-linecap="round"/>
+        </svg>
+      ` : `
+        <svg viewBox="0 0 48 48" width="100%" height="100%" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect width="48" height="48" fill="#eff6ff"/>
+          <circle cx="24" cy="16" r="7.5" fill="#2056a5"/>
+          <path d="M11 40c0-7.18 5.82-13 13-13s13 5.82 13 13v1H11v-1z" fill="#2056a5"/>
+          <path d="M21 27l3 5 3-5" stroke="#ffffff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      `;
+    }
+
+    function updateStudioAvatarUI() {
+      if (!currentEmployee || !studioAvatarWrap) return;
+      const empId = currentEmployee.id;
+      const photoUrl = studioUploadedPhotos[empId] || currentEmployee.photo;
+      const genderSvg = getGenderSvg(currentEmployee.gender);
+
+      if (photoUrl) {
+        studioAvatarWrap.innerHTML = `<img src="${photoUrl}" alt="${currentEmployee.name}" style="width: 100%; height: 100%; object-fit: cover; display: block;" onerror="this.onerror=null; this.parentElement.innerHTML=\`${genderSvg.replace(/`/g, '\\`')}\`;">`;
+        photoStatusBadge.textContent = 'Official Photo';
+        photoStatusBadge.style.background = '#dcfce7';
+        photoStatusBadge.style.color = '#15803d';
+        btnStudioRemovePhoto.style.display = 'inline-block';
+        btnStudioUploadPhoto.textContent = '📷 Change';
+      } else {
+        studioAvatarWrap.innerHTML = genderSvg;
+        photoStatusBadge.textContent = 'Default Gender Icon';
+        photoStatusBadge.style.background = '#e0f2fe';
+        photoStatusBadge.style.color = '#0369a1';
+        btnStudioRemovePhoto.style.display = 'none';
+        btnStudioUploadPhoto.textContent = '📷 Upload Photo';
+      }
+    }
+
+    if (btnStudioUploadPhoto) {
+      btnStudioUploadPhoto.addEventListener('click', () => {
+        studioPhotoFileInput.value = '';
+        studioPhotoFileInput.click();
+      });
+    }
+
+    if (studioPhotoFileInput) {
+      studioPhotoFileInput.addEventListener('change', async (e) => {
+        const file = e.target.files[0];
+        if (!file || !currentEmployee) return;
+        if (file.size > 5 * 1024 * 1024) {
+          alert('File size exceeds 5MB limit. Please choose a smaller image.');
+          return;
+        }
+
+        const reader = new FileReader();
+        reader.onload = async (evt) => {
+          const base64Data = evt.target.result;
+          try {
+            const res = await fetch(`/api/employees/${currentEmployee.id}/photo`, {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ photoBase64: base64Data })
+            });
+            const result = await res.json();
+            if (result.success) {
+              studioUploadedPhotos[currentEmployee.id] = result.photoUrl;
+              updateStudioAvatarUI();
+              showToast('✓ Official photo uploaded successfully and synced with team profile!');
+            } else {
+              alert('Upload failed: ' + (result.error || 'Unknown error'));
+            }
+          } catch (err) {
+            alert('Upload failed: ' + err.message);
+          }
+        };
+        reader.readAsDataURL(file);
+      });
+    }
+
+    if (btnStudioRemovePhoto) {
+      btnStudioRemovePhoto.addEventListener('click', async () => {
+        if (!currentEmployee) return;
+        if (!confirm(`Remove photo for ${currentEmployee.name} and restore the default gender icon?`)) return;
+        try {
+          const res = await fetch(`/api/employees/${currentEmployee.id}/photo`, {
+            method: 'DELETE'
+          });
+          const result = await res.json();
+          if (result.success) {
+            delete studioUploadedPhotos[currentEmployee.id];
+            updateStudioAvatarUI();
+            showToast('Photo removed. Default gender icon restored.');
+          }
+        } catch (err) {
+          alert('Could not remove photo: ' + err.message);
+        }
+      });
+    }
+
+    // Preview elements
+    const signatureRenderArea = document.getElementById('signature-render-area');
+    const mockFromVal = document.getElementById('mock-from-val');
+    const simulatorViewport = document.getElementById('simulator-viewport');
+    const btnCopySignature = document.getElementById('btn-copy-signature');
+    const btnCopyImage = document.getElementById('btn-copy-image');
+    const btnDownloadPng = document.getElementById('btn-download-png');
+    const btnDownloadHtml = document.getElementById('btn-download-html');
+    const btnViewSource = document.getElementById('btn-view-source');
+
+    // Modals
+    const sourceModal = document.getElementById('source-modal');
+    const rawCodeDisplay = document.getElementById('raw-code-display');
+    const modalCloseBtn = document.getElementById('modal-close-btn');
+    const btnCloseSourceModal = document.getElementById('btn-close-source-modal');
+    const btnCopyRawCode = document.getElementById('btn-copy-raw-code');
+
+    // Setup Guide Tabs
+    const guideTabBtns = document.querySelectorAll('.guide-tab-btn');
+    const guideContents = document.querySelectorAll('.guide-content');
+
+    // Populate Staff Dropdown
+    async function initStaffSelector() {
+      if (!staffSelect) return;
+
+      try {
+        const res = await fetch('/api/employees');
+        if (res.ok) {
+          const data = await res.json();
+          if (data.success && Array.isArray(data.employees)) {
+            window.VELOLOG_EMPLOYEES = data.employees;
+          }
+        }
+      } catch (e) {
+        console.warn('Could not fetch /api/employees:', e);
+      }
+
+      const employeesList = (typeof VELOLOG_EMPLOYEES !== 'undefined') ? VELOLOG_EMPLOYEES : [];
+
+      staffSelect.innerHTML = employeesList.map(emp => 
+        `<option value="${emp.id}">${emp.name} — ${emp.title} (${emp.department})</option>`
+      ).join('');
+
+      const staffLabel = document.getElementById('staff-select-label');
+      if (staffLabel) {
+        staffLabel.textContent = `Select Team Member (${employeesList.length} Staff)`;
+      }
+
+      const batchBtn = document.getElementById('btn-batch-download');
+      if (batchBtn) {
+        batchBtn.innerHTML = `<span>📦 Download All Staff Signatures (${employeesList.length})</span>`;
+      }
+
+      // Check URL query param ?id=...
+      const urlParams = new URLSearchParams(window.location.search);
+      const queryId = urlParams.get('id');
+      const targetEmp = employeesList.find(e => e.id === queryId) || employeesList[0];
+
+      if (targetEmp) {
+        loadEmployee(targetEmp.id);
+      }
+      fetchStudioPhotos();
+    }
+
+    // Load Employee into Form
+    function loadEmployee(empId) {
+      const employeesList = (typeof VELOLOG_EMPLOYEES !== 'undefined') ? VELOLOG_EMPLOYEES : [];
+      const emp = employeesList.find(e => e.id === empId);
+      if (!emp) return;
+
+      currentEmployee = { ...emp };
+      staffSelect.value = emp.id;
+
+      fieldName.value = emp.name;
+      fieldTitle.value = emp.title;
+      fieldDept.value = emp.department;
+      fieldPhone.value = emp.phone;
+      fieldEmail.value = emp.email;
+
+      if (mockFromVal) mockFromVal.textContent = `${emp.name} <${emp.email}>`;
+      const outlookFrom = document.getElementById('outlook-from-val');
+      if (outlookFrom) outlookFrom.textContent = `${emp.name} <${emp.email}>`;
+
+      updateStudioAvatarUI();
+      renderSignature();
+    }
+
+    // Render Signature
+    function renderSignature() {
+      if (!currentEmployee) return;
+
+      const options = {
+        name: fieldName.value,
+        title: fieldTitle.value,
+        department: fieldDept.value,
+        phone: fieldPhone.value,
+        email: fieldEmail.value,
+        showRegards: toggleRegards.checked,
+        regardsText: fieldRegards.value,
+        useBase64: toggleBase64.checked,
+        showSocial: toggleSocial.checked,
+        linkedinUrl: fieldLinkedin.value,
+        whatsappUrl: fieldWhatsapp.value
+      };
+
+      currentGeneratedHtml = generateSignatureHtml(currentEmployee, options);
+      
+      const sigGmail = document.getElementById('signature-render-area');
+      if (sigGmail) sigGmail.innerHTML = currentGeneratedHtml;
+
+      const sigOutlook = document.getElementById('signature-render-area-outlook');
+      if (sigOutlook) sigOutlook.innerHTML = currentGeneratedHtml;
+
+      if (mockFromVal) mockFromVal.textContent = `${fieldName.value} <${fieldEmail.value}>`;
+      const outlookFrom = document.getElementById('outlook-from-val');
+      if (outlookFrom) outlookFrom.textContent = `${fieldName.value} <${fieldEmail.value}>`;
+    }
+
+    // Event Listeners for Live Editing
+    staffSelect.addEventListener('change', (e) => loadEmployee(e.target.value));
+
+    [fieldName, fieldTitle, fieldDept, fieldPhone, fieldEmail, fieldRegards, fieldLinkedin, fieldWhatsapp].forEach(el => {
+      el.addEventListener('input', renderSignature);
+    });
+
+    toggleRegards.addEventListener('change', () => {
+      regardsInputContainer.style.display = toggleRegards.checked ? 'block' : 'none';
+      renderSignature();
+    });
+
+    toggleBase64.addEventListener('change', renderSignature);
+
+    toggleSocial.addEventListener('change', () => {
+      socialInputsContainer.style.display = toggleSocial.checked ? 'flex' : 'none';
+      renderSignature();
+    });
+
+    btnReset.addEventListener('click', () => {
+      if (currentEmployee) {
+        loadEmployee(currentEmployee.id);
+        toggleRegards.checked = true;
+        regardsInputContainer.style.display = 'block';
+        fieldRegards.value = 'Best regards,';
+        toggleSocial.checked = false;
+        socialInputsContainer.style.display = 'none';
+        renderSignature();
+        showToast('Fields reset to original employee records.');
+      }
+    });
+
+    // Preview Mode Switcher (Authentic Gmail Web vs Outlook 365)
+    const simulatorGmail = document.getElementById('simulator-gmail');
+    const simulatorOutlook = document.getElementById('simulator-outlook');
+
+    document.querySelectorAll('.mode-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+
+        const mode = btn.getAttribute('data-mode');
+        if (mode === 'outlook') {
+          if (simulatorGmail) simulatorGmail.style.display = 'none';
+          if (simulatorOutlook) simulatorOutlook.style.display = 'block';
+        } else {
+          // Gmail mode
+          if (simulatorGmail) simulatorGmail.style.display = 'block';
+          if (simulatorOutlook) simulatorOutlook.style.display = 'none';
+        }
+      });
+    });
+
+    // Add Staff Modal Controller
+    const btnAddStaffModalOpen = document.getElementById('btn-add-staff-modal-open');
+    const addStaffModal = document.getElementById('add-staff-modal');
+    const btnCloseAddStaffModal = document.getElementById('btn-close-add-staff-modal');
+    const btnCancelAddStaff = document.getElementById('btn-cancel-add-staff');
+    const btnSubmitAddStaff = document.getElementById('btn-submit-add-staff');
+
+    const newStaffName = document.getElementById('new-staff-name');
+    const newStaffTitle = document.getElementById('new-staff-title');
+    const newStaffDept = document.getElementById('new-staff-dept');
+    const newStaffPhone = document.getElementById('new-staff-phone');
+    const newStaffEmail = document.getElementById('new-staff-email');
+    const newStaffGender = document.getElementById('new-staff-gender');
+    const newStaffPhotoFile = document.getElementById('new-staff-photo-file');
+
+    function openAddStaffModal() {
+      if (addStaffModal) {
+        addStaffModal.classList.add('show');
+        if (newStaffName) {
+          newStaffName.value = '';
+          setTimeout(() => newStaffName.focus(), 100);
+        }
+        if (newStaffTitle) newStaffTitle.value = '';
+        if (newStaffPhone) newStaffPhone.value = '';
+        if (newStaffEmail) newStaffEmail.value = '';
+        if (newStaffPhotoFile) newStaffPhotoFile.value = '';
+      }
+    }
+
+    function closeAddStaffModal() {
+      if (addStaffModal) addStaffModal.classList.remove('show');
+    }
+
+    if (btnAddStaffModalOpen) btnAddStaffModalOpen.addEventListener('click', openAddStaffModal);
+    if (btnCloseAddStaffModal) btnCloseAddStaffModal.addEventListener('click', closeAddStaffModal);
+    if (btnCancelAddStaff) btnCancelAddStaff.addEventListener('click', closeAddStaffModal);
+
+    if (btnSubmitAddStaff) {
+      btnSubmitAddStaff.addEventListener('click', async () => {
+        const name = newStaffName.value.trim();
+        const title = newStaffTitle.value.trim();
+        const dept = newStaffDept.value.trim();
+        const phone = newStaffPhone.value.trim();
+        const email = newStaffEmail.value.trim();
+        const gender = newStaffGender.value;
+
+        if (!name || !title || !email) {
+          alert('Please fill in Employee Name, Designation, and Email Address.');
+          return;
+        }
+
+        btnSubmitAddStaff.disabled = true;
+        btnSubmitAddStaff.textContent = 'Saving...';
+
+        let photoBase64 = null;
+        if (newStaffPhotoFile.files && newStaffPhotoFile.files[0]) {
+          try {
+            photoBase64 = await new Promise((resolve) => {
+              const reader = new FileReader();
+              reader.onload = e => resolve(e.target.result);
+              reader.readAsDataURL(newStaffPhotoFile.files[0]);
+            });
+          } catch (e) {}
+        }
+
+        try {
+          const res = await fetch('/api/employees', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              name,
+              title,
+              department: dept,
+              phone,
+              email,
+              gender,
+              photoBase64
+            })
+          });
+
+          const data = await res.json();
+          if (data.success && data.employee) {
+            const newEmp = data.employee;
+            if (Array.isArray(data.employees)) {
+              window.VELOLOG_EMPLOYEES = data.employees;
+            } else if (typeof VELOLOG_EMPLOYEES !== 'undefined') {
+              VELOLOG_EMPLOYEES.push(newEmp);
+            }
+
+            closeAddStaffModal();
+            await initStaffSelector();
+            loadEmployee(newEmp.id);
+            showToast(`✓ Added ${newEmp.name} to VELOLOG! Official signature generated.`);
+          } else {
+            alert('Failed to add employee: ' + (data.error || 'Server error'));
+          }
+        } catch (err) {
+          alert('Network error: ' + err.message);
+        } finally {
+          btnSubmitAddStaff.disabled = false;
+          btnSubmitAddStaff.textContent = 'Save & Generate Signature';
+        }
+      });
+    }
+
+    // Copy Signature (Rich HTML to clipboard)
+    btnCopySignature.addEventListener('click', async () => {
+      try {
+        const renderEl = document.getElementById('signature-render-area');
+        
+        // Select range
+        const range = document.createRange();
+        range.selectNode(renderEl);
+        window.getSelection().removeAllRanges();
+        window.getSelection().addRange(range);
+
+        // Modern navigator.clipboard with text/html Blob
+        if (navigator.clipboard && window.ClipboardItem) {
+          const blobHtml = new Blob([currentGeneratedHtml], { type: 'text/html' });
+          const blobText = new Blob([renderEl.innerText], { type: 'text/plain' });
+          const item = new ClipboardItem({
+            'text/html': blobHtml,
+            'text/plain': blobText
+          });
+          await navigator.clipboard.write([item]);
+        } else {
+          // Fallback execCommand
+          document.execCommand('copy');
+        }
+
+        window.getSelection().removeAllRanges();
+        showToast(`✓ Signature copied for ${fieldName.value}! Ready to paste into Gmail or Outlook.`);
+      } catch (err) {
+        console.warn('Clipboard write fallback:', err);
+        // Fallback: document.execCommand
+        try {
+          const range = document.createRange();
+          range.selectNode(document.getElementById('signature-render-area'));
+          window.getSelection().removeAllRanges();
+          window.getSelection().addRange(range);
+          document.execCommand('copy');
+          window.getSelection().removeAllRanges();
+          showToast(`✓ Signature copied! Ready to paste.`);
+        } catch (e2) {
+          alert('Could not copy automatically. Please open the "Code" modal and copy manually.');
+        }
+      }
+    });
+
+    // Copy Signature as Image (PNG to clipboard)
+    btnCopyImage.addEventListener('click', async () => {
+      try {
+        const tableEl = document.getElementById('velolog-signature');
+        if (!tableEl) return;
+        showToast('Rendering signature as PNG image...');
+        const canvas = await html2canvas(tableEl, {
+          backgroundColor: '#ffffff',
+          scale: 2, // 2x high resolution
+          useCORS: true
+        });
+        canvas.toBlob(async (blob) => {
+          if (navigator.clipboard && window.ClipboardItem) {
+            try {
+              await navigator.clipboard.write([
+                new ClipboardItem({ 'image/png': blob })
+              ]);
+              showToast(`✓ Image copied to clipboard for ${fieldName.value}! Ready to paste.`);
+            } catch (clipErr) {
+              // Fallback to PNG download if clipboard permission denied
+              const url = URL.createObjectURL(blob);
+              const a = document.createElement('a');
+              a.href = url;
+              a.download = `VELOLOG_Signature_${(fieldName.value || 'Staff').replace(/\\s+/g, '_')}.png`;
+              document.body.appendChild(a);
+              a.click();
+              document.body.removeChild(a);
+              URL.revokeObjectURL(url);
+              showToast(`PNG downloaded (clipboard permission blocked in browser).`);
+            }
+          } else {
+            showToast('Clipboard image write not supported in this browser. Please use PNG download.');
+          }
+        }, 'image/png');
+      } catch (err) {
+        console.error('Copy image error:', err);
+        showToast('Error generating PNG image: ' + err.message);
+      }
+    });
+
+    // Download Single PNG Image
+    btnDownloadPng.addEventListener('click', async () => {
+      try {
+        const tableEl = document.getElementById('velolog-signature');
+        if (!tableEl) return;
+        showToast('Generating high-res PNG image...');
+        const canvas = await html2canvas(tableEl, {
+          backgroundColor: '#ffffff',
+          scale: 2,
+          useCORS: true
+        });
+        const url = canvas.toDataURL('image/png');
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `VELOLOG_Signature_${(fieldName.value || 'Staff').replace(/\\s+/g, '_')}.png`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        showToast(`✓ Downloaded PNG image for ${fieldName.value}.`);
+      } catch (err) {
+        console.error('Download PNG error:', err);
+        showToast('Error generating PNG: ' + err.message);
+      }
+    });
+
+    // Download Single HTML
+    btnDownloadHtml.addEventListener('click', () => {
+      const fullDoc = `<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>VELOLOG Email Signature - ${fieldName.value}</title>
+</head>
+<body style="margin: 20px; font-family: 'Segoe UI', Arial, sans-serif;">
+  ${currentGeneratedHtml}
+</body>
+</html>`;
+
+      const blob = new Blob([fullDoc], { type: 'text/html;charset=utf-8' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `VELOLOG_Signature_${(fieldName.value || 'Staff').replace(/\s+/g, '_')}.html`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+      showToast(`Downloaded HTML for ${fieldName.value}.`);
+    });
+
+    // Batch Download All 9 Staff Signatures
+    btnBatchDownload.addEventListener('click', () => {
+      VELOLOG_EMPLOYEES.forEach((emp, index) => {
+        setTimeout(() => {
+          const empHtml = generateSignatureHtml(emp, {
+            useBase64: true,
+            showRegards: true,
+            showSocial: false
+          });
+          const fullDoc = `<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>VELOLOG Email Signature - ${emp.name}</title>
+</head>
+<body style="margin: 20px; font-family: 'Segoe UI', Arial, sans-serif;">
+  ${empHtml}
+</body>
+</html>`;
+          const blob = new Blob([fullDoc], { type: 'text/html;charset=utf-8' });
+          const url = URL.createObjectURL(blob);
+          const a = document.createElement('a');
+          a.href = url;
+          a.download = `VELOLOG_${emp.id}_${emp.name.replace(/\s+/g, '_')}.html`;
+          document.body.appendChild(a);
+          a.click();
+          document.body.removeChild(a);
+          URL.revokeObjectURL(url);
+        }, index * 200);
+      });
+      showToast('Downloading signatures for all 9 team members...');
+    });
+
+    // View Source Modal
+    btnViewSource.addEventListener('click', () => {
+      rawCodeDisplay.textContent = currentGeneratedHtml;
+      sourceModal.classList.add('show');
+    });
+
+    btnCopyRawCode.addEventListener('click', async () => {
+      await navigator.clipboard.writeText(currentGeneratedHtml);
+      showToast('HTML code copied to clipboard!');
+    });
+
+    modalCloseBtn.addEventListener('click', () => sourceModal.classList.remove('show'));
+    btnCloseSourceModal.addEventListener('click', () => sourceModal.classList.remove('show'));
+
+    // Installation Guide Tabs
+    guideTabBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        guideTabBtns.forEach(b => b.classList.remove('active'));
+        guideContents.forEach(c => c.classList.remove('active'));
+
+        btn.classList.add('active');
+        const tabId = 'tab-' + btn.getAttribute('data-tab');
+        const target = document.getElementById(tabId);
+        if (target) target.classList.add('active');
+      });
+    });
+
+    // Initialize
+    initStaffSelector();
+  </script>
+</body>
+</html>

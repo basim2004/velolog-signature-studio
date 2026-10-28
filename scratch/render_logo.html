@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Logo Generator with Tagline</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body style="background: #e2e8f0; padding: 40px; font-family: sans-serif;">
+  <h2>VELOLOG Logo with Tagline Preview</h2>
+  <div style="background: white; padding: 30px; display: inline-block; border-radius: 8px;">
+    <canvas id="logoCanvas"></canvas>
+  </div>
+  <div style="margin-top: 20px;">
+    <button id="saveBtn" style="padding: 10px 20px; font-size: 16px; background: #2154a3; color: white; border: none; border-radius: 6px; cursor: pointer;">Save as assets/velolog_logo_stacked.png</button>
+  </div>
+
+  <script>
+    async function init() {
+      // Load Google Font
+      await document.fonts.load('700 34px Montserrat');
+      await document.fonts.load('600 24px Montserrat');
+
+      // Load file -03.png
+      const img = new Image();
+      img.src = '/logo/file%20-03.png';
+      await new Promise(r => img.onload = r);
+
+      const canvas = document.getElementById('logoCanvas');
+      // Dimensions: 500 x 360
+      const w = 500;
+      const h = 360;
+      canvas.width = w;
+      canvas.height = h;
+      const ctx = canvas.getContext('2d');
+      ctx.clearRect(0, 0, w, h);
+
+      // Mark: [281, 371, 597, 731]
+      // Draw mark centered at top
+      const markW = 168;
+      const markH = Math.round(168 * (731 / 597)); // ~206
+      const markX = Math.round((w - markW) / 2);
+      const markY = 0;
+      ctx.drawImage(img, 281, 371, 597, 731, markX, markY, markW, markH);
+
+      // VELOLOG text: [1046, 473, 3174, 525]
+      const textW = 480;
+      const textH = Math.round(480 * (525 / 3174)); // ~79
+      const textX = Math.round((w - textW) / 2);
+      const textY = markY + markH + 20;
+      ctx.drawImage(img, 1046, 473, 3174, 525, textX, textY, textW, textH);
+
+      // Tagline: "Across Miles. Beyond Limits."
+      const taglineY = textY + textH + 34;
+      ctx.font = '700 34px "Montserrat", sans-serif';
+      ctx.fillStyle = '#2154a3';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.letterSpacing = '0.5px';
+      ctx.fillText('Across Miles. Beyond Limits.', w / 2, taglineY);
+
+      // Auto-save
+      const b64 = canvas.toDataURL('image/png');
+      const res = await fetch('/api/save-logo-stacked', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ image: b64 })
+      });
+      const d = await res.json();
+      const statusDiv = document.createElement('h1');
+      statusDiv.id = 'status-msg';
+      statusDiv.textContent = d.success ? 'SAVED_SUCCESSFULLY' : 'SAVE_ERROR';
+      document.body.appendChild(statusDiv);
+    }
+    init();
+  </script>
+</body>
+</html>
