@@ -247,62 +247,17 @@
       <section class="book-showcase-section" id="help-desk-guide-showcase">
         <div class="book-showcase-card">
           
-          <!-- LEFT: 3D Interactive Realistic Book Mockup -->
-          <div class="book-interactive-stage">
-            <div class="stage">
-              <div class="shadow"></div>
-              <div class="book" id="b" onclick="window.open('help-desk-guide.pdf', '_blank')" title="Click to view official Help Desk Guide (PDF)">
-                <!-- Front Cover -->
-                <div class="f front">
-                  <div class="in">
-                    <div>
-                      <div class="brand">VELOLOG</div>
-                      <div class="tag">Global Freight. Smart Logistics.</div>
-                    </div>
-                    <div class="mid">
-                      <div class="kick"><i></i>Help desk guide</div>
-                      <h1>Signature<br>Studio</h1>
-                      <div class="sub">How to create and install your official VELOLOG email signature.</div>
-                    </div>
-                    <div class="foot">
-                      <span>Staff email suite</span>
-                      <span>Prepared by BE Creatives</span>
-                    </div>
-                  </div>
-                </div>
-                <!-- Back Cover -->
-                <div class="f back">
-                  <div class="in">
-                    <div class="brand">VELOLOG</div>
-                    <div class="mid">
-                      <h2>Need help?</h2>
-                      <dl>
-                        <dt>Email</dt><dd>info@velologsa.com</dd>
-                        <dt>Phone</dt><dd>+966 546979474</dd>
-                        <dt>Web</dt><dd>www.velologsa.com</dd>
-                        <dt>Instagram</dt><dd><a href="https://www.instagram.com/velolog.sa?utm_source=ig_web_button_share_sheet&amp;dlrf=ZDNlZDc0MzIxNw==" target="_blank" style="color: #e9b824; text-decoration: none;">@velolog.sa</a></dd>
-                        <dt>Office</dt><dd>An Nawras, King Saud Road, Dammam, Building 4612 Office 102</dd>
-                      </dl>
-                    </div>
-                    <div class="foot">
-                      <span>Global Freight. Smart Logistics.</span>
-                    </div>
-                  </div>
-                </div>
-                <!-- 3D Spine -->
-                <div class="f spine">
-                  <span>VELOLOG &nbsp; Signature Studio</span>
-                </div>
-                <!-- 3D Paper Edge -->
-                <div class="f edge"></div>
+          <!-- LEFT: Ultra-Realistic 3D Book Mockup -->
+          <div class="book-photo-wrap">
+            <a href="help-desk-guide.pdf" target="_blank" class="book-photo-card" title="Click to view official Help Desk Guide (PDF)">
+              <img src="images/help_desk_book_mockup.jpg" alt="VELOLOG Signature Studio Help Desk Guide - 3D Book Mockup" class="book-photo-img">
+              <div class="book-photo-overlay">
+                <span class="book-photo-badge">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+                  Click to Read Official PDF (6 Pages)
+                </span>
               </div>
-            </div>
-            <!-- Interactive Turn Controls -->
-            <div class="ctl">
-              <label for="r" style="font-weight: 700; font-size: 12px; cursor: pointer;">Turn</label>
-              <input id="r" type="range" min="-160" max="40" value="-28" aria-label="Turn 3D Book">
-              <button id="sp" type="button">Show back</button>
-            </div>
+            </a>
           </div>
 
           <!-- RIGHT: Content & Actions -->
@@ -521,24 +476,6 @@
       statusBox.className = `contact-form-status ${type}`;
       statusBox.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
     }
-
-    // 3D Realistic Interactive Book Controls
-    (function() {
-      var b = document.getElementById('b'),
-          r = document.getElementById('r'),
-          s = document.getElementById('sp');
-      if (b && r && s) {
-        function setRot(v) {
-          b.style.setProperty('--ry', v + 'deg');
-          r.value = v;
-          s.textContent = parseInt(v, 10) < -90 ? 'Show front' : 'Show back';
-        }
-        r.addEventListener('input', function() { setRot(r.value); });
-        s.addEventListener('click', function() {
-          setRot(parseInt(r.value, 10) < -90 ? -28 : -155);
-        });
-      }
-    })();
   </script>
   <script type="module" src="firebase-init.js"></script>
 </body>
