@@ -15,3 +15,4 @@ Official VELOLOG Corporate Website and Email Signature Generator Studio.
 node server.js
 ```
 Open [http://localhost:3000](http://localhost:3000) or [http://localhost:3000/signature-studio](http://localhost:3000/signature-studio) in your browser.
+

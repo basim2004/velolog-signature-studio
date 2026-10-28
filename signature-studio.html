@@ -60,10 +60,18 @@
     
     <!-- SECTION 1 — HERO BANNER -->
     <section class="page-hero-banner" style="background-image: url('images/home_hero_velolog_truck.png');">
-      <div class="container">
-        <span class="page-hero-badge">Staff Email Suite • Verified Signatures</span>
-        <h1 class="page-hero-title">Signature Studio</h1>
-        <p class="page-hero-sub">VELOLOG Official HTML Email Signature Generator</p>
+      <div class="container" style="display: flex; justify-content: space-between; align-items: flex-end; flex-wrap: wrap; gap: 16px;">
+        <div>
+          <span class="page-hero-badge">Staff Email Suite • Verified Signatures</span>
+          <h1 class="page-hero-title">Signature Studio</h1>
+          <p class="page-hero-sub">VELOLOG Official HTML Email Signature Generator</p>
+        </div>
+        <div style="margin-bottom: 6px;">
+          <a href="help-desk-guide.pdf" target="_blank" class="btn btn-sm" style="background: rgba(255,255,255,0.95); color: #102f67; font-weight: 700; border: 1.5px solid #ffffff; box-shadow: 0 4px 12px rgba(0,0,0,0.18); display: inline-flex; align-items: center; gap: 8px; padding: 9px 18px; border-radius: 6px; text-decoration: none;">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2154a3" stroke-width="2.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+            <span>📘 Help Desk Guide (PDF)</span>
+          </a>
+        </div>
       </div>
     </section>
 
@@ -415,12 +423,26 @@
 
       <!-- STEP-BY-STEP EMAIL SETUP GUIDE -->
       <div class="guide-section">
-        <h2 style="font-size: 18px; font-weight: 700; color: var(--primary-dark); margin-bottom: 6px;">
-          How to Install Your VELOLOG Email Signature
-        </h2>
-        <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 20px;">
-          Follow the quick steps below for your preferred email client:
-        </p>
+        <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 14px; margin-bottom: 16px;">
+          <div>
+            <h2 style="font-size: 18px; font-weight: 700; color: var(--primary-dark); margin-bottom: 6px;">
+              How to Install Your VELOLOG Email Signature
+            </h2>
+            <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 0;">
+              Follow the quick steps below for your email client or view the complete official PDF guide:
+            </p>
+          </div>
+          <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+            <a href="help-desk-guide.pdf" target="_blank" class="btn btn-primary btn-sm" style="font-weight: 700; display: inline-flex; align-items: center; gap: 6px; box-shadow: 0 2px 6px rgba(33, 84, 163, 0.25);">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+              <span>📄 View Help Desk PDF Guide</span>
+            </a>
+            <a href="help-desk-guide.pdf" download="VELOLOG_Signature_Studio_Help_Desk_Guide.pdf" class="btn btn-outline btn-sm" style="display: inline-flex; align-items: center; gap: 6px;" title="Download PDF">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+              <span>Download PDF</span>
+            </a>
+          </div>
+        </div>
 
         <div class="guide-tabs">
           <button class="guide-tab-btn active" data-tab="gmail">
@@ -434,6 +456,9 @@
           </button>
           <button class="guide-tab-btn" data-tab="apple">
             <span>🍎 Apple Mail</span>
+          </button>
+          <button class="guide-tab-btn" data-tab="helpdesk-pdf">
+            <span>📘 Help Desk Guide (PDF)</span>
           </button>
         </div>
 
@@ -477,6 +502,34 @@
             <li>Uncheck <em>"Always match my default message font"</em>.</li>
             <li>Paste your signature into the editor window using <kbd>Cmd+V</kbd>.</li>
           </ol>
+        </div>
+
+        <div class="guide-content" id="tab-helpdesk-pdf">
+          <div style="background: #f8fafc; border: 1.5px solid #caddec; border-radius: var(--radius-sm); padding: 18px; margin-top: 6px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 14px; margin-bottom: 16px;">
+              <div>
+                <div style="font-size: 16px; font-weight: 700; color: #102f67;">
+                  VELOLOG Signature Studio • Help Desk Guide
+                </div>
+                <div style="font-size: 12.5px; color: #475569; margin-top: 4px;">
+                  Official 6-page comprehensive reference guide for VELOLOG Email Signature Studio, staff management, and client installation.
+                </div>
+              </div>
+              <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+                <a href="help-desk-guide.pdf" target="_blank" class="btn btn-primary btn-sm" style="font-weight: 700; display: inline-flex; align-items: center; gap: 6px;">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+                  <span>Open Fullscreen</span>
+                </a>
+                <a href="help-desk-guide.pdf" download="VELOLOG_Signature_Studio_Help_Desk_Guide.pdf" class="btn btn-secondary btn-sm" style="display: inline-flex; align-items: center; gap: 6px;">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                  <span>Download PDF (2.5 MB)</span>
+                </a>
+              </div>
+            </div>
+            <div style="width: 100%; height: 580px; border-radius: 8px; overflow: hidden; border: 1px solid #cbd5e1; background: #ffffff; box-shadow: 0 2px 8px rgba(0,0,0,0.06);">
+              <iframe src="help-desk-guide.pdf#toolbar=1&navpanes=0" style="width: 100%; height: 100%; border: none;"></iframe>
+            </div>
+          </div>
         </div>
 
       </div>
@@ -603,6 +656,7 @@
             <li><a href="/services">Services</a></li>
             <li><a href="/contact">Contact</a></li>
             <li><a href="/signature-studio">Signature Studio</a></li>
+            <li><a href="/help-desk-guide" target="_blank">Help Desk Guide (PDF)</a></li>
           </ul>
         </div>
 

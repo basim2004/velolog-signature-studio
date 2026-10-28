@@ -30,3 +30,14 @@
   from = "/signature-studio"
   to = "/signature-studio.html"
   status = 200
+
+[[redirects]]
+  from = "/help-desk-guide"
+  to = "/help-desk-guide.pdf"
+  status = 200
+
+[[redirects]]
+  from = "/helpdesk"
+  to = "/help-desk-guide.pdf"
+  status = 200
+

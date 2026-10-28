@@ -34,7 +34,9 @@ const ROUTE_MAP = {
   '/team': 'team.html',
   '/services': 'services.html',
   '/contact': 'contact.html',
-  '/signature-studio': 'signature-studio.html'
+  '/signature-studio': 'signature-studio.html',
+  '/help-desk-guide': 'help-desk-guide.pdf',
+  '/helpdesk': 'help-desk-guide.pdf'
 };
 
 function parseBody(req) {

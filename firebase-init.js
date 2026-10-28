@@ -23,3 +23,4 @@ try {
   // Analytics is skipped in local file:// protocols or if offline
   console.info("Firebase initialized successfully.");
 }
+
