@@ -24,7 +24,8 @@ const MIME_TYPES = {
   '.svg': 'image/svg+xml',
   '.pdf': 'application/pdf',
   '.ico': 'image/x-icon',
-  '.webp': 'image/webp'
+  '.webp': 'image/webp',
+  '.mp4': 'video/mp4'
 };
 
 const ROUTE_MAP = {
