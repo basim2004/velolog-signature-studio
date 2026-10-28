@@ -183,17 +183,6 @@
             </div>
             <img src="logo/ISO Certified Seal and JCTRANS Logo.png" alt="ISO 9001:2015 &amp; JCTRANS" style="height: 38px; width: auto;">
           </div>
-
-          <!-- Quick Navigation to Guide -->
-          <div style="margin-top: 22px;">
-            <a href="#help-desk-guide-showcase" style="display: flex; align-items: center; justify-content: space-between; text-decoration: none; padding: 12px 16px; background: #f0f7ff; border: 1.5px solid #bfdbfe; border-radius: 10px; color: #102f67; font-weight: 700; font-size: 13px; transition: all 0.2s ease;">
-              <span style="display: flex; align-items: center; gap: 10px;">
-                <span style="font-size: 18px;">📘</span>
-                <span>Help Desk Guide (PDF)</span>
-              </span>
-              <span style="font-size: 12px; color: #2154a3; font-weight: 700;">View Book ↓</span>
-            </a>
-          </div>
         </div>
 
         <!-- RIGHT: Functional Contact Form -->
@@ -239,57 +228,61 @@
       <section class="book-showcase-section" id="help-desk-guide-showcase">
         <div class="book-showcase-card">
           
-          <!-- LEFT: 3D Interactive Book Mockup -->
-          <div class="book-mockup-wrap">
-            <a href="help-desk-guide.pdf" target="_blank" class="book-3d" title="Click to open official PDF guide">
-              <div class="book-shine"></div>
-              
-              <!-- Book Cover Content -->
-              <div>
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
-                  <span style="font-size: 9px; font-weight: 800; letter-spacing: 1px; color: #93c5fd; text-transform: uppercase;">VELOLOG</span>
-                  <span style="font-size: 7.5px; font-weight: 700; background: rgba(255,255,255,0.16); padding: 2px 6px; border-radius: 8px; color: #e2e8f0;">6 PAGES</span>
+          <!-- LEFT: 3D Interactive Realistic Book Mockup -->
+          <div class="book-interactive-stage">
+            <div class="stage">
+              <div class="shadow"></div>
+              <div class="book" id="b" onclick="window.open('help-desk-guide.pdf', '_blank')" title="Click to view official Help Desk Guide (PDF)">
+                <!-- Front Cover -->
+                <div class="f front">
+                  <div class="in">
+                    <div>
+                      <div class="brand">VELOLOG</div>
+                      <div class="tag">Global Freight. Smart Logistics.</div>
+                    </div>
+                    <div class="mid">
+                      <div class="kick"><i></i>Help desk guide</div>
+                      <h1>Signature<br>Studio</h1>
+                      <div class="sub">How to create and install your official VELOLOG email signature.</div>
+                    </div>
+                    <div class="foot">
+                      <span>Staff email suite</span>
+                      <span>Prepared by BE Creatives</span>
+                    </div>
+                  </div>
                 </div>
-                <div style="font-size: 7.5px; font-weight: 600; color: #cbd5e1; margin-bottom: 14px; line-height: 1.2;">
-                  Global Freight. Smart Logistics.
+                <!-- Back Cover -->
+                <div class="f back">
+                  <div class="in">
+                    <div class="brand">VELOLOG</div>
+                    <div class="mid">
+                      <h2>Need help?</h2>
+                      <dl>
+                        <dt>Email</dt><dd>info@velologsa.com</dd>
+                        <dt>Phone</dt><dd>+966 546979474</dd>
+                        <dt>Web</dt><dd>www.velologsa.com</dd>
+                        <dt>Office</dt><dd>An Nawras, King Saud Road, Dammam, Building 4612 Office 102</dd>
+                      </dl>
+                    </div>
+                    <div class="foot">
+                      <span>Global Freight. Smart Logistics.</span>
+                    </div>
+                  </div>
                 </div>
-
-                <div class="book-tag">
-                  HELP DESK GUIDE • EMAIL SUITE
+                <!-- 3D Spine -->
+                <div class="f spine">
+                  <span>VELOLOG &nbsp; Signature Studio</span>
                 </div>
-
-                <div class="book-title">
-                  Signature<br>Studio
-                </div>
-
-                <div class="book-sub">
-                  Official HTML Email Signature Manual &amp; Deployment Guide
-                </div>
-
-                <div class="book-pills">
-                  <span class="book-pill">Gmail</span>
-                  <span class="book-pill">Outlook 365</span>
-                  <span class="book-pill">Apple Mail</span>
-                  <span class="book-pill">Thunderbird</span>
-                </div>
+                <!-- 3D Paper Edge -->
+                <div class="f edge"></div>
               </div>
-
-              <!-- Book Bottom Stats -->
-              <div class="book-footer-stats">
-                <div>
-                  <strong>10</strong>
-                  STAFF PROFILES
-                </div>
-                <div style="text-align: center;">
-                  <strong>1-CLICK</strong>
-                  COPY HTML
-                </div>
-                <div style="text-align: right;">
-                  <strong>BASE64</strong>
-                  EMBEDDED
-                </div>
-              </div>
-            </a>
+            </div>
+            <!-- Interactive Turn Controls -->
+            <div class="ctl">
+              <label for="r" style="font-weight: 700; font-size: 12px; cursor: pointer;">Turn</label>
+              <input id="r" type="range" min="-160" max="40" value="-28" aria-label="Turn 3D Book">
+              <button id="sp" type="button">Show back</button>
+            </div>
           </div>
 
           <!-- RIGHT: Content & Actions -->
@@ -507,6 +500,24 @@
       statusBox.className = `contact-form-status ${type}`;
       statusBox.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
     }
+
+    // 3D Realistic Interactive Book Controls
+    (function() {
+      var b = document.getElementById('b'),
+          r = document.getElementById('r'),
+          s = document.getElementById('sp');
+      if (b && r && s) {
+        function setRot(v) {
+          b.style.setProperty('--ry', v + 'deg');
+          r.value = v;
+          s.textContent = parseInt(v, 10) < -90 ? 'Show front' : 'Show back';
+        }
+        r.addEventListener('input', function() { setRot(r.value); });
+        s.addEventListener('click', function() {
+          setRot(parseInt(r.value, 10) < -90 ? -28 : -155);
+        });
+      }
+    })();
   </script>
   <script type="module" src="firebase-init.js"></script>
 </body>

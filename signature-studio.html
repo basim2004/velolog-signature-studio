@@ -505,29 +505,108 @@
         </div>
 
         <div class="guide-content" id="tab-helpdesk-pdf">
-          <div style="background: #f8fafc; border: 1.5px solid #caddec; border-radius: var(--radius-sm); padding: 18px; margin-top: 6px;">
-            <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 14px; margin-bottom: 16px;">
+          <div style="background: linear-gradient(135deg, #f8fafc 0%, #ffffff 50%, #f0f7ff 100%); border: 1.5px solid #cbd5e1; border-radius: 16px; padding: 28px 32px; margin-top: 6px; box-shadow: 0 4px 20px rgba(16, 47, 103, 0.06);">
+            <div style="display: grid; grid-template-columns: minmax(300px, 420px) 1fr; gap: 36px; align-items: center;" class="studio-book-grid">
+              
+              <!-- 3D Interactive Book Mockup -->
+              <div class="book-interactive-stage">
+                <div class="stage">
+                  <div class="shadow"></div>
+                  <div class="book" id="b-studio" onclick="window.open('help-desk-guide.pdf', '_blank')" title="Click to view official Help Desk Guide (PDF)">
+                    <!-- Front Cover -->
+                    <div class="f front">
+                      <div class="in">
+                        <div>
+                          <div class="brand">VELOLOG</div>
+                          <div class="tag">Global Freight. Smart Logistics.</div>
+                        </div>
+                        <div class="mid">
+                          <div class="kick"><i></i>Help desk guide</div>
+                          <h1>Signature<br>Studio</h1>
+                          <div class="sub">How to create and install your official VELOLOG email signature.</div>
+                        </div>
+                        <div class="foot">
+                          <span>Staff email suite</span>
+                          <span>Prepared by BE Creatives</span>
+                        </div>
+                      </div>
+                    </div>
+                    <!-- Back Cover -->
+                    <div class="f back">
+                      <div class="in">
+                        <div class="brand">VELOLOG</div>
+                        <div class="mid">
+                          <h2>Need help?</h2>
+                          <dl>
+                            <dt>Email</dt><dd>info@velologsa.com</dd>
+                            <dt>Phone</dt><dd>+966 546979474</dd>
+                            <dt>Web</dt><dd>www.velologsa.com</dd>
+                            <dt>Office</dt><dd>An Nawras, King Saud Road, Dammam, Building 4612 Office 102</dd>
+                          </dl>
+                        </div>
+                        <div class="foot">
+                          <span>Global Freight. Smart Logistics.</span>
+                        </div>
+                      </div>
+                    </div>
+                    <!-- Spine -->
+                    <div class="f spine">
+                      <span>VELOLOG &nbsp; Signature Studio</span>
+                    </div>
+                    <!-- Edge -->
+                    <div class="f edge"></div>
+                  </div>
+                </div>
+                <!-- Controls -->
+                <div class="ctl">
+                  <label for="r-studio" style="font-weight: 700; font-size: 12px; cursor: pointer;">Turn</label>
+                  <input id="r-studio" type="range" min="-160" max="40" value="-28" aria-label="Turn 3D Book">
+                  <button id="sp-studio" type="button">Show back</button>
+                </div>
+              </div>
+
+              <!-- Information & Actions -->
               <div>
-                <div style="font-size: 16px; font-weight: 700; color: #102f67;">
-                  VELOLOG Signature Studio • Help Desk Guide
+                <div class="book-info-badge">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+                  <span>Official Documentation</span>
                 </div>
-                <div style="font-size: 12.5px; color: #475569; margin-top: 4px;">
-                  Official 6-page comprehensive reference guide for VELOLOG Email Signature Studio, staff management, and client installation.
+                <h3 class="book-info-title" style="font-size: 24px; margin-bottom: 8px;">
+                  Signature Studio Help Desk Guide
+                </h3>
+                <p class="book-info-desc" style="font-size: 13.5px; margin-bottom: 16px;">
+                  An official 6-page visual handbook prepared by BE Creatives for VELOLOG staff members, logistics coordinators, and management across Saudi Arabia.
+                </p>
+                <div class="book-features-grid" style="margin-bottom: 20px;">
+                  <div class="book-feature-item">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                    <span><strong>Step-by-Step:</strong> Fast setup instructions for all 10 staff members.</span>
+                  </div>
+                  <div class="book-feature-item">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                    <span><strong>Universal Support:</strong> Gmail, Outlook 365, Apple Mail, and Thunderbird.</span>
+                  </div>
+                  <div class="book-feature-item">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                    <span><strong>Certified Seals:</strong> ISO 9001:2015 and JCTRANS credentialing rules.</span>
+                  </div>
+                  <div class="book-feature-item">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                    <span><strong>100% Email Safe:</strong> Embedded Base64 assets preventing broken images.</span>
+                  </div>
+                </div>
+                <div class="book-cta-row">
+                  <a href="help-desk-guide.pdf" target="_blank" class="btn btn-primary" style="font-weight: 700; padding: 10px 20px; box-shadow: 0 4px 14px rgba(33, 84, 163, 0.3); display: inline-flex; align-items: center; gap: 8px;">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+                    <span>Open Fullscreen (PDF)</span>
+                  </a>
+                  <a href="help-desk-guide.pdf" download="VELOLOG_Signature_Studio_Help_Desk_Guide.pdf" class="btn btn-secondary" style="font-weight: 700; padding: 10px 18px; display: inline-flex; align-items: center; gap: 8px;">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                    <span>Download PDF (2.5 MB)</span>
+                  </a>
                 </div>
               </div>
-              <div style="display: flex; gap: 8px; flex-wrap: wrap;">
-                <a href="help-desk-guide.pdf" target="_blank" class="btn btn-primary btn-sm" style="font-weight: 700; display: inline-flex; align-items: center; gap: 6px;">
-                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
-                  <span>Open Fullscreen</span>
-                </a>
-                <a href="help-desk-guide.pdf" download="VELOLOG_Signature_Studio_Help_Desk_Guide.pdf" class="btn btn-secondary btn-sm" style="display: inline-flex; align-items: center; gap: 6px;">
-                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-                  <span>Download PDF (2.5 MB)</span>
-                </a>
-              </div>
-            </div>
-            <div style="width: 100%; height: 580px; border-radius: 8px; overflow: hidden; border: 1px solid #cbd5e1; background: #ffffff; box-shadow: 0 2px 8px rgba(0,0,0,0.06);">
-              <iframe src="help-desk-guide.pdf#toolbar=1&navpanes=0" style="width: 100%; height: 100%; border: none;"></iframe>
+
             </div>
           </div>
         </div>
@@ -1308,6 +1387,24 @@
 
     // Initialize
     initStaffSelector();
+
+    // 3D Realistic Interactive Book Controls
+    (function() {
+      var b = document.getElementById('b-studio'),
+          r = document.getElementById('r-studio'),
+          s = document.getElementById('sp-studio');
+      if (b && r && s) {
+        function setRot(v) {
+          b.style.setProperty('--ry', v + 'deg');
+          r.value = v;
+          s.textContent = parseInt(v, 10) < -90 ? 'Show front' : 'Show back';
+        }
+        r.addEventListener('input', function() { setRot(r.value); });
+        s.addEventListener('click', function() {
+          setRot(parseInt(r.value, 10) < -90 ? -28 : -155);
+        });
+      }
+    })();
   </script>
   <script type="module" src="firebase-init.js"></script>
 </body>
