@@ -58,7 +58,7 @@
     <div class="container">
       
       <!-- SECTION 2 — COMPANY STORY -->
-      <div class="about-story-card" style="display: grid; grid-template-columns: 1.15fr 0.85fr; gap: 32px; align-items: center; margin-bottom: 32px;">
+      <div class="about-story-card about-grid-2col" style="margin-bottom: 32px;">
         <div>
           <div style="font-size: 12px; font-weight: 700; color: var(--primary); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px;">About Velolog</div>
           <h2 style="font-size: 24px; font-weight: 800; color: var(--primary-dark); margin-bottom: 12px;">Connecting People, Businesses, and Dreams</h2>
@@ -68,29 +68,29 @@
           <p class="story-text" style="margin-top: 14px;">
             Our team works tirelessly to ensure every parcel, container, and delivery arrives intact and on schedule. With Velolog, your success is our priority.
           </p>
-          <div style="margin-top: 18px; display: flex; gap: 14px; flex-wrap: wrap;">
-            <div style="background: var(--primary-light); border: 1px solid var(--primary-border); padding: 8px 14px; border-radius: 6px; font-size: 12px; font-weight: 700; color: var(--primary-dark);">
+          <div class="story-badges-wrap">
+            <div class="story-badge-pill">
               ✓ ISO 9001:2015 Quality Certified
             </div>
-            <div style="background: var(--primary-light); border: 1px solid var(--primary-border); padding: 8px 14px; border-radius: 6px; font-size: 12px; font-weight: 700; color: var(--primary-dark);">
+            <div class="story-badge-pill">
               ✓ JCTRANS Global Member #159403
             </div>
-            <div style="background: var(--primary-light); border: 1px solid var(--primary-border); padding: 8px 14px; border-radius: 6px; font-size: 12px; font-weight: 700; color: var(--primary-dark);">
+            <div class="story-badge-pill">
               ✓ 80,000 SQM Dammam Terminal
             </div>
           </div>
         </div>
 
-        <div style="position: relative; border-radius: var(--radius-md); overflow: hidden; box-shadow: var(--shadow-md); border: 1px solid var(--border-card);">
-          <video autoplay loop muted playsinline poster="images/about_hq_building.jpg" style="width: 100%; height: 280px; object-fit: cover; display: block;">
+        <div class="about-media-box">
+          <video autoplay loop muted playsinline poster="images/about_hq_building.jpg">
             <source src="assets/velolog_gcc_motion.mp4" type="video/mp4">
             <source src="images/velolog_gcc_motion.mp4" type="video/mp4">
             Your browser does not support the video tag.
           </video>
-          <div style="position: absolute; top: 12px; right: 12px; background: rgba(14, 41, 82, 0.75); backdrop-filter: blur(4px); color: #ffffff; font-size: 11px; font-weight: 700; padding: 4px 10px; border-radius: 20px; display: flex; align-items: center; gap: 6px; letter-spacing: 0.5px;">
-            <span style="width: 7px; height: 7px; background: #22c55e; border-radius: 50%; display: inline-block; box-shadow: 0 0 6px #22c55e;"></span> GCC LOGISTICS MOTION
+          <div class="media-live-badge">
+            <span class="live-dot"></span> GCC LOGISTICS MOTION
           </div>
-          <div style="position: absolute; bottom: 0; left: 0; right: 0; background: linear-gradient(to top, rgba(14, 41, 82, 0.95), rgba(14, 41, 82, 0.4) 60%, transparent); padding: 18px 20px; color: #ffffff;">
+          <div class="media-caption-overlay">
             <div style="font-size: 14px; font-weight: 700;">VELOLOG Commercial Headquarters</div>
             <div style="font-size: 12px; color: #dbeafe;">An Nawras, King Saud Road, Dammam, KSA</div>
           </div>
@@ -98,10 +98,10 @@
       </div>
 
       <!-- SECTION 2B — 80,000 SQM TERMINAL HANDLING FACILITY SPOTLIGHT -->
-      <div class="about-story-card" style="display: grid; grid-template-columns: 0.9fr 1.1fr; gap: 32px; align-items: center; margin-bottom: 32px; background: linear-gradient(to right, #f8fafc, #ffffff); border: 2px solid var(--primary);">
-        <div style="position: relative; border-radius: var(--radius-md); overflow: hidden; box-shadow: var(--shadow-md); border: 1px solid var(--border-card);">
-          <img src="images/about_terminal_80k.png" alt="80,000 SQM Terminal in Dammam" style="width: 100%; height: 280px; object-fit: cover; display: block;">
-          <div style="position: absolute; bottom: 0; left: 0; right: 0; background: linear-gradient(to top, rgba(14, 41, 82, 0.95), transparent); padding: 14px 18px; color: #ffffff;">
+      <div class="about-story-card about-grid-2col about-grid-terminal" style="margin-bottom: 32px;">
+        <div class="about-media-box">
+          <img src="images/about_terminal_80k.png" alt="80,000 SQM Terminal in Dammam">
+          <div class="media-caption-overlay">
             <div style="font-size: 13px; font-weight: 700;">VELOLOG Dammam Terminal Facility</div>
             <div style="font-size: 11px; color: #dbeafe;">Strategically Located Near King Abdulaziz Seaport</div>
           </div>
@@ -163,28 +163,28 @@
         <p class="story-text" style="max-width: 760px; margin: 0 auto 24px auto;">
           Headquartered in Dammam, Saudi Arabia, VELOLOG directly connects the Arabian Gulf with key international trade lines. We provide dedicated overland trucking, border customs clearance, and port drayage across all six GCC member nations:
         </p>
-        <div style="display: flex; gap: 14px; flex-wrap: wrap; justify-content: center; margin-bottom: 24px;">
-          <div style="background: #ffffff; padding: 10px 18px; border-radius: 8px; border: 1.5px solid var(--primary-border); font-weight: 700; color: var(--primary-dark); display: inline-flex; align-items: center; gap: 8px; box-shadow: var(--shadow-sm);">
+        <div class="gcc-country-grid">
+          <div class="gcc-country-item">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="2.5"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
             Saudi Arabia (HQ Dammam)
           </div>
-          <div style="background: #ffffff; padding: 10px 18px; border-radius: 8px; border: 1.5px solid var(--primary-border); font-weight: 700; color: var(--primary-dark); display: inline-flex; align-items: center; gap: 8px; box-shadow: var(--shadow-sm);">
+          <div class="gcc-country-item">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="2.5"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
             United Arab Emirates
           </div>
-          <div style="background: #ffffff; padding: 10px 18px; border-radius: 8px; border: 1.5px solid var(--primary-border); font-weight: 700; color: var(--primary-dark); display: inline-flex; align-items: center; gap: 8px; box-shadow: var(--shadow-sm);">
+          <div class="gcc-country-item">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="2.5"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
             Kuwait
           </div>
-          <div style="background: #ffffff; padding: 10px 18px; border-radius: 8px; border: 1.5px solid var(--primary-border); font-weight: 700; color: var(--primary-dark); display: inline-flex; align-items: center; gap: 8px; box-shadow: var(--shadow-sm);">
+          <div class="gcc-country-item">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="2.5"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
             Bahrain
           </div>
-          <div style="background: #ffffff; padding: 10px 18px; border-radius: 8px; border: 1.5px solid var(--primary-border); font-weight: 700; color: var(--primary-dark); display: inline-flex; align-items: center; gap: 8px; box-shadow: var(--shadow-sm);">
+          <div class="gcc-country-item">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="2.5"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
             Qatar
           </div>
-          <div style="background: #ffffff; padding: 10px 18px; border-radius: 8px; border: 1.5px solid var(--primary-border); font-weight: 700; color: var(--primary-dark); display: inline-flex; align-items: center; gap: 8px; box-shadow: var(--shadow-sm);">
+          <div class="gcc-country-item">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="2.5"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
             Oman
           </div>

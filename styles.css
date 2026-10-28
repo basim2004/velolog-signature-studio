@@ -33,6 +33,12 @@
   padding: 0;
 }
 
+html, body {
+  overflow-x: hidden;
+  width: 100%;
+  max-width: 100vw;
+}
+
 body {
   font-family: var(--font-main);
   background-color: var(--bg-page);
@@ -612,6 +618,119 @@ body {
   padding: 32px;
   margin-bottom: 32px;
   box-shadow: var(--shadow-sm);
+  overflow: hidden;
+}
+
+.about-grid-2col {
+  display: grid;
+  grid-template-columns: 1.15fr 0.85fr;
+  gap: 32px;
+  align-items: center;
+}
+
+.about-grid-terminal {
+  grid-template-columns: 0.9fr 1.1fr;
+  background: linear-gradient(to right, #f8fafc, #ffffff);
+  border: 2px solid var(--primary);
+}
+
+.about-media-box {
+  position: relative;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  box-shadow: var(--shadow-md);
+  border: 1px solid var(--border-card);
+  height: 280px;
+  width: 100%;
+}
+
+.about-media-box video,
+.about-media-box img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.media-live-badge {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  background: rgba(14, 41, 82, 0.78);
+  backdrop-filter: blur(4px);
+  color: #ffffff;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 4px 10px;
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  letter-spacing: 0.5px;
+}
+
+.live-dot {
+  width: 7px;
+  height: 7px;
+  background: #22c55e;
+  border-radius: 50%;
+  display: inline-block;
+  box-shadow: 0 0 6px #22c55e;
+}
+
+.media-caption-overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: linear-gradient(to top, rgba(14, 41, 82, 0.95), rgba(14, 41, 82, 0.4) 60%, transparent);
+  padding: 16px 18px;
+  color: #ffffff;
+}
+
+.story-badges-wrap {
+  margin-top: 18px;
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.story-badge-pill {
+  background: var(--primary-light);
+  border: 1px solid var(--primary-border);
+  padding: 8px 14px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--primary-dark);
+}
+
+.gcc-country-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.gcc-country-item {
+  background: #ffffff;
+  padding: 10px 16px;
+  border-radius: 8px;
+  border: 1.5px solid var(--primary-border);
+  font-weight: 700;
+  color: var(--primary-dark);
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: var(--shadow-sm);
+  font-size: 13px;
+  justify-content: center;
+}
+
+.modal-grid-2col {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
 }
 
 .story-heading {
@@ -1554,8 +1673,20 @@ input:checked + .slider:before {
 
 /* Responsive Breakpoints Testing (320px, 360px, 390px, 430px, 768px, 1024px, 1440px) */
 @media (max-width: 1024px) {
+  .about-grid-2col,
+  .about-grid-terminal {
+    grid-template-columns: 1fr !important;
+    gap: 24px !important;
+  }
   .studio-layout {
-    grid-template-columns: 1fr;
+    grid-template-columns: 100% !important;
+    gap: 20px !important;
+  }
+  .controls-card,
+  .preview-card {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
   }
   .home-hero {
     min-height: auto;
@@ -1670,15 +1801,119 @@ input:checked + .slider:before {
     align-items: flex-start;
     gap: 16px;
   }
+  .mobile-swipe-indicator {
+    display: block !important;
+  }
+  .about-media-box {
+    height: 240px !important;
+  }
+  .page-hero-banner {
+    padding: 36px 0 28px 0 !important;
+    margin-bottom: 24px !important;
+  }
+  .page-hero-title {
+    font-size: 24px !important;
+    line-height: 1.25 !important;
+  }
+  .page-hero-sub {
+    font-size: 13.5px !important;
+  }
+  .simulator-viewport {
+    padding: 14px 8px !important;
+    min-height: auto !important;
+  }
+  .preview-toolbar {
+    padding: 12px 14px !important;
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 12px !important;
+  }
+  .preview-modes {
+    width: 100% !important;
+    display: flex !important;
+  }
+  .preview-modes .mode-btn {
+    flex: 1 !important;
+    text-align: center !important;
+    justify-content: center !important;
+    padding: 8px 10px !important;
+    font-size: 12px !important;
+  }
+  .studio-action-row {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    gap: 8px !important;
+    width: 100% !important;
+  }
+  .studio-action-row #btn-copy-signature {
+    grid-column: 1 / -1 !important;
+    padding: 12px 16px !important;
+    font-size: 14px !important;
+    font-weight: 700 !important;
+  }
+  .studio-action-row .btn {
+    justify-content: center !important;
+    padding: 8px 10px !important;
+    font-size: 12px !important;
+  }
+  .gmail-top-bar {
+    padding: 8px 12px !important;
+  }
+  .gmail-header-row {
+    padding: 6px 12px !important;
+    font-size: 12px !important;
+    flex-wrap: wrap !important;
+  }
+  .gmail-recipient-pill {
+    max-width: 100% !important;
+    word-break: break-all !important;
+  }
+  .gmail-message-body,
+  .outlook-message-body {
+    padding: 14px 10px !important;
+    font-size: 13px !important;
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+  }
+  .signature-render-target {
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+    display: block !important;
+    max-width: 100% !important;
+    width: 100% !important;
+  }
 }
 
 @media (max-width: 640px) {
   .header-actions .btn-secondary {
     display: none;
   }
+  .about-story-card {
+    padding: 22px 16px !important;
+    margin-bottom: 24px !important;
+  }
+  .about-media-box {
+    height: 210px !important;
+  }
+  .story-badges-wrap {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 8px !important;
+  }
+  .story-badge-pill {
+    text-align: center !important;
+  }
+  .gcc-country-grid {
+    grid-template-columns: 1fr 1fr !important;
+    gap: 8px !important;
+  }
   .modal-card {
     margin: 12px;
     max-height: 85vh;
+  }
+  .modal-grid-2col {
+    grid-template-columns: 1fr !important;
+    gap: 8px !important;
   }
 }
 
@@ -1712,11 +1947,40 @@ input:checked + .slider:before {
     bottom: 16px;
     max-width: calc(100vw - 32px);
   }
+  .gcc-country-grid {
+    grid-template-columns: 1fr !important;
+  }
+  .about-media-box {
+    height: 190px !important;
+  }
 }
 
 /* ==========================================================================
    AUTHENTIC CLIENT SIMULATORS: GMAIL & OUTLOOK
    ========================================================================== */
+
+/* Signature live render container */
+.signature-render-target {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  padding-bottom: 8px;
+}
+
+.mobile-swipe-indicator {
+  display: none;
+  font-size: 11.5px;
+  font-weight: 700;
+  color: #1e40af;
+  background: #eff6ff;
+  border: 1px dashed #93c5fd;
+  border-radius: 6px;
+  padding: 6px 12px;
+  text-align: center;
+  margin-bottom: 12px;
+}
 
 /* Gmail Web Compose Interface */
 .gmail-compose-window {
