@@ -1,0 +1,20 @@
+{
+  "hosting": {
+    "public": ".",
+    "ignore": [
+      "firebase.json",
+      ".firebaserc",
+      "**/.*",
+      "**/node_modules/**",
+      "scratch/**"
+    ],
+    "rewrites": [
+      { "source": "/signature-studio", "destination": "/signature-studio.html" },
+      { "source": "/about", "destination": "/about.html" },
+      { "source": "/team", "destination": "/team.html" },
+      { "source": "/services", "destination": "/services.html" },
+      { "source": "/contact", "destination": "/contact.html" },
+      { "source": "/home", "destination": "/index.html" }
+    ]
+  }
+}
