@@ -25,7 +25,8 @@ const MIME_TYPES = {
   '.pdf': 'application/pdf',
   '.ico': 'image/x-icon',
   '.webp': 'image/webp',
-  '.mp4': 'video/mp4'
+  '.mp4': 'video/mp4',
+  '.webmanifest': 'application/manifest+json'
 };
 
 const ROUTE_MAP = {
@@ -373,10 +374,15 @@ const server = http.createServer(async (req, res) => {
     const ext = path.extname(filePath).toLowerCase();
     const contentType = MIME_TYPES[ext] || 'application/octet-stream';
 
-    res.writeHead(200, {
+    const responseHeaders = {
       'Content-Type': contentType,
       'Cache-Control': 'no-cache'
-    });
+    };
+    if (pathname === '/sw.js') {
+      responseHeaders['Service-Worker-Allowed'] = '/';
+    }
+
+    res.writeHead(200, responseHeaders);
 
     const stream = fs.createReadStream(filePath);
     stream.pipe(res);

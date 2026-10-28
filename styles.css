@@ -128,6 +128,36 @@ body {
   gap: 10px;
 }
 
+/* PWA App Install Button & Standalone Mode */
+.pwa-install-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.pwa-install-btn:hover {
+  transform: translateY(-1px);
+  filter: brightness(1.1);
+}
+
+body.pwa-standalone .pwa-install-btn {
+  display: none !important;
+}
+
+/* Standalone app window styling adjustments */
+body.pwa-standalone {
+  user-select: none;
+}
+
+body.pwa-standalone input,
+body.pwa-standalone textarea,
+body.pwa-standalone select,
+body.pwa-standalone .signature-render-target {
+  user-select: text;
+}
+
 /* Mobile Hamburger Toggle */
 .mobile-only-nav-item {
   display: none;
