@@ -123,6 +123,10 @@ body {
 }
 
 /* Mobile Hamburger Toggle */
+.mobile-only-nav-item {
+  display: none;
+}
+
 .mobile-menu-toggle {
   display: none;
   background: none;
@@ -1618,6 +1622,9 @@ input:checked + .slider:before {
   .mobile-menu-toggle {
     display: block;
   }
+  .mobile-only-nav-item {
+    display: block;
+  }
   .nav-menu {
     display: none;
     position: absolute;
@@ -1630,6 +1637,7 @@ input:checked + .slider:before {
     padding: 16px 24px;
     box-shadow: var(--shadow-lg);
     gap: 4px;
+    z-index: 1000;
   }
   .nav-menu.show {
     display: flex;
@@ -1661,6 +1669,48 @@ input:checked + .slider:before {
     flex-direction: column;
     align-items: flex-start;
     gap: 16px;
+  }
+}
+
+@media (max-width: 640px) {
+  .header-actions .btn-secondary {
+    display: none;
+  }
+  .modal-card {
+    margin: 12px;
+    max-height: 85vh;
+  }
+}
+
+@media (max-width: 480px) {
+  .container {
+    padding: 0 16px;
+  }
+  .brand-logo-img {
+    height: 32px;
+  }
+  .header-actions .btn-primary {
+    padding: 7px 11px;
+    font-size: 12px;
+  }
+  .home-hero-title {
+    font-size: 26px;
+    line-height: 1.2;
+  }
+  .home-hero-sub {
+    font-size: 14px;
+  }
+  .hero-truck-visual {
+    height: 250px;
+  }
+  .team-grid {
+    grid-template-columns: 1fr !important;
+  }
+  .toast {
+    left: 16px;
+    right: 16px;
+    bottom: 16px;
+    max-width: calc(100vw - 32px);
   }
 }
 
