@@ -208,7 +208,9 @@
       <!-- Controls & Filter Toolbar -->
       <div class="team-toolbar">
         <div class="team-dept-pills" id="team-dept-pills">
-          <button class="dept-pill active" data-dept="all">All Staff (10)</button>
+          <button class="dept-pill active" data-dept="all">All Staff (11)</button>
+          <button class="dept-pill" data-dept="saudi">🇸🇦 Saudi Arabia (10)</button>
+          <button class="dept-pill" data-dept="dubai">🇦🇪 UAE Dubai (1)</button>
           <button class="dept-pill" data-dept="management">Management</button>
           <button class="dept-pill" data-dept="sales">Sales &amp; BD</button>
           <button class="dept-pill" data-dept="operations">Operations &amp; Pricing</button>
@@ -414,14 +416,17 @@
       if (!teamGrid || typeof VELOLOG_EMPLOYEES === 'undefined') return;
 
       const filtered = VELOLOG_EMPLOYEES.filter(emp => {
-        // Dept match
+        // Dept & Branch match
         let matchDept = true;
         if (currentDept !== 'all') {
           const deptLower = (emp.department || '').toLowerCase();
-          if (currentDept === 'management' && !deptLower.includes('management')) matchDept = false;
-          if (currentDept === 'sales' && !deptLower.includes('sales') && !deptLower.includes('business')) matchDept = false;
-          if (currentDept === 'operations' && !deptLower.includes('operation') && !deptLower.includes('pricing')) matchDept = false;
-          if (currentDept === 'accounts' && !deptLower.includes('account')) matchDept = false;
+          const empBranch = emp.branch || (emp.email && emp.email.includes('velologuae.com') ? 'dubai' : 'saudi');
+          if (currentDept === 'saudi' && empBranch !== 'saudi') matchDept = false;
+          else if (currentDept === 'dubai' && empBranch !== 'dubai') matchDept = false;
+          else if (currentDept === 'management' && !deptLower.includes('management')) matchDept = false;
+          else if (currentDept === 'sales' && !deptLower.includes('sales') && !deptLower.includes('business')) matchDept = false;
+          else if (currentDept === 'operations' && !deptLower.includes('operation') && !deptLower.includes('pricing')) matchDept = false;
+          else if (currentDept === 'accounts' && !deptLower.includes('account')) matchDept = false;
         }
 
         // Search match
@@ -494,7 +499,10 @@
                   ${uploadOverlay}
                 </div>
                 <div class="team-meta">
-                  <div class="team-name" title="${emp.name}">${emp.name}</div>
+                  <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 4px; margin-bottom: 2px;">
+                    <div class="team-name" title="${emp.name}">${emp.name}</div>
+                    ${emp.branch === 'dubai' ? '<span style="font-size: 10px; font-weight: 700; background: #fef3c7; color: #92400e; padding: 2px 6px; border-radius: 4px; border: 1px solid #fde68a; white-space: nowrap;">🇦🇪 Dubai</span>' : '<span style="font-size: 10px; font-weight: 700; background: #eff6ff; color: #1e40af; padding: 2px 6px; border-radius: 4px; border: 1px solid #bfdbfe; white-space: nowrap;">🇸🇦 Saudi</span>'}
+                  </div>
                   <div class="team-role">${emp.title}</div>
                   <span class="dept-badge ${deptClass}">${emp.department}</span>
                 </div>

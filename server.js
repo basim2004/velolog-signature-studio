@@ -38,7 +38,13 @@ const ROUTE_MAP = {
   '/contact': 'contact.html',
   '/signature-studio': 'signature-studio.html',
   '/help-desk-guide': 'help-desk-guide.pdf',
-  '/helpdesk': 'help-desk-guide.pdf'
+  '/helpdesk': 'help-desk-guide.pdf',
+  '/signatures': 'signatures/index.html',
+  '/signatures/': 'signatures/index.html',
+  '/signatures/saudi': 'signatures/saudi/index.html',
+  '/signatures/saudi/': 'signatures/saudi/index.html',
+  '/signatures/dubai': 'signatures/dubai/index.html',
+  '/signatures/dubai/': 'signatures/dubai/index.html'
 };
 
 function parseBody(req) {
@@ -187,7 +193,7 @@ const server = http.createServer(async (req, res) => {
   if (req.method === 'POST' && pathname === '/api/employees') {
     try {
       const data = await parseBody(req);
-      const { name, title, department, phone, email, gender, photoBase64, note } = data;
+      const { name, title, department, phone, email, branch, gender, photoBase64, note } = data;
 
       if (!name || !title || !email) {
         res.writeHead(400, { 'Content-Type': 'application/json' });
@@ -198,7 +204,7 @@ const server = http.createServer(async (req, res) => {
       // Read current employees from data.js
       const dataJsPath = path.join(__dirname, 'data.js');
       const dataJsContent = fs.readFileSync(dataJsPath, 'utf8');
-      const matchEmployees = dataJsContent.match(/const VELOLOG_EMPLOYEES = (\[[\s\S]*?\]);\s*const VELOLOG_COMPANY/);
+      const matchEmployees = dataJsContent.match(/const VELOLOG_EMPLOYEES = (\[[\s\S]*?\]);\s*(const VELOLOG_BRANCHES|const VELOLOG_COMPANY)/);
       if (!matchEmployees) {
         throw new Error('Could not parse VELOLOG_EMPLOYEES from data.js');
       }
@@ -239,6 +245,7 @@ const server = http.createServer(async (req, res) => {
         name: name.trim(),
         title: title.trim(),
         department: (department || 'Operations').trim(),
+        branch: (branch || (email.toLowerCase().includes('velologuae.com') ? 'dubai' : 'saudi')),
         phone: (phone || '').trim(),
         email: email.trim(),
         gender: (gender || 'male').toLowerCase(),
@@ -251,8 +258,8 @@ const server = http.createServer(async (req, res) => {
 
       // Re-write data.js with updated employees
       const updatedDataJs = dataJsContent.replace(
-        /const VELOLOG_EMPLOYEES = \[[\s\S]*?\];\s*const VELOLOG_COMPANY/,
-        `const VELOLOG_EMPLOYEES = ${JSON.stringify(employees, null, 2)};\n\nconst VELOLOG_COMPANY`
+        /const VELOLOG_EMPLOYEES = \[[\s\S]*?\];\s*(const VELOLOG_BRANCHES|const VELOLOG_COMPANY)/,
+        `const VELOLOG_EMPLOYEES = ${JSON.stringify(employees, null, 2)};\n\n$1`
       );
       fs.writeFileSync(dataJsPath, updatedDataJs, 'utf8');
 
@@ -353,9 +360,15 @@ const server = http.createServer(async (req, res) => {
   let targetFile = ROUTE_MAP[pathname] || pathname;
   if (targetFile.startsWith('/')) targetFile = targetFile.slice(1);
 
-  // If path doesn't have an extension, try adding .html
+  // If path is a directory with index.html, serve that index.html; otherwise try adding .html
   let filePath = path.join(__dirname, targetFile);
-  if (!fs.existsSync(filePath) && fs.existsSync(filePath + '.html')) {
+  if (fs.existsSync(filePath)) {
+    try {
+      if (fs.statSync(filePath).isDirectory() && fs.existsSync(path.join(filePath, 'index.html'))) {
+        filePath = path.join(filePath, 'index.html');
+      }
+    } catch (e) {}
+  } else if (fs.existsSync(filePath + '.html')) {
     filePath = filePath + '.html';
   }
 

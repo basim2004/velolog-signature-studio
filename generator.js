@@ -19,7 +19,9 @@ function parsePhoneNumbers(phoneStr) {
   const parts = phoneStr.split(/[|,/]/).map(p => p.trim()).filter(Boolean);
   return parts.map(raw => {
     let clean = raw.replace(/[^\d+]/g, '');
-    if (clean.startsWith('05')) {
+    if (clean.startsWith('00971')) {
+      clean = '+971' + clean.slice(5);
+    } else if (clean.startsWith('05')) {
       clean = '+966' + clean.slice(1);
     } else if (clean.startsWith('5') && clean.length === 9) {
       clean = '+966' + clean;
@@ -36,6 +38,19 @@ function parsePhoneNumbers(phoneStr) {
  */
 function generateSignatureHtml(employee, options = {}) {
   const company = (typeof VELOLOG_COMPANY !== 'undefined') ? VELOLOG_COMPANY : (typeof require !== 'undefined' ? require('./data.js').VELOLOG_COMPANY : {});
+  const branches = (typeof VELOLOG_BRANCHES !== 'undefined') ? VELOLOG_BRANCHES : (typeof require !== 'undefined' ? require('./data.js').VELOLOG_BRANCHES : {});
+
+  // Resolve Branch (options.branch > employee.branch > inferred from email > 'saudi')
+  let branchKey = options.branch || (employee ? employee.branch : null);
+  if (!branchKey) {
+    const checkEmail = ((options.email || (employee ? employee.email : '') || '')).toLowerCase();
+    if (checkEmail.includes('velologuae.com')) {
+      branchKey = 'dubai';
+    } else {
+      branchKey = 'saudi';
+    }
+  }
+  const branch = (branches && branches[branchKey]) ? branches[branchKey] : (branches && branches.saudi ? branches.saudi : {});
 
   // Settings & options
   const useBase64 = options.useBase64 !== undefined ? options.useBase64 : true;
@@ -44,11 +59,18 @@ function generateSignatureHtml(employee, options = {}) {
   const customRegards = options.regardsText || 'Best regards,';
   
   // Custom or overridden employee fields
-  const name = (options.name || employee.name || '').trim();
-  const title = (options.title || employee.title || '').trim();
-  const department = (options.department || employee.department || '').trim();
-  const phone = (options.phone || employee.phone || '').trim();
-  const email = (options.email || employee.email || '').trim();
+  const name = (options.name || (employee ? employee.name : '') || '').trim();
+  const title = (options.title || (employee ? employee.title : '') || '').trim();
+  const department = (options.department || (employee ? employee.department : '') || '').trim();
+  const phone = (options.phone || (employee ? employee.phone : '') || '').trim();
+  const email = (options.email || (employee ? employee.email : '') || '').trim();
+
+  // Branch-specific Address, Reg No, Website
+  const addressLine1 = options.addressLine1 !== undefined ? options.addressLine1 : (branch.addressLine1 || company.addressLine1 || 'An Nawras, King Saud Road,');
+  const addressLine2 = options.addressLine2 !== undefined ? options.addressLine2 : (branch.addressLine2 || company.addressLine2 || 'Dammam, Building 4612 Office 102');
+  const regNo = options.regNo !== undefined ? options.regNo : (branch.regNo || '');
+  const website = options.website !== undefined ? options.website : (branch.website || company.website || 'www.velologsa.com');
+  const websiteUrl = options.websiteUrl !== undefined ? options.websiteUrl : (branch.websiteUrl || company.websiteUrl || 'https://www.velologsa.com');
 
   // Assets (Base64 or Hosted URLs)
   const assets = company.assets || {};
@@ -69,17 +91,13 @@ function generateSignatureHtml(employee, options = {}) {
     ).join('<span style="color: #94a3b8; margin: 0 4px;">|</span>');
   }
 
-  // Address
-  const addressLine1 = company.addressLine1 || 'An Nawras, King Saud Road,';
-  const addressLine2 = company.addressLine2 || 'Dammam, Building 4612 Office 102';
-
   return `<!-- VELOLOG OFFICIAL EMAIL SIGNATURE START -->
 <table id="velolog-signature" cellpadding="0" cellspacing="0" border="0" style="border-collapse: collapse; background-color: #ffffff; width: 640px; min-width: 640px; max-width: 640px; font-family: Arial, Helvetica, sans-serif; mso-table-lspace: 0pt; mso-table-rspace: 0pt;">
   ${showRegards ? `<tr><td colspan="3" style="padding-bottom: 8px; font-family: Arial, Helvetica, sans-serif; font-size: 13px; color: #334155; font-weight: normal;">${customRegards}</td></tr>` : ''}
   <tr>
     <!-- LEFT SECTION: Stacked VELOLOG Logo (top-aligned with name) -->
     <td valign="top" align="center" style="width: 140px; min-width: 140px; max-width: 140px; padding: 2px 14px 4px 0; border-right: 1px solid #caddec; text-align: center;">
-      <a href="${company.websiteUrl}" target="_blank" style="text-decoration: none; display: inline-block;">
+      <a href="${websiteUrl}" target="_blank" style="text-decoration: none; display: inline-block;">
         <img src="${logoSrc}" alt="VELOLOG" width="112" style="display: block; width: 112px; max-width: 112px; height: auto; border: 0; margin: 0 auto;" />
       </a>
       <div style="font-family: Arial, Helvetica, sans-serif; font-size: 8.5px; font-weight: 600; color: #2154a3; letter-spacing: 0.2px; line-height: 12px; margin-top: 10px; text-align: center; white-space: nowrap;">
@@ -138,7 +156,7 @@ function generateSignatureHtml(employee, options = {}) {
                   <img src="${iconPinSrc}" alt="Address" width="14" height="16" style="display: block; width: 14px; height: 16px; border: 0;" />
                 </td>
                 <td valign="top" style="padding: 2px 0 2px 6px; color: #1e293b; line-height: 14px; font-size: 11px;">
-                  ${addressLine1}<br>${addressLine2}
+                  ${addressLine1}<br>${addressLine2}${regNo ? `<br><span style="color: #64748b; font-size: 10px; font-weight: 600;">${regNo}</span>` : ''}
                 </td>
               </tr>` : ''}
               <!-- Website (Seamless, balanced spacing) -->
@@ -147,7 +165,7 @@ function generateSignatureHtml(employee, options = {}) {
                   <img src="${iconGlobeSrc}" alt="Website" width="14" height="14" style="display: block; width: 14px; height: 14px; border: 0;" />
                 </td>
                 <td valign="middle" style="padding: 2px 0 2px 6px;">
-                  <a href="${company.websiteUrl}" target="_blank" style="color: #2154a3; text-decoration: none; font-weight: bold; font-size: 12px; line-height: 14px;">www.velologsa.com</a>
+                  <a href="${websiteUrl}" target="_blank" style="color: #2154a3; text-decoration: none; font-weight: bold; font-size: 12px; line-height: 14px;">${website}</a>
                 </td>
               </tr>
             </table>

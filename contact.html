@@ -118,62 +118,177 @@
         
         <!-- LEFT: Verified Company Contact Details -->
         <div class="contact-info-card">
-          <h2 class="contact-card-title">Corporate Headquarters</h2>
-          <p style="font-size: 13.5px; color: #475569; line-height: 1.6; margin-bottom: 24px;">
-            Visit our central management operations facility in Dammam, or connect directly with our freight dispatch coordinators.
-          </p>
+          <!-- Branch Toggle Pills -->
+          <div style="display: flex; gap: 8px; margin-bottom: 20px;">
+            <button type="button" class="btn btn-sm branch-contact-btn active" id="btn-contact-saudi" style="flex: 1; padding: 8px 10px; font-weight: 700; background: #2154a3; color: #ffffff; border: 1.5px solid #2154a3; border-radius: 6px; cursor: pointer; text-align: center;">
+              🇸🇦 Saudi Arabia (HQ)
+            </button>
+            <button type="button" class="btn btn-sm branch-contact-btn" id="btn-contact-dubai" style="flex: 1; padding: 8px 10px; font-weight: 700; background: #f8fafc; color: #334155; border: 1.5px solid #cbd5e1; border-radius: 6px; cursor: pointer; text-align: center;">
+              🇦🇪 UAE Dubai Branch
+            </button>
+          </div>
 
-          <div class="contact-info-list">
-            
-            <div class="contact-item">
-              <div class="contact-icon" style="background: var(--primary-light); color: var(--primary); display: flex; align-items: center; justify-content: center; width: 40px; height: 40px; border-radius: 8px;">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+          <!-- Saudi Branch Details -->
+          <div id="contact-panel-saudi">
+            <h2 class="contact-card-title">Corporate Headquarters</h2>
+            <p style="font-size: 13.5px; color: #475569; line-height: 1.6; margin-bottom: 20px;">
+              Visit our central management operations facility in Dammam, or connect directly with our freight dispatch coordinators.
+            </p>
+
+            <div class="contact-info-list">
+              <div class="contact-item">
+                <div class="contact-icon" style="background: var(--primary-light); color: var(--primary); display: flex; align-items: center; justify-content: center; width: 40px; height: 40px; border-radius: 8px;">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+                </div>
+                <div>
+                  <strong style="color: var(--primary-dark); font-size: 13px;">Office Address:</strong>
+                  <p style="margin-top: 4px; line-height: 1.5;">
+                    An Nawras, King Saud Road<br>
+                    Building 4612 Office 102, Dammam<br>
+                    Kingdom of Saudi Arabia
+                  </p>
+                </div>
               </div>
-              <div>
-                <strong style="color: var(--primary-dark); font-size: 13px;">Office Address:</strong>
-                <p style="margin-top: 4px; line-height: 1.5;">
-                  An Nawras, King Saud Road<br>
-                  Building 4612 Office 102, Dammam<br>
-                  Kingdom of Saudi Arabia
-                </p>
+
+              <div class="contact-item">
+                <div class="contact-icon" style="background: var(--primary-light); color: var(--primary); display: flex; align-items: center; justify-content: center; width: 40px; height: 40px; border-radius: 8px;">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
+                </div>
+                <div>
+                  <strong style="color: var(--primary-dark); font-size: 13px;">Official Telephone:</strong>
+                  <p style="margin-top: 4px;">
+                    <a href="tel:+966546979474" style="color: var(--primary); text-decoration: none; font-weight: 600;">+966 546979474</a>
+                  </p>
+                </div>
+              </div>
+
+              <div class="contact-item">
+                <div class="contact-icon" style="background: var(--primary-light); color: var(--primary); display: flex; align-items: center; justify-content: center; width: 40px; height: 40px; border-radius: 8px;">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+                </div>
+                <div>
+                  <strong style="color: var(--primary-dark); font-size: 13px;">Official Email Desk:</strong>
+                  <p style="margin-top: 4px;">
+                    <a href="mailto:info@velologsa.com" style="color: var(--primary); text-decoration: none; font-weight: 600;">info@velologsa.com</a>
+                  </p>
+                </div>
+              </div>
+
+              <div class="contact-item">
+                <div class="contact-icon" style="background: var(--primary-light); color: var(--primary); display: flex; align-items: center; justify-content: center; width: 40px; height: 40px; border-radius: 8px;">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>
+                </div>
+                <div>
+                  <strong style="color: var(--primary-dark); font-size: 13px;">Official Website:</strong>
+                  <p style="margin-top: 4px;">
+                    <a href="https://www.velologsa.com/" target="_blank" style="color: var(--primary); text-decoration: none; font-weight: 600;">www.velologsa.com</a>
+                  </p>
+                </div>
+              </div>
+
+              <div class="contact-item">
+                <div class="contact-icon" style="background: #f0fdf4; color: #16a34a; display: flex; align-items: center; justify-content: center; width: 40px; height: 40px; border-radius: 8px; border: 1px solid #bbf7d0;">
+                  📁
+                </div>
+                <div>
+                  <strong style="color: var(--primary-dark); font-size: 13px;">Staff Signatures Folder:</strong>
+                  <p style="margin-top: 4px;">
+                    <a href="/signatures/saudi/" target="_blank" style="color: #16a34a; text-decoration: none; font-weight: 700;">Open Saudi Signatures Directory →</a>
+                  </p>
+                </div>
               </div>
             </div>
+          </div>
 
-            <div class="contact-item">
-              <div class="contact-icon" style="background: var(--primary-light); color: var(--primary); display: flex; align-items: center; justify-content: center; width: 40px; height: 40px; border-radius: 8px;">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
+          <!-- Dubai Branch Details -->
+          <div id="contact-panel-dubai" style="display: none;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+              <h2 class="contact-card-title" style="margin-bottom: 0;">UAE Dubai Branch</h2>
+              <span style="font-size: 11px; font-weight: 700; background: #fef3c7; color: #92400e; padding: 3px 8px; border-radius: 4px; border: 1px solid #fde68a;">Reg : 2902815</span>
+            </div>
+            <p style="font-size: 13.5px; color: #475569; line-height: 1.6; margin-bottom: 20px;">
+              Our dedicated United Arab Emirates branch coordinating regional freight forwarding, GCC cross-border road freight, and cargo operations.
+            </p>
+
+            <div class="contact-info-list">
+              <div class="contact-item">
+                <div class="contact-icon" style="background: var(--primary-light); color: var(--primary); display: flex; align-items: center; justify-content: center; width: 40px; height: 40px; border-radius: 8px;">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+                </div>
+                <div>
+                  <strong style="color: var(--primary-dark); font-size: 13px;">Branch Office Address:</strong>
+                  <p style="margin-top: 4px; line-height: 1.5;">
+                    Trade Square, Office -107<br>
+                    Al Asayel Street, Al Quoz Industrial 4<br>
+                    Dubai, United Arab Emirates
+                  </p>
+                </div>
               </div>
-              <div>
-                <strong style="color: var(--primary-dark); font-size: 13px;">Official Telephone:</strong>
-                <p style="margin-top: 4px;">
-                  <a href="tel:+966546979474" style="color: var(--primary); text-decoration: none; font-weight: 600;">+966 546979474</a>
-                </p>
+
+              <div class="contact-item">
+                <div class="contact-icon" style="background: var(--primary-light); color: var(--primary); display: flex; align-items: center; justify-content: center; width: 40px; height: 40px; border-radius: 8px;">
+                  👤
+                </div>
+                <div>
+                  <strong style="color: var(--primary-dark); font-size: 13px;">Operations Executive:</strong>
+                  <p style="margin-top: 4px;">
+                    <strong>Nazir Abdullah</strong> — Operations Executive
+                  </p>
+                </div>
+              </div>
+
+              <div class="contact-item">
+                <div class="contact-icon" style="background: var(--primary-light); color: var(--primary); display: flex; align-items: center; justify-content: center; width: 40px; height: 40px; border-radius: 8px;">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
+                </div>
+                <div>
+                  <strong style="color: var(--primary-dark); font-size: 13px;">Branch Mobile:</strong>
+                  <p style="margin-top: 4px;">
+                    <a href="tel:+971551369161" style="color: var(--primary); text-decoration: none; font-weight: 600;">00971551369161 (+971 55 136 9161)</a>
+                  </p>
+                </div>
+              </div>
+
+              <div class="contact-item">
+                <div class="contact-icon" style="background: var(--primary-light); color: var(--primary); display: flex; align-items: center; justify-content: center; width: 40px; height: 40px; border-radius: 8px;">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+                </div>
+                <div>
+                  <strong style="color: var(--primary-dark); font-size: 13px;">Branch Email:</strong>
+                  <p style="margin-top: 4px;">
+                    <a href="mailto:nasir@velologuae.com" style="color: var(--primary); text-decoration: none; font-weight: 600;">nasir@velologuae.com</a>
+                  </p>
+                </div>
+              </div>
+
+              <div class="contact-item">
+                <div class="contact-icon" style="background: var(--primary-light); color: var(--primary); display: flex; align-items: center; justify-content: center; width: 40px; height: 40px; border-radius: 8px;">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>
+                </div>
+                <div>
+                  <strong style="color: var(--primary-dark); font-size: 13px;">UAE Official Website:</strong>
+                  <p style="margin-top: 4px;">
+                    <a href="https://www.velologuae.com/" target="_blank" style="color: var(--primary); text-decoration: none; font-weight: 600;">www.velologuae.com</a>
+                  </p>
+                </div>
+              </div>
+
+              <div class="contact-item">
+                <div class="contact-icon" style="background: #f0fdf4; color: #16a34a; display: flex; align-items: center; justify-content: center; width: 40px; height: 40px; border-radius: 8px; border: 1px solid #bbf7d0;">
+                  📁
+                </div>
+                <div>
+                  <strong style="color: var(--primary-dark); font-size: 13px;">Dubai Signatures Folder:</strong>
+                  <p style="margin-top: 4px;">
+                    <a href="/signatures/dubai/" target="_blank" style="color: #16a34a; text-decoration: none; font-weight: 700;">Open Dubai Signatures Directory →</a>
+                  </p>
+                </div>
               </div>
             </div>
+          </div>
 
-            <div class="contact-item">
-              <div class="contact-icon" style="background: var(--primary-light); color: var(--primary); display: flex; align-items: center; justify-content: center; width: 40px; height: 40px; border-radius: 8px;">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
-              </div>
-              <div>
-                <strong style="color: var(--primary-dark); font-size: 13px;">Official Email Desk:</strong>
-                <p style="margin-top: 4px;">
-                  <a href="mailto:info@velologsa.com" style="color: var(--primary); text-decoration: none; font-weight: 600;">info@velologsa.com</a>
-                </p>
-              </div>
-            </div>
-
-            <div class="contact-item">
-              <div class="contact-icon" style="background: var(--primary-light); color: var(--primary); display: flex; align-items: center; justify-content: center; width: 40px; height: 40px; border-radius: 8px;">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>
-              </div>
-              <div>
-                <strong style="color: var(--primary-dark); font-size: 13px;">Official Website:</strong>
-                <p style="margin-top: 4px;">
-                  <a href="https://www.velologsa.com/" target="_blank" style="color: var(--primary); text-decoration: none; font-weight: 600;">www.velologsa.com</a>
-                </p>
-              </div>
-            </div>
+          <!-- Common Social & Operating Hours -->
+          <div class="contact-info-list" style="margin-top: 14px; padding-top: 14px; border-top: 1px dashed var(--border-card);">
 
             <div class="contact-item">
               <div class="contact-icon" style="background: linear-gradient(135deg, #fdf2f8 0%, #fff1f2 50%, #eff6ff 100%); color: #e1306c; display: flex; align-items: center; justify-content: center; width: 40px; height: 40px; border-radius: 8px; border: 1px solid #fbcfe8;">
@@ -401,15 +516,21 @@
         </div>
 
         <div>
-          <div class="footer-col-title">Headquarters</div>
-          <div style="font-size: 13px; color: #475569; line-height: 1.7;">
-            <strong>An Nawras, King Saud Road</strong><br>
-            Dammam, Building 4612 Office 102<br>
-            Kingdom of Saudi Arabia<br>
+          <div class="footer-col-title">Offices &amp; Branches</div>
+          <div style="font-size: 13px; color: #475569; line-height: 1.6; margin-bottom: 12px;">
+            <strong style="color: var(--primary-dark);">🇸🇦 Saudi Arabia (HQ)</strong><br>
+            An Nawras, King Saud Road, Dammam<br>
             Phone: <a href="tel:+966546979474" style="color: var(--primary); text-decoration: none;">+966 546979474</a><br>
             Email: <a href="mailto:info@velologsa.com" style="color: var(--primary); text-decoration: none;">info@velologsa.com</a><br>
-            Website: <a href="https://www.velologsa.com/" target="_blank" style="color: var(--primary); text-decoration: none;">www.velologsa.com</a><br>
-            Social: <a href="https://www.instagram.com/velolog.sa?utm_source=ig_web_button_share_sheet&amp;dlrf=ZDNlZDc0MzIxNw==" target="_blank" rel="noopener noreferrer" style="color: #e1306c; text-decoration: none; font-weight: 600;">Instagram</a> &bull; <a href="https://www.facebook.com/p/Velolog-61587577526772/" target="_blank" rel="noopener noreferrer" style="color: #1877f2; text-decoration: none; font-weight: 600;">Facebook</a>
+            Website: <a href="https://www.velologsa.com/" target="_blank" style="color: var(--primary); text-decoration: none;">www.velologsa.com</a>
+          </div>
+          <div style="font-size: 13px; color: #475569; line-height: 1.6;">
+            <strong style="color: var(--primary-dark);">🇦🇪 UAE Dubai Branch</strong><br>
+            Trade Square Office -107, Al Quoz 4, Dubai<br>
+            <span style="font-size: 11px; color: #94a3b8; font-weight: 600;">Reg : 2902815</span><br>
+            Phone: <a href="tel:+971551369161" style="color: var(--primary); text-decoration: none;">00971551369161</a><br>
+            Email: <a href="mailto:nasir@velologuae.com" style="color: var(--primary); text-decoration: none;">nasir@velologuae.com</a><br>
+            Website: <a href="https://www.velologuae.com/" target="_blank" style="color: var(--primary); text-decoration: none;">www.velologuae.com</a>
           </div>
         </div>
       </div>
@@ -427,6 +548,38 @@
 
   <script src="common.js"></script>
   <script>
+    // Contact Branch Switcher
+    const btnContactSaudi = document.getElementById('btn-contact-saudi');
+    const btnContactDubai = document.getElementById('btn-contact-dubai');
+    const panelContactSaudi = document.getElementById('contact-panel-saudi');
+    const panelContactDubai = document.getElementById('contact-panel-dubai');
+
+    if (btnContactSaudi && btnContactDubai) {
+      btnContactSaudi.addEventListener('click', () => {
+        btnContactSaudi.style.background = '#2154a3';
+        btnContactSaudi.style.color = '#ffffff';
+        btnContactSaudi.style.borderColor = '#2154a3';
+        btnContactDubai.style.background = '#f8fafc';
+        btnContactDubai.style.color = '#334155';
+        btnContactDubai.style.borderColor = '#cbd5e1';
+
+        panelContactSaudi.style.display = 'block';
+        panelContactDubai.style.display = 'none';
+      });
+
+      btnContactDubai.addEventListener('click', () => {
+        btnContactDubai.style.background = '#2154a3';
+        btnContactDubai.style.color = '#ffffff';
+        btnContactDubai.style.borderColor = '#2154a3';
+        btnContactSaudi.style.background = '#f8fafc';
+        btnContactSaudi.style.color = '#334155';
+        btnContactSaudi.style.borderColor = '#cbd5e1';
+
+        panelContactSaudi.style.display = 'none';
+        panelContactDubai.style.display = 'block';
+      });
+    }
+
     // Prefill subject if query parameter passed
     const urlParams = new URLSearchParams(window.location.search);
     const serviceParam = urlParams.get('service');

@@ -10,7 +10,8 @@ const VELOLOG_EMPLOYEES = [
     "gender": "male",
     "photo": "",
     "detailsImage": "details/SUDHEER.jpg.jpeg",
-    "note": "General Manager leading VELOLOG KSA operations"
+    "note": "General Manager leading VELOLOG KSA operations",
+    "branch": "saudi"
   },
   {
     "id": "amjed",
@@ -22,7 +23,8 @@ const VELOLOG_EMPLOYEES = [
     "gender": "male",
     "photo": "",
     "detailsImage": "details/AMJED- MAIL.png",
-    "note": "Overseeing corporate client partnerships and freight accounts"
+    "note": "Overseeing corporate client partnerships and freight accounts",
+    "branch": "saudi"
   },
   {
     "id": "shabbir",
@@ -36,7 +38,8 @@ const VELOLOG_EMPLOYEES = [
     "gender": "male",
     "photo": "",
     "detailsImage": "details/SHABBIR KHAN.jpg.jpeg",
-    "note": "Leading sales strategy and enterprise freight accounts"
+    "note": "Leading sales strategy and enterprise freight accounts",
+    "branch": "saudi"
   },
   {
     "id": "hafeez",
@@ -48,7 +51,8 @@ const VELOLOG_EMPLOYEES = [
     "gender": "male",
     "photo": "",
     "detailsImage": "details/HAFEEZ.png",
-    "note": "Operations execution and customer delivery coordination"
+    "note": "Operations execution and customer delivery coordination",
+    "branch": "saudi"
   },
   {
     "id": "alaftageen",
@@ -61,7 +65,8 @@ const VELOLOG_EMPLOYEES = [
     "gender": "male",
     "photo": "",
     "detailsImage": "details/Muhammad Alaftageen Mail Signature.png",
-    "note": "Business development and client logistics solutions"
+    "note": "Business development and client logistics solutions",
+    "branch": "saudi"
   },
   {
     "id": "naseeh",
@@ -73,7 +78,8 @@ const VELOLOG_EMPLOYEES = [
     "gender": "male",
     "photo": "",
     "detailsImage": "details/NASEEH.png",
-    "note": "Financial accounting, billing, and invoicing management"
+    "note": "Financial accounting, billing, and invoicing management",
+    "branch": "saudi"
   },
   {
     "id": "sanjid",
@@ -85,7 +91,8 @@ const VELOLOG_EMPLOYEES = [
     "gender": "male",
     "photo": "",
     "detailsImage": "details/SANJID.png",
-    "note": "Freight pricing quotation and shipment routing"
+    "note": "Freight pricing quotation and shipment routing",
+    "branch": "saudi"
   },
   {
     "id": "yadhu",
@@ -97,7 +104,8 @@ const VELOLOG_EMPLOYEES = [
     "gender": "male",
     "photo": "",
     "detailsImage": "details/YADHU.png",
-    "note": "International pricing analysis and cargo operations"
+    "note": "International pricing analysis and cargo operations",
+    "branch": "saudi"
   },
   {
     "id": "nihal",
@@ -109,7 +117,8 @@ const VELOLOG_EMPLOYEES = [
     "gender": "male",
     "photo": "",
     "detailsImage": "details/Nihal Muhyudheen Mail Signature.png",
-    "note": "Shipment tracking, customs clearance, and road freight operations"
+    "note": "Shipment tracking, customs clearance, and road freight operations",
+    "branch": "saudi"
   },
   {
     "id": "ishan",
@@ -121,9 +130,62 @@ const VELOLOG_EMPLOYEES = [
     "gender": "male",
     "photo": "",
     "detailsImage": "",
-    "note": "Operations executive coordinating freight logistics and shipment routing"
+    "note": "Operations executive coordinating freight logistics and shipment routing",
+    "branch": "saudi"
+  },
+  {
+    "id": "nazir",
+    "name": "Nazir Abdullah",
+    "title": "Operation Executive",
+    "department": "Operations",
+    "branch": "dubai",
+    "phone": "00971551369161",
+    "email": "nasir@velologuae.com",
+    "gender": "male",
+    "photo": "",
+    "detailsImage": "",
+    "note": "Operation executive coordinating VELOLOG Dubai & UAE freight forwarding"
   }
 ];
+
+const VELOLOG_BRANCHES = {
+  saudi: {
+    key: 'saudi',
+    name: 'Saudi Arabia (Headquarters)',
+    badge: '🇸🇦 KSA HQ',
+    flag: '🇸🇦',
+    country: 'Saudi Arabia',
+    city: 'Dammam',
+    regNo: '',
+    addressLine1: 'An Nawras, King Saud Road,',
+    addressLine2: 'Dammam, Building 4612 Office 102',
+    cityCountry: 'Dammam, Kingdom of Saudi Arabia',
+    fullAddress: 'An Nawras, King Saud Road, Dammam, Building 4612 Office 102, Kingdom of Saudi Arabia',
+    website: 'www.velologsa.com',
+    websiteUrl: 'https://www.velologsa.com',
+    phone: '+966 546979474',
+    email: 'info@velologsa.com',
+    outputFolder: 'signatures/saudi'
+  },
+  dubai: {
+    key: 'dubai',
+    name: 'UAE Dubai Branch',
+    badge: '🇦🇪 UAE Dubai',
+    flag: '🇦🇪',
+    country: 'UAE',
+    city: 'Dubai',
+    regNo: 'Reg : 2902815',
+    addressLine1: 'Trade Square, Office -107, Al Asayel St,',
+    addressLine2: 'Al Quoz Industrial 4, Dubai, UAE',
+    cityCountry: 'Dubai, United Arab Emirates',
+    fullAddress: 'Trade Square, Office -107, Al Asayel Street, Al Quoz Industrial 4, Dubai, UAE',
+    website: 'www.velologuae.com',
+    websiteUrl: 'https://www.velologuae.com',
+    phone: '00971551369161',
+    email: 'nasir@velologuae.com',
+    outputFolder: 'signatures/dubai'
+  }
+};
 
 const VELOLOG_COMPANY = {
   "name": "VELOLOG",
@@ -151,5 +213,5 @@ const VELOLOG_COMPANY = {
 };
 
 if (typeof module !== 'undefined' && module.exports) {
-  module.exports = { VELOLOG_EMPLOYEES, VELOLOG_COMPANY };
+  module.exports = { VELOLOG_EMPLOYEES, VELOLOG_COMPANY, VELOLOG_BRANCHES };
 }

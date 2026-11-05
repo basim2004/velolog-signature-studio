@@ -108,6 +108,25 @@
 
           <div class="controls-body">
             
+            <!-- Branch Filter Pills -->
+            <div style="margin-bottom: 14px;">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+                <label class="form-label" style="margin-bottom: 0;">Filter By Branch:</label>
+                <a href="/signatures" target="_blank" style="font-size: 11px; color: #2154a3; font-weight: 700; text-decoration: none;">📁 View Separate Folders →</a>
+              </div>
+              <div style="display: flex; gap: 6px;" id="branch-pills-container">
+                <button type="button" class="btn btn-sm branch-filter-pill active" data-branch="all" style="flex: 1; padding: 5px 8px; font-size: 11px; font-weight: 700; background: #2154a3; color: #ffffff; border: 1.5px solid #2154a3; border-radius: 6px; cursor: pointer;">
+                  All (11)
+                </button>
+                <button type="button" class="btn btn-sm branch-filter-pill" data-branch="saudi" style="flex: 1; padding: 5px 8px; font-size: 11px; font-weight: 700; background: #f8fafc; color: #334155; border: 1.5px solid #cbd5e1; border-radius: 6px; cursor: pointer;">
+                  🇸🇦 Saudi (10)
+                </button>
+                <button type="button" class="btn btn-sm branch-filter-pill" data-branch="dubai" style="flex: 1; padding: 5px 8px; font-size: 11px; font-weight: 700; background: #f8fafc; color: #334155; border: 1.5px solid #cbd5e1; border-radius: 6px; cursor: pointer;">
+                  🇦🇪 Dubai (1)
+                </button>
+              </div>
+            </div>
+
             <!-- Employee Selector -->
             <div class="form-group">
               <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
@@ -121,6 +140,17 @@
               <select id="field-staff-select" class="form-select">
                 <!-- Populated dynamically from data.js -->
               </select>
+            </div>
+
+            <!-- Active Branch Info Banner -->
+            <div id="active-branch-banner" style="background: #eff6ff; border: 1px solid #bfdbfe; border-radius: 6px; padding: 8px 12px; margin-bottom: 14px; font-size: 11.5px; color: #1e3a8a; display: flex; align-items: center; justify-content: space-between; gap: 8px;">
+              <div>
+                <strong id="branch-badge-text">🇸🇦 Saudi Arabia (HQ)</strong>
+                <div id="branch-sub-text" style="font-size: 10.5px; color: #3b82f6; margin-top: 2px;">Dammam • www.velologsa.com</div>
+              </div>
+              <a id="branch-folder-link" href="/signatures/saudi/" target="_blank" style="padding: 4px 8px; background: #ffffff; border: 1px solid #93c5fd; border-radius: 4px; color: #1d4ed8; font-weight: 700; font-size: 10.5px; text-decoration: none; white-space: nowrap;">
+                📂 Open Folder
+              </a>
             </div>
 
             <!-- Profile Photo & Avatar Setting -->
@@ -151,6 +181,14 @@
             </div>
 
             <!-- Editable Fields -->
+            <div class="form-group">
+              <label class="form-label" for="field-branch">Company Branch &amp; Location:</label>
+              <select id="field-branch" class="form-select">
+                <option value="saudi">🇸🇦 Saudi Arabia (HQ) — An Nawras, Dammam (www.velologsa.com)</option>
+                <option value="dubai">🇦🇪 UAE Dubai Branch — Trade Square Office -107 (www.velologuae.com)</option>
+              </select>
+            </div>
+
             <div class="form-group">
               <label class="form-label" for="field-name">Employee Full Name:</label>
               <input type="text" id="field-name" class="form-input">
@@ -228,11 +266,25 @@
               </div>
             </div>
 
-            <!-- Batch Download All Staff Signatures -->
+            <!-- Batch Download All Staff Signatures in Branch Folders -->
             <div style="margin-top: 8px; padding-top: 12px; border-top: 1px solid var(--border-card);">
-              <button class="btn btn-outline" id="btn-batch-download" style="width: 100%; font-size: 12px; justify-content: center;">
-                <span>📦 Download All Staff Signatures (10)</span>
-              </button>
+              <div style="font-size: 11px; font-weight: 700; color: #475569; margin-bottom: 8px; text-transform: uppercase;">📦 Batch Export Signatures</div>
+              <div style="display: flex; flex-direction: column; gap: 6px;">
+                <button class="btn btn-primary" id="btn-batch-download" style="width: 100%; font-size: 12px; justify-content: center;">
+                  <span>📦 Download All Signatures (11)</span>
+                </button>
+                <div style="display: flex; gap: 6px;">
+                  <button type="button" class="btn btn-outline" id="btn-batch-saudi" style="flex: 1; font-size: 11px; padding: 6px 6px; justify-content: center;">
+                    🇸🇦 Saudi (10)
+                  </button>
+                  <button type="button" class="btn btn-outline" id="btn-batch-dubai" style="flex: 1; font-size: 11px; padding: 6px 6px; justify-content: center;">
+                    🇦🇪 Dubai (1)
+                  </button>
+                </div>
+                <a href="/signatures" target="_blank" class="btn btn-outline" style="width: 100%; font-size: 11.5px; justify-content: center; background: #f8fafc; color: #2154a3; border-color: #cbd5e1; text-decoration: none; margin-top: 2px;">
+                  📁 Browse Separate Output Folders →
+                </a>
+              </div>
             </div>
 
           </div>
@@ -625,6 +677,14 @@
 
         <form id="add-staff-form" onsubmit="return false;">
           <div class="form-group">
+            <label class="form-label" for="new-staff-branch">Company Branch: <span style="color: #dc2626;">*</span></label>
+            <select id="new-staff-branch" class="form-select">
+              <option value="saudi" selected>🇸🇦 Saudi Arabia (HQ) — An Nawras, Dammam (www.velologsa.com)</option>
+              <option value="dubai">🇦🇪 UAE Dubai Branch — Trade Square Office -107 (www.velologuae.com)</option>
+            </select>
+          </div>
+
+          <div class="form-group">
             <label class="form-label" for="new-staff-name">Employee Full Name: <span style="color: #dc2626;">*</span></label>
             <input type="text" id="new-staff-name" class="form-input" placeholder="e.g. Salman Al-Otaibi" required>
           </div>
@@ -698,6 +758,7 @@
     let currentGeneratedHtml = '';
 
     const staffSelect = document.getElementById('field-staff-select');
+    const fieldBranch = document.getElementById('field-branch');
     const fieldName = document.getElementById('field-name');
     const fieldTitle = document.getElementById('field-title');
     const fieldDept = document.getElementById('field-dept');
@@ -713,6 +774,10 @@
     const fieldWhatsapp = document.getElementById('field-whatsapp');
     const btnReset = document.getElementById('btn-reset-fields');
     const btnBatchDownload = document.getElementById('btn-batch-download');
+    const btnBatchSaudi = document.getElementById('btn-batch-saudi');
+    const btnBatchDubai = document.getElementById('btn-batch-dubai');
+    const branchPillBtns = document.querySelectorAll('.branch-filter-pill');
+    let currentBranchFilter = 'all';
 
     // Photo Settings Elements
     const studioAvatarWrap = document.getElementById('studio-avatar-wrap');
@@ -861,9 +926,28 @@
     const guideTabBtns = document.querySelectorAll('.guide-tab-btn');
     const guideContents = document.querySelectorAll('.guide-content');
 
-    // Populate Staff Dropdown
-    async function initStaffSelector() {
+    // Update Active Branch UI Display Banner
+    function updateActiveBranchUI(branchKey) {
+      const isDubai = branchKey === 'dubai';
+      const badgeText = document.getElementById('branch-badge-text');
+      const subText = document.getElementById('branch-sub-text');
+      const folderLink = document.getElementById('branch-folder-link');
+      if (badgeText) {
+        badgeText.textContent = isDubai ? '🇦🇪 UAE Dubai Branch' : '🇸🇦 Saudi Arabia (HQ)';
+      }
+      if (subText) {
+        subText.textContent = isDubai ? 'Trade Square Office -107 • Reg : 2902815 • www.velologuae.com' : 'An Nawras, Dammam • www.velologsa.com';
+      }
+      if (folderLink) {
+        folderLink.href = isDubai ? '/signatures/dubai/' : '/signatures/saudi/';
+        folderLink.textContent = isDubai ? '📂 Open Dubai Folder' : '📂 Open Saudi Folder';
+      }
+    }
+
+    // Populate Staff Dropdown with Branch Filtering
+    async function initStaffSelector(branchFilter = currentBranchFilter) {
       if (!staffSelect) return;
+      currentBranchFilter = branchFilter;
 
       try {
         const res = await fetch('/api/employees');
@@ -877,32 +961,57 @@
         console.warn('Could not fetch /api/employees:', e);
       }
 
-      const employeesList = (typeof VELOLOG_EMPLOYEES !== 'undefined') ? VELOLOG_EMPLOYEES : [];
+      const allEmployees = (typeof VELOLOG_EMPLOYEES !== 'undefined') ? VELOLOG_EMPLOYEES : [];
+      const filteredEmployees = allEmployees.filter(emp => {
+        if (currentBranchFilter === 'all') return true;
+        const empBranch = emp.branch || (emp.email && emp.email.includes('velologuae.com') ? 'dubai' : 'saudi');
+        return empBranch === currentBranchFilter;
+      });
 
-      staffSelect.innerHTML = employeesList.map(emp => 
-        `<option value="${emp.id}">${emp.name} — ${emp.title} (${emp.department})</option>`
-      ).join('');
+      staffSelect.innerHTML = filteredEmployees.map(emp => {
+        const flag = (emp.branch === 'dubai' || (emp.email && emp.email.includes('velologuae.com'))) ? '🇦🇪' : '🇸🇦';
+        return `<option value="${emp.id}">${flag} ${emp.name} — ${emp.title} (${emp.department})</option>`;
+      }).join('');
 
       const staffLabel = document.getElementById('staff-select-label');
       if (staffLabel) {
-        staffLabel.textContent = `Select Team Member (${employeesList.length} Staff)`;
+        staffLabel.textContent = `Select Team Member (${filteredEmployees.length} Staff)`;
       }
 
       const batchBtn = document.getElementById('btn-batch-download');
       if (batchBtn) {
-        batchBtn.innerHTML = `<span>📦 Download All Staff Signatures (${employeesList.length})</span>`;
+        batchBtn.innerHTML = `<span>📦 Download All Signatures (${allEmployees.length})</span>`;
       }
 
-      // Check URL query param ?id=...
+      // Check URL query param ?id=... or select target employee
       const urlParams = new URLSearchParams(window.location.search);
       const queryId = urlParams.get('id');
-      const targetEmp = employeesList.find(e => e.id === queryId) || employeesList[0];
+      const targetEmp = filteredEmployees.find(e => e.id === queryId) || filteredEmployees[0] || allEmployees[0];
 
       if (targetEmp) {
         loadEmployee(targetEmp.id);
       }
       fetchStudioPhotos();
     }
+
+    // Branch Filter Pills Click Handlers
+    branchPillBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        branchPillBtns.forEach(b => {
+          b.classList.remove('active');
+          b.style.background = '#f8fafc';
+          b.style.color = '#334155';
+          b.style.borderColor = '#cbd5e1';
+        });
+        btn.classList.add('active');
+        btn.style.background = '#2154a3';
+        btn.style.color = '#ffffff';
+        btn.style.borderColor = '#2154a3';
+
+        const branch = btn.getAttribute('data-branch') || 'all';
+        initStaffSelector(branch);
+      });
+    });
 
     // Load Employee into Form
     function loadEmployee(empId) {
@@ -912,6 +1021,12 @@
 
       currentEmployee = { ...emp };
       staffSelect.value = emp.id;
+
+      const empBranch = emp.branch || (emp.email && emp.email.includes('velologuae.com') ? 'dubai' : 'saudi');
+      if (fieldBranch) {
+        fieldBranch.value = empBranch;
+      }
+      updateActiveBranchUI(empBranch);
 
       fieldName.value = emp.name;
       fieldTitle.value = emp.title;
@@ -931,7 +1046,11 @@
     function renderSignature() {
       if (!currentEmployee) return;
 
+      const activeBranch = fieldBranch ? fieldBranch.value : (currentEmployee.branch || 'saudi');
+      updateActiveBranchUI(activeBranch);
+
       const options = {
+        branch: activeBranch,
         name: fieldName.value,
         title: fieldTitle.value,
         department: fieldDept.value,
@@ -960,6 +1079,13 @@
 
     // Event Listeners for Live Editing
     staffSelect.addEventListener('change', (e) => loadEmployee(e.target.value));
+
+    if (fieldBranch) {
+      fieldBranch.addEventListener('change', () => {
+        updateActiveBranchUI(fieldBranch.value);
+        renderSignature();
+      });
+    }
 
     [fieldName, fieldTitle, fieldDept, fieldPhone, fieldEmail, fieldRegards, fieldLinkedin, fieldWhatsapp].forEach(el => {
       el.addEventListener('input', renderSignature);
@@ -1018,6 +1144,7 @@
     const btnCancelAddStaff = document.getElementById('btn-cancel-add-staff');
     const btnSubmitAddStaff = document.getElementById('btn-submit-add-staff');
 
+    const newStaffBranch = document.getElementById('new-staff-branch');
     const newStaffName = document.getElementById('new-staff-name');
     const newStaffTitle = document.getElementById('new-staff-title');
     const newStaffDept = document.getElementById('new-staff-dept');
@@ -1050,6 +1177,7 @@
 
     if (btnSubmitAddStaff) {
       btnSubmitAddStaff.addEventListener('click', async () => {
+        const branch = newStaffBranch ? newStaffBranch.value : 'saudi';
         const name = newStaffName.value.trim();
         const title = newStaffTitle.value.trim();
         const dept = newStaffDept.value.trim();
@@ -1081,6 +1209,7 @@
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
+              branch,
               name,
               title,
               department: dept,
@@ -1238,23 +1367,27 @@
 </body>
 </html>`;
 
+      const branchKey = fieldBranch ? fieldBranch.value : ((currentEmployee && currentEmployee.branch) || 'saudi');
       const blob = new Blob([fullDoc], { type: 'text/html;charset=utf-8' });
       const url = URL.createObjectURL(blob);
       const a = document.createElement('a');
       a.href = url;
-      a.download = `VELOLOG_Signature_${(fieldName.value || 'Staff').replace(/\s+/g, '_')}.html`;
+      a.download = `VELOLOG_${branchKey}_${(fieldName.value || 'Staff').replace(/\s+/g, '_')}.html`;
       document.body.appendChild(a);
       a.click();
       document.body.removeChild(a);
       URL.revokeObjectURL(url);
-      showToast(`Downloaded HTML for ${fieldName.value}.`);
+      showToast(`Downloaded HTML for ${fieldName.value} (${branchKey === 'dubai' ? 'Dubai Branch' : 'Saudi HQ'}).`);
     });
 
-    // Batch Download All 9 Staff Signatures
-    btnBatchDownload.addEventListener('click', () => {
-      VELOLOG_EMPLOYEES.forEach((emp, index) => {
+    // Batch Download Helper
+    function triggerBatchDownload(list, label) {
+      if (!list || list.length === 0) return;
+      list.forEach((emp, index) => {
         setTimeout(() => {
+          const bKey = emp.branch || (emp.email && emp.email.includes('velologuae.com') ? 'dubai' : 'saudi');
           const empHtml = generateSignatureHtml(emp, {
+            branch: bKey,
             useBase64: true,
             showRegards: true,
             showSocial: false
@@ -1273,15 +1406,39 @@
           const url = URL.createObjectURL(blob);
           const a = document.createElement('a');
           a.href = url;
-          a.download = `VELOLOG_${emp.id}_${emp.name.replace(/\s+/g, '_')}.html`;
+          a.download = `VELOLOG_${bKey}_${emp.id}_${emp.name.replace(/\s+/g, '_')}.html`;
           document.body.appendChild(a);
           a.click();
           document.body.removeChild(a);
           URL.revokeObjectURL(url);
         }, index * 200);
       });
-      showToast('Downloading signatures for all 9 team members...');
-    });
+      showToast(`Downloading ${list.length} signatures (${label})...`);
+    }
+
+    // Batch Download Handlers
+    if (btnBatchDownload) {
+      btnBatchDownload.addEventListener('click', () => {
+        const all = (typeof VELOLOG_EMPLOYEES !== 'undefined') ? VELOLOG_EMPLOYEES : [];
+        triggerBatchDownload(all, 'All Branches');
+      });
+    }
+
+    if (btnBatchSaudi) {
+      btnBatchSaudi.addEventListener('click', () => {
+        const all = (typeof VELOLOG_EMPLOYEES !== 'undefined') ? VELOLOG_EMPLOYEES : [];
+        const saudi = all.filter(e => (e.branch || 'saudi') === 'saudi');
+        triggerBatchDownload(saudi, 'Saudi Arabia HQ');
+      });
+    }
+
+    if (btnBatchDubai) {
+      btnBatchDubai.addEventListener('click', () => {
+        const all = (typeof VELOLOG_EMPLOYEES !== 'undefined') ? VELOLOG_EMPLOYEES : [];
+        const dubai = all.filter(e => e.branch === 'dubai');
+        triggerBatchDownload(dubai, 'UAE Dubai Branch');
+      });
+    }
 
     // View Source Modal
     btnViewSource.addEventListener('click', () => {

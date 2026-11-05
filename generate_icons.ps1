@@ -42,3 +42,4 @@ Copy-Item -Path "icons\favicon.png" -Destination "favicon.png" -Force
 
 $srcImg.Dispose()
 Write-Host "All icons generated successfully!"
+
