@@ -426,3 +426,4 @@ const mainIndexHtml = `<!DOCTYPE html>
 
 fs.writeFileSync(path.join(signaturesDir, 'index.html'), mainIndexHtml, 'utf8');
 console.log('All branch signatures and directories built successfully!');
+

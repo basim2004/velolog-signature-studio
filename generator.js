@@ -91,6 +91,10 @@ function generateSignatureHtml(employee, options = {}) {
     ).join('<span style="color: #94a3b8; margin: 0 4px;">|</span>');
   }
 
+  // Right column padding calculation:
+  // Base padding 44px for Saudi standard 2-line address; 51px for Dubai (3 address lines with Reg No) to perfectly align ISO/JCTRANS badges with website line
+  const rightColPadding = (regNo || branchKey === 'dubai') ? 51 : 44;
+
   return `<!-- VELOLOG OFFICIAL EMAIL SIGNATURE START -->
 <table id="velolog-signature" cellpadding="0" cellspacing="0" border="0" style="border-collapse: collapse; background-color: #ffffff; width: 640px; min-width: 640px; max-width: 640px; font-family: Arial, Helvetica, sans-serif; mso-table-lspace: 0pt; mso-table-rspace: 0pt;">
   ${showRegards ? `<tr><td colspan="3" style="padding-bottom: 8px; font-family: Arial, Helvetica, sans-serif; font-size: 13px; color: #334155; font-weight: normal;">${customRegards}</td></tr>` : ''}
@@ -179,7 +183,7 @@ function generateSignatureHtml(employee, options = {}) {
       <table cellpadding="0" cellspacing="0" border="0" width="100%" style="border-collapse: collapse; margin-left: auto;">
         <!-- Upper Row: World Map & Text -->
         <tr>
-          <td valign="top" align="right" style="padding-bottom: 44px;">
+          <td valign="top" align="right" style="padding-bottom: ${rightColPadding}px;">
             <table cellpadding="0" cellspacing="0" border="0" style="border-collapse: collapse; margin-left: auto;">
               <tr>
                 <td valign="middle" style="padding-right: 6px;">
