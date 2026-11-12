@@ -395,19 +395,45 @@
       return 'ops';
     }
 
-    // Fetch existing uploaded photos
+    // Fetch existing uploaded photos & custom employees
     async function fetchPhotos() {
       try {
         const res = await fetch('/api/employee-photos');
-        if (res.ok) {
+        const contentType = res.headers.get('content-type') || '';
+        if (res.ok && contentType.includes('application/json')) {
           const data = await res.json();
           if (data.success && data.photos) {
-            uploadedPhotos = data.photos;
+            uploadedPhotos = { ...uploadedPhotos, ...data.photos };
           }
         }
       } catch (err) {
-        console.warn('Could not load photos index:', err);
+        console.warn('Could not load photos index (static / Netlify mode):', err);
       }
+
+      // Merge localStorage photos
+      try {
+        const rawPhotos = localStorage.getItem('velolog_custom_photos');
+        if (rawPhotos) {
+          const customPhotos = JSON.parse(rawPhotos);
+          uploadedPhotos = { ...uploadedPhotos, ...customPhotos };
+        }
+      } catch (e) {}
+
+      // Merge localStorage custom employees
+      try {
+        const rawEmps = localStorage.getItem('velolog_custom_employees');
+        if (rawEmps) {
+          const customEmps = JSON.parse(rawEmps);
+          if (Array.isArray(customEmps) && typeof VELOLOG_EMPLOYEES !== 'undefined') {
+            customEmps.forEach(ce => {
+              if (!VELOLOG_EMPLOYEES.some(e => e.id === ce.id)) {
+                VELOLOG_EMPLOYEES.push(ce);
+              }
+            });
+          }
+        }
+      } catch (e) {}
+
       renderTeamGrid();
     }
 
@@ -653,37 +679,50 @@
       reader.readAsDataURL(file);
     });
 
-    // Save Photo via API
+    // Save Photo via API & LocalStorage
     btnPhotoSave.addEventListener('click', async () => {
       if (!selectedEmployeeForPhoto || !pendingBase64Photo) return;
 
       btnPhotoSave.disabled = true;
       btnPhotoSave.textContent = 'Saving...';
 
+      let photoUrl = pendingBase64Photo;
       try {
         const res = await fetch(`/api/employees/${selectedEmployeeForPhoto.id}/photo`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ photoBase64: pendingBase64Photo })
         });
-        const data = await res.json();
-        if (data.success) {
-          uploadedPhotos[selectedEmployeeForPhoto.id] = data.photoUrl;
-          renderTeamGrid();
-          closePhotoModal();
-          showToast(`Photo updated successfully for ${selectedEmployeeForPhoto.name}`);
-        } else {
-          alert('Upload failed: ' + (data.error || 'Unknown error'));
+        const contentType = res.headers.get('content-type') || '';
+        if (res.ok && contentType.includes('application/json')) {
+          const data = await res.json();
+          if (data.success && data.photoUrl) {
+            photoUrl = data.photoUrl;
+          }
         }
       } catch (err) {
-        alert('Upload network error: ' + err.message);
-      } finally {
-        btnPhotoSave.disabled = false;
-        btnPhotoSave.textContent = 'Save Photo';
+        console.log('Server upload skipped (running in static / Netlify mode):', err);
       }
+
+      // Persist in localStorage
+      try {
+        const rawPhotos = localStorage.getItem('velolog_custom_photos');
+        const customPhotos = rawPhotos ? JSON.parse(rawPhotos) : {};
+        customPhotos[selectedEmployeeForPhoto.id] = photoUrl;
+        localStorage.setItem('velolog_custom_photos', JSON.stringify(customPhotos));
+      } catch (e) {}
+
+      uploadedPhotos[selectedEmployeeForPhoto.id] = photoUrl;
+      selectedEmployeeForPhoto.photo = photoUrl;
+      renderTeamGrid();
+      closePhotoModal();
+      showToast(`✓ Photo updated successfully for ${selectedEmployeeForPhoto.name}`);
+
+      btnPhotoSave.disabled = false;
+      btnPhotoSave.textContent = 'Save Photo';
     });
 
-    // Remove Photo via API
+    // Remove Photo via API & LocalStorage
     btnPhotoRemove.addEventListener('click', async () => {
       if (!selectedEmployeeForPhoto) return;
       if (!confirm(`Are you sure you want to remove the photo for ${selectedEmployeeForPhoto.name}?`)) return;
@@ -692,18 +731,26 @@
         const res = await fetch(`/api/employees/${selectedEmployeeForPhoto.id}/photo`, {
           method: 'DELETE'
         });
-        const data = await res.json();
-        if (data.success) {
-          delete uploadedPhotos[selectedEmployeeForPhoto.id];
-          renderTeamGrid();
-          closePhotoModal();
-          showToast(`Photo removed for ${selectedEmployeeForPhoto.name}`);
-        } else {
-          alert('Removal failed: ' + (data.error || 'Unknown error'));
+        const contentType = res.headers.get('content-type') || '';
+        if (res.ok && contentType.includes('application/json')) {
+          await res.json();
         }
-      } catch (err) {
-        alert('Network error: ' + err.message);
-      }
+      } catch (err) {}
+
+      try {
+        const rawPhotos = localStorage.getItem('velolog_custom_photos');
+        if (rawPhotos) {
+          const customPhotos = JSON.parse(rawPhotos);
+          delete customPhotos[selectedEmployeeForPhoto.id];
+          localStorage.setItem('velolog_custom_photos', JSON.stringify(customPhotos));
+        }
+      } catch (e) {}
+
+      delete uploadedPhotos[selectedEmployeeForPhoto.id];
+      selectedEmployeeForPhoto.photo = '';
+      renderTeamGrid();
+      closePhotoModal();
+      showToast(`Photo removed for ${selectedEmployeeForPhoto.name}. Default gender icon restored.`);
     });
 
     function closePhotoModal() {

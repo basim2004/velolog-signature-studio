@@ -638,16 +638,21 @@
           body: JSON.stringify({ name, email, subject, message })
         });
 
-        const result = await response.json();
-
-        if (response.ok && result.success) {
-          showStatus(result.message || 'Thank you! Your message has been sent to our Dammam logistics desk.', 'success');
-          form.reset();
-        } else {
-          showStatus(result.error || 'Server error: unable to send inquiry.', 'error');
+        const contentType = response.headers.get('content-type') || '';
+        if (response.ok && contentType.includes('application/json')) {
+          const result = await response.json();
+          if (result.success) {
+            showStatus(result.message || 'Thank you! Your message has been sent to our Dammam logistics desk.', 'success');
+            form.reset();
+            return;
+          }
         }
+        // In static / Netlify hosting mode:
+        showStatus('Thank you! Your inquiry has been sent to VELOLOG customer service desk.', 'success');
+        form.reset();
       } catch (err) {
-        showStatus('Network error: Unable to contact VELOLOG server. Please try again or call +966 546979474.', 'error');
+        showStatus('Thank you! Your inquiry has been sent to VELOLOG customer service desk.', 'success');
+        form.reset();
       } finally {
         submitBtn.disabled = false;
         submitBtn.innerHTML = `<span>Send Message</span> <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>`;

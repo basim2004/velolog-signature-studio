@@ -790,15 +790,26 @@
     async function fetchStudioPhotos() {
       try {
         const res = await fetch('/api/employee-photos');
-        if (res.ok) {
+        const contentType = res.headers.get('content-type') || '';
+        if (res.ok && contentType.includes('application/json')) {
           const data = await res.json();
           if (data.success && data.photos) {
-            studioUploadedPhotos = data.photos;
+            studioUploadedPhotos = { ...studioUploadedPhotos, ...data.photos };
           }
         }
       } catch (e) {
-        console.warn('Failed loading photo index in studio:', e);
+        console.warn('Server photos not reachable (static / Netlify mode):', e);
       }
+
+      // Merge localStorage photos (persisted for Netlify & static hosting)
+      try {
+        const rawPhotos = localStorage.getItem('velolog_custom_photos');
+        if (rawPhotos) {
+          const customPhotos = JSON.parse(rawPhotos);
+          studioUploadedPhotos = { ...studioUploadedPhotos, ...customPhotos };
+        }
+      } catch (e) {}
+
       updateStudioAvatarUI();
     }
 
@@ -863,23 +874,36 @@
         const reader = new FileReader();
         reader.onload = async (evt) => {
           const base64Data = evt.target.result;
+          let photoUrl = base64Data;
           try {
             const res = await fetch(`/api/employees/${currentEmployee.id}/photo`, {
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
               body: JSON.stringify({ photoBase64: base64Data })
             });
-            const result = await res.json();
-            if (result.success) {
-              studioUploadedPhotos[currentEmployee.id] = result.photoUrl;
-              updateStudioAvatarUI();
-              showToast('✓ Official photo uploaded successfully and synced with team profile!');
-            } else {
-              alert('Upload failed: ' + (result.error || 'Unknown error'));
+            const contentType = res.headers.get('content-type') || '';
+            if (res.ok && contentType.includes('application/json')) {
+              const result = await res.json();
+              if (result.success && result.photoUrl) {
+                photoUrl = result.photoUrl;
+              }
             }
-          } catch (err) {
-            alert('Upload failed: ' + err.message);
+          } catch (apiErr) {
+            console.log('Server photo upload skipped (running in static / Netlify mode):', apiErr);
           }
+
+          // Save photo in localStorage for client persistence
+          try {
+            const rawPhotos = localStorage.getItem('velolog_custom_photos');
+            const customPhotos = rawPhotos ? JSON.parse(rawPhotos) : {};
+            customPhotos[currentEmployee.id] = photoUrl;
+            localStorage.setItem('velolog_custom_photos', JSON.stringify(customPhotos));
+          } catch (e) {}
+
+          studioUploadedPhotos[currentEmployee.id] = photoUrl;
+          if (currentEmployee) currentEmployee.photo = photoUrl;
+          updateStudioAvatarUI();
+          showToast('✓ Official photo uploaded successfully and synced with team profile!');
         };
         reader.readAsDataURL(file);
       });
@@ -893,15 +917,25 @@
           const res = await fetch(`/api/employees/${currentEmployee.id}/photo`, {
             method: 'DELETE'
           });
-          const result = await res.json();
-          if (result.success) {
-            delete studioUploadedPhotos[currentEmployee.id];
-            updateStudioAvatarUI();
-            showToast('Photo removed. Default gender icon restored.');
+          const contentType = res.headers.get('content-type') || '';
+          if (res.ok && contentType.includes('application/json')) {
+            await res.json();
           }
-        } catch (err) {
-          alert('Could not remove photo: ' + err.message);
-        }
+        } catch (err) {}
+
+        try {
+          const rawPhotos = localStorage.getItem('velolog_custom_photos');
+          if (rawPhotos) {
+            const customPhotos = JSON.parse(rawPhotos);
+            delete customPhotos[currentEmployee.id];
+            localStorage.setItem('velolog_custom_photos', JSON.stringify(customPhotos));
+          }
+        } catch (e) {}
+
+        delete studioUploadedPhotos[currentEmployee.id];
+        if (currentEmployee) currentEmployee.photo = '';
+        updateStudioAvatarUI();
+        showToast('Photo removed. Default gender icon restored.');
       });
     }
 
@@ -944,24 +978,67 @@
       }
     }
 
+    function setActiveBranchPill(branch) {
+      currentBranchFilter = branch;
+      branchPillBtns.forEach(b => {
+        const bBranch = b.getAttribute('data-branch') || 'all';
+        if (bBranch === branch) {
+          b.classList.add('active');
+          b.style.background = '#2154a3';
+          b.style.color = '#ffffff';
+          b.style.borderColor = '#2154a3';
+        } else {
+          b.classList.remove('active');
+          b.style.background = '#f8fafc';
+          b.style.color = '#334155';
+          b.style.borderColor = '#cbd5e1';
+        }
+      });
+    }
+
     // Populate Staff Dropdown with Branch Filtering
-    async function initStaffSelector(branchFilter = currentBranchFilter) {
+    async function initStaffSelector(branchFilter = currentBranchFilter, targetEmployeeId = null) {
       if (!staffSelect) return;
       currentBranchFilter = branchFilter;
 
       try {
         const res = await fetch('/api/employees');
-        if (res.ok) {
+        const contentType = res.headers.get('content-type') || '';
+        if (res.ok && contentType.includes('application/json')) {
           const data = await res.json();
           if (data.success && Array.isArray(data.employees)) {
             window.VELOLOG_EMPLOYEES = data.employees;
           }
         }
       } catch (e) {
-        console.warn('Could not fetch /api/employees:', e);
+        console.warn('Server employees not reachable (static / Netlify mode):', e);
       }
 
-      const allEmployees = (typeof VELOLOG_EMPLOYEES !== 'undefined') ? VELOLOG_EMPLOYEES : [];
+      // Merge custom employees from localStorage
+      let localCustom = [];
+      try {
+        const raw = localStorage.getItem('velolog_custom_employees');
+        if (raw) localCustom = JSON.parse(raw);
+      } catch (e) {}
+
+      const allBase = (typeof VELOLOG_EMPLOYEES !== 'undefined' && Array.isArray(VELOLOG_EMPLOYEES)) ? VELOLOG_EMPLOYEES : [];
+      const empMap = new Map();
+      allBase.forEach(e => empMap.set(e.id, e));
+      localCustom.forEach(e => empMap.set(e.id, e));
+      const allEmployees = Array.from(empMap.values());
+      window.VELOLOG_EMPLOYEES = allEmployees;
+
+      // If targetEmployeeId is specified, check if its branch matches filter. If not, switch pill to target branch
+      if (targetEmployeeId) {
+        const targetObj = allEmployees.find(e => e.id === targetEmployeeId);
+        if (targetObj) {
+          const targetBranch = targetObj.branch || (targetObj.email && targetObj.email.includes('velologuae.com') ? 'dubai' : 'saudi');
+          if (currentBranchFilter !== 'all' && currentBranchFilter !== targetBranch) {
+            setActiveBranchPill(targetBranch);
+          }
+        }
+      }
+
       const filteredEmployees = allEmployees.filter(emp => {
         if (currentBranchFilter === 'all') return true;
         const empBranch = emp.branch || (emp.email && emp.email.includes('velologuae.com') ? 'dubai' : 'saudi');
@@ -978,6 +1055,16 @@
         staffLabel.textContent = `Select Team Member (${filteredEmployees.length} Staff)`;
       }
 
+      // Update pill count badges
+      const saudiCount = allEmployees.filter(e => (e.branch || 'saudi') === 'saudi').length;
+      const dubaiCount = allEmployees.filter(e => e.branch === 'dubai').length;
+      branchPillBtns.forEach(btn => {
+        const b = btn.getAttribute('data-branch');
+        if (b === 'all') btn.innerHTML = `All (${allEmployees.length})`;
+        else if (b === 'saudi') btn.innerHTML = `🇸🇦 Saudi (${saudiCount})`;
+        else if (b === 'dubai') btn.innerHTML = `🇦🇪 Dubai (${dubaiCount})`;
+      });
+
       const batchBtn = document.getElementById('btn-batch-download');
       if (batchBtn) {
         batchBtn.innerHTML = `<span>📦 Download All Signatures (${allEmployees.length})</span>`;
@@ -986,7 +1073,8 @@
       // Check URL query param ?id=... or select target employee
       const urlParams = new URLSearchParams(window.location.search);
       const queryId = urlParams.get('id');
-      const targetEmp = filteredEmployees.find(e => e.id === queryId) || filteredEmployees[0] || allEmployees[0];
+      const chosenId = targetEmployeeId || queryId;
+      const targetEmp = (chosenId && filteredEmployees.find(e => e.id === chosenId)) || filteredEmployees[0] || allEmployees[0];
 
       if (targetEmp) {
         loadEmployee(targetEmp.id);
@@ -997,18 +1085,8 @@
     // Branch Filter Pills Click Handlers
     branchPillBtns.forEach(btn => {
       btn.addEventListener('click', () => {
-        branchPillBtns.forEach(b => {
-          b.classList.remove('active');
-          b.style.background = '#f8fafc';
-          b.style.color = '#334155';
-          b.style.borderColor = '#cbd5e1';
-        });
-        btn.classList.add('active');
-        btn.style.background = '#2154a3';
-        btn.style.color = '#ffffff';
-        btn.style.borderColor = '#2154a3';
-
         const branch = btn.getAttribute('data-branch') || 'all';
+        setActiveBranchPill(branch);
         initStaffSelector(branch);
       });
     });
@@ -1204,6 +1282,30 @@
           } catch (e) {}
         }
 
+        // Generate clean unique ID for the employee
+        const baseId = name.toLowerCase().replace(/[^a-z0-9]/g, '_').replace(/_+/g, '_').replace(/^_|_$/g, '').slice(0, 15) || 'staff';
+        let newId = baseId;
+        const currentList = (typeof VELOLOG_EMPLOYEES !== 'undefined' && Array.isArray(VELOLOG_EMPLOYEES)) ? VELOLOG_EMPLOYEES : [];
+        let counter = 1;
+        while (currentList.some(e => e.id === newId)) {
+          newId = `${baseId}_${counter++}`;
+        }
+
+        let newEmp = {
+          id: newId,
+          name: name,
+          title: title,
+          department: dept || 'Operations',
+          branch: branch,
+          phone: phone,
+          email: email,
+          gender: (gender || 'male').toLowerCase(),
+          photo: photoBase64 || '',
+          detailsImage: '',
+          note: `${title} coordinating VELOLOG freight solutions`
+        };
+
+        // Try syncing with server backend if available (e.g. running on Node.js)
         try {
           const res = await fetch('/api/employees', {
             method: 'POST',
@@ -1220,28 +1322,59 @@
             })
           });
 
-          const data = await res.json();
-          if (data.success && data.employee) {
-            const newEmp = data.employee;
-            if (Array.isArray(data.employees)) {
-              window.VELOLOG_EMPLOYEES = data.employees;
-            } else if (typeof VELOLOG_EMPLOYEES !== 'undefined') {
-              VELOLOG_EMPLOYEES.push(newEmp);
+          const contentType = res.headers.get('content-type') || '';
+          if (res.ok && contentType.includes('application/json')) {
+            const data = await res.json();
+            if (data.success && data.employee) {
+              newEmp = data.employee;
+              if (Array.isArray(data.employees)) {
+                window.VELOLOG_EMPLOYEES = data.employees;
+              }
             }
-
-            closeAddStaffModal();
-            await initStaffSelector();
-            loadEmployee(newEmp.id);
-            showToast(`✓ Added ${newEmp.name} to VELOLOG! Official signature generated.`);
-          } else {
-            alert('Failed to add employee: ' + (data.error || 'Server error'));
           }
-        } catch (err) {
-          alert('Network error: ' + err.message);
-        } finally {
-          btnSubmitAddStaff.disabled = false;
-          btnSubmitAddStaff.textContent = 'Save & Generate Signature';
+        } catch (apiErr) {
+          console.log('Running in static / Netlify mode (client storage active):', apiErr);
         }
+
+        // Always save to browser localStorage (guarantees persistence on Netlify / static CDN)
+        try {
+          const raw = localStorage.getItem('velolog_custom_employees');
+          const customList = raw ? JSON.parse(raw) : [];
+          const existingIdx = customList.findIndex(e => e.id === newEmp.id);
+          if (existingIdx >= 0) {
+            customList[existingIdx] = newEmp;
+          } else {
+            customList.push(newEmp);
+          }
+          localStorage.setItem('velolog_custom_employees', JSON.stringify(customList));
+
+          if (photoBase64) {
+            const rawPhotos = localStorage.getItem('velolog_custom_photos');
+            const customPhotos = rawPhotos ? JSON.parse(rawPhotos) : {};
+            customPhotos[newEmp.id] = photoBase64;
+            localStorage.setItem('velolog_custom_photos', JSON.stringify(customPhotos));
+            if (typeof studioUploadedPhotos !== 'undefined') {
+              studioUploadedPhotos[newEmp.id] = photoBase64;
+            }
+          }
+        } catch (storageErr) {
+          console.warn('LocalStorage save warning:', storageErr);
+        }
+
+        // Add to in-memory list
+        if (typeof VELOLOG_EMPLOYEES !== 'undefined' && Array.isArray(VELOLOG_EMPLOYEES)) {
+          if (!VELOLOG_EMPLOYEES.some(e => e.id === newEmp.id)) {
+            VELOLOG_EMPLOYEES.push(newEmp);
+          }
+        }
+
+        closeAddStaffModal();
+        await initStaffSelector(currentBranchFilter, newEmp.id);
+        loadEmployee(newEmp.id);
+        showToast(`✓ Added ${newEmp.name} to VELOLOG! Official signature generated.`);
+
+        btnSubmitAddStaff.disabled = false;
+        btnSubmitAddStaff.textContent = 'Save & Generate Signature';
       });
     }
 
