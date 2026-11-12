@@ -1621,6 +1621,10 @@
 
     // Initialize
     initStaffSelector();
+    window.addEventListener('velolog-firebase-ready', () => {
+      console.log('Firebase ready event received, syncing studio...');
+      initStaffSelector();
+    });
   </script>
   <script src="pwa.js"></script>
   <script type="module" src="firebase-init.js"></script>

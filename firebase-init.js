@@ -57,6 +57,7 @@ window.VelologFirebase = {
       const snap = await getDocs(colRef);
       const list = [];
       snap.forEach(d => list.push(d.data()));
+      console.log(`✓ Fetched ${list.length} custom employees from Firebase Firestore`);
       return list;
     } catch (err) {
       console.warn("Firebase getEmployees notice:", err.message);
@@ -64,5 +65,9 @@ window.VelologFirebase = {
     }
   }
 };
+
+// Notify other scripts that Firebase is initialized and ready
+window.dispatchEvent(new CustomEvent('velolog-firebase-ready', { detail: window.VelologFirebase }));
+
 
 

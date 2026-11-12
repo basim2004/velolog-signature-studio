@@ -805,6 +805,10 @@
     // Init
     updateAdminUI();
     fetchPhotos();
+    window.addEventListener('velolog-firebase-ready', () => {
+      console.log('Firebase ready event received, syncing team...');
+      fetchPhotos();
+    });
   </script>
   <script src="common.js"></script>
   <script src="pwa.js"></script>
