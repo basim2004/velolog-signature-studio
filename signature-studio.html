@@ -236,6 +236,11 @@
                 </svg>
                 <span>🗑️ Delete Staff Member</span>
               </button>
+              <div style="text-align: center; margin-top: 6px;">
+                <button type="button" id="btn-open-restore-modal" style="background: none; border: none; font-size: 11.5px; color: #2563eb; font-weight: 600; cursor: pointer; text-decoration: underline; padding: 2px 4px; display: inline-flex; align-items: center; gap: 4px;">
+                  ♻️ Restore Deleted Staff (തിരിച്ചെടുക്കുക)
+                </button>
+              </div>
             </div>
 
             <hr style="border: 0; border-top: 1px solid var(--border-card); margin: 6px 0;">
@@ -761,6 +766,27 @@
             <button type="button" class="btn btn-primary" id="btn-submit-add-staff" style="background: #16a34a; border-color: #15803d; font-weight: 700; font-size: 13px; padding: 10px 18px; box-shadow: 0 2px 6px rgba(22, 163, 74, 0.25);">💾 Save Employee &amp; Generate Signature</button>
           </div>
         </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Restore Deleted Staff Modal (Recycle Bin) -->
+  <div class="modal-overlay" id="restore-staff-modal">
+    <div class="modal-box" style="max-width: 540px;">
+      <div class="modal-header">
+        <h3 class="modal-title" style="display: flex; align-items: center; gap: 8px;">
+          <span>♻️ Recycle Bin: Restore Deleted Staff</span>
+        </h3>
+        <button class="modal-close" id="btn-close-restore-modal">&times;</button>
+      </div>
+      <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 16px; line-height: 1.45;">
+        Previously deleted staff members can be restored back to the directory and email signatures at any time with all their details intact.
+      </p>
+      <div id="restore-staff-list" style="max-height: 320px; overflow-y: auto; display: flex; flex-direction: column; gap: 8px; margin-bottom: 16px;">
+        <!-- Populated dynamically -->
+      </div>
+      <div style="display: flex; justify-content: flex-end; gap: 8px;">
+        <button type="button" class="btn btn-secondary" id="btn-cancel-restore-modal">Close</button>
       </div>
     </div>
   </div>
@@ -1548,19 +1574,20 @@
       btnDeleteCurrentStaff.addEventListener('click', async () => {
         if (!currentEmployee) return;
         const empName = currentEmployee.name || 'this staff member';
-        const empId = currentEmployee.id;
+        const empObj = { ...currentEmployee };
+        const empId = empObj.id;
 
-        if (!confirm(`Are you sure you want to permanently delete "${empName}" from the VELOLOG staff directory?`)) {
+        if (!confirm(`Are you sure you want to delete "${empName}" from the VELOLOG staff directory? You can restore them anytime from the Recycle Bin.`)) {
           return;
         }
 
         btnDeleteCurrentStaff.disabled = true;
         btnDeleteCurrentStaff.textContent = 'Deleting...';
 
-        // 1. Delete from Firebase Cloud Firestore
+        // 1. Delete from Firebase Cloud Firestore (saved in recycle bin for restore)
         if (window.VelologFirebase && typeof window.VelologFirebase.deleteEmployee === 'function') {
           try {
-            await window.VelologFirebase.deleteEmployee(empId);
+            await window.VelologFirebase.deleteEmployee(empObj);
           } catch (e) {
             console.warn('Firebase delete error:', e);
           }
@@ -1572,6 +1599,14 @@
           const deletedList = rawDel ? JSON.parse(rawDel) : [];
           if (!deletedList.includes(empId)) deletedList.push(empId);
           localStorage.setItem('velolog_deleted_employee_ids', JSON.stringify(deletedList));
+
+          // Save full record in trash for local restore
+          const rawTrash = localStorage.getItem('velolog_trash_employees');
+          const trashList = rawTrash ? JSON.parse(rawTrash) : [];
+          if (!trashList.some(e => e.id === empId)) {
+            trashList.push({ ...empObj, deletedAt: new Date().toISOString() });
+            localStorage.setItem('velolog_trash_employees', JSON.stringify(trashList));
+          }
         } catch (e) {}
 
         // 3. Remove from velolog_custom_employees in localStorage
@@ -1603,7 +1638,7 @@
           await fetch(`/api/employees/${empId}`, { method: 'DELETE' });
         } catch (e) {}
 
-        showToast(`✓ Removed ${empName} from staff directory.`);
+        showToast(`✓ Removed ${empName}. Click "Restore Deleted Staff" anytime to recover.`);
 
         // Re-initialize staff selector and load remaining staff
         await initStaffSelector();
@@ -1617,6 +1652,170 @@
           </svg>
           <span>🗑️ Delete Staff Member</span>
         `;
+      });
+    }
+
+    // Restore Deleted Staff Modal Controller
+    const btnOpenRestoreModal = document.getElementById('btn-open-restore-modal');
+    const restoreStaffModal = document.getElementById('restore-staff-modal');
+    const btnCloseRestoreModal = document.getElementById('btn-close-restore-modal');
+    const btnCancelRestoreModal = document.getElementById('btn-cancel-restore-modal');
+    const restoreStaffList = document.getElementById('restore-staff-list');
+
+    async function loadRestoreList() {
+      if (!restoreStaffList) return;
+      restoreStaffList.innerHTML = `<div style="text-align: center; padding: 20px; color: #64748b; font-size: 13px;">Loading recycle bin...</div>`;
+
+      let deletedMap = new Map();
+
+      // Read from localStorage trash
+      try {
+        const rawTrash = localStorage.getItem('velolog_trash_employees');
+        if (rawTrash) {
+          const list = JSON.parse(rawTrash);
+          if (Array.isArray(list)) list.forEach(e => deletedMap.set(e.id, e));
+        }
+      } catch (e) {}
+
+      // Read from Firebase Cloud Firestore recycle bin
+      if (window.VelologFirebase && typeof window.VelologFirebase.getDeletedEmployees === 'function') {
+        try {
+          const fbDeleted = await window.VelologFirebase.getDeletedEmployees();
+          if (Array.isArray(fbDeleted)) fbDeleted.forEach(e => deletedMap.set(e.id, e));
+        } catch (e) {}
+      }
+
+      // Check deleted IDs against base dataset in data.js
+      try {
+        const rawDelIds = localStorage.getItem('velolog_deleted_employee_ids');
+        const delIds = rawDelIds ? JSON.parse(rawDelIds) : [];
+        if (typeof VELOLOG_EMPLOYEES !== 'undefined' || typeof require !== 'undefined') {
+          const baseList = (typeof VELOLOG_EMPLOYEES !== 'undefined') ? VELOLOG_EMPLOYEES : [];
+          delIds.forEach(id => {
+            if (!deletedMap.has(id)) {
+              const found = baseList.find(b => b.id === id);
+              if (found) deletedMap.set(id, found);
+            }
+          });
+        }
+      } catch (e) {}
+
+      const deletedItems = Array.from(deletedMap.values());
+
+      if (deletedItems.length === 0) {
+        restoreStaffList.innerHTML = `
+          <div style="text-align: center; padding: 28px 16px; background: #f8fafc; border: 1px dashed #cbd5e1; border-radius: 8px;">
+            <div style="font-size: 24px; margin-bottom: 6px;">♻️</div>
+            <div style="font-weight: 700; color: #334155; font-size: 13.5px;">Recycle Bin is Empty</div>
+            <div style="font-size: 12px; color: #64748b; margin-top: 4px;">No deleted staff members found. When a staff member is deleted, you can restore them here.</div>
+          </div>
+        `;
+        return;
+      }
+
+      restoreStaffList.innerHTML = deletedItems.map(emp => {
+        const branchBadge = (emp.branch === 'dubai' || (emp.email && emp.email.includes('velologuae.com'))) ? '🇦🇪 Dubai' : '🇸🇦 Saudi HQ';
+        return `
+          <div style="display: flex; justify-content: space-between; align-items: center; padding: 10px 14px; background: #ffffff; border: 1px solid #e2e8f0; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.04);">
+            <div>
+              <div style="font-weight: 700; color: #102f67; font-size: 13px;">${emp.name || 'Unnamed Staff'}</div>
+              <div style="font-size: 11.5px; color: #64748b; margin-top: 2px;">
+                ${emp.title || 'Staff'} • ${emp.department || 'Operations'} <span style="font-size: 10.5px; background: #f1f5f9; padding: 2px 6px; border-radius: 4px; margin-left: 4px;">${branchBadge}</span>
+              </div>
+              <div style="font-size: 11px; color: #94a3b8; margin-top: 2px;">✉️ ${emp.email || 'N/A'}</div>
+            </div>
+            <button type="button" class="btn-restore-action" data-id="${emp.id}" style="background: #16a34a; color: #ffffff; border: none; font-weight: 700; font-size: 11.5px; padding: 6px 14px; border-radius: 6px; cursor: pointer; display: flex; align-items: center; gap: 4px; box-shadow: 0 1px 4px rgba(22, 163, 74, 0.25);">
+              <span>♻️ Restore</span>
+            </button>
+          </div>
+        `;
+      }).join('');
+
+      // Attach restore button handlers
+      restoreStaffList.querySelectorAll('.btn-restore-action').forEach(btn => {
+        btn.addEventListener('click', async () => {
+          const empId = btn.getAttribute('data-id');
+          const targetObj = deletedMap.get(empId);
+          btn.disabled = true;
+          btn.textContent = 'Restoring...';
+
+          await restoreStaffMember(targetObj || { id: empId });
+          if (restoreStaffModal) restoreStaffModal.classList.remove('show');
+        });
+      });
+    }
+
+    async function restoreStaffMember(empObj) {
+      const empId = empObj.id;
+      const empName = empObj.name || 'Staff';
+
+      // 1. Restore in Firebase Cloud Firestore
+      if (window.VelologFirebase && typeof window.VelologFirebase.restoreEmployee === 'function') {
+        try {
+          await window.VelologFirebase.restoreEmployee(empId);
+        } catch (e) {
+          console.warn('Firebase restore error:', e);
+        }
+      }
+
+      // 2. Remove from velolog_deleted_employee_ids in localStorage
+      try {
+        const rawDel = localStorage.getItem('velolog_deleted_employee_ids');
+        if (rawDel) {
+          const list = JSON.parse(rawDel).filter(id => id !== empId);
+          localStorage.setItem('velolog_deleted_employee_ids', JSON.stringify(list));
+        }
+      } catch (e) {}
+
+      // 3. Remove from velolog_trash_employees in localStorage
+      try {
+        const rawTrash = localStorage.getItem('velolog_trash_employees');
+        if (rawTrash) {
+          const list = JSON.parse(rawTrash).filter(e => e.id !== empId);
+          localStorage.setItem('velolog_trash_employees', JSON.stringify(list));
+        }
+      } catch (e) {}
+
+      // 4. Put back into velolog_custom_employees in localStorage if not in base
+      try {
+        const rawCustom = localStorage.getItem('velolog_custom_employees');
+        const customList = rawCustom ? JSON.parse(rawCustom) : [];
+        if (!customList.some(e => e.id === empId)) {
+          customList.push(empObj);
+          localStorage.setItem('velolog_custom_employees', JSON.stringify(customList));
+        }
+      } catch (e) {}
+
+      // 5. Add back to in-memory VELOLOG_EMPLOYEES
+      if (typeof VELOLOG_EMPLOYEES !== 'undefined' && Array.isArray(VELOLOG_EMPLOYEES)) {
+        if (!VELOLOG_EMPLOYEES.some(e => e.id === empId)) {
+          VELOLOG_EMPLOYEES.push(empObj);
+        }
+      }
+
+      showToast(`✓ Restored ${empName} to VELOLOG staff directory!`);
+      await initStaffSelector(currentBranchFilter, empId);
+      loadEmployee(empId);
+    }
+
+    if (btnOpenRestoreModal) {
+      btnOpenRestoreModal.addEventListener('click', () => {
+        if (restoreStaffModal) {
+          restoreStaffModal.classList.add('show');
+          loadRestoreList();
+        }
+      });
+    }
+
+    if (btnCloseRestoreModal) {
+      btnCloseRestoreModal.addEventListener('click', () => {
+        if (restoreStaffModal) restoreStaffModal.classList.remove('show');
+      });
+    }
+
+    if (btnCancelRestoreModal) {
+      btnCancelRestoreModal.addEventListener('click', () => {
+        if (restoreStaffModal) restoreStaffModal.classList.remove('show');
       });
     }
 

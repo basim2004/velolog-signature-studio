@@ -1,7 +1,7 @@
 // Firebase Web SDK Integration
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-app.js";
 import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-analytics.js";
-import { getFirestore, collection, getDocs, doc, setDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-firestore.js";
+import { getFirestore, collection, getDocs, doc, setDoc, deleteDoc, getDoc } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-firestore.js";
 
 // Your web app's Firebase configuration
 export const firebaseConfig = {
@@ -49,20 +49,55 @@ window.VelologFirebase = {
       return false;
     }
   },
-  // Delete an employee from Cloud Firestore
-  async deleteEmployee(employeeId) {
+  // Delete an employee from Cloud Firestore (stores in recycle bin so they can be restored)
+  async deleteEmployee(employee) {
     if (!db) return false;
+    const empId = typeof employee === 'string' ? employee : employee.id;
+    const empData = typeof employee === 'object' ? employee : { id: empId };
     try {
-      const empRef = doc(db, "employees", employeeId);
+      const empRef = doc(db, "employees", empId);
       await deleteDoc(empRef);
-      // Track in deleted_employees collection so other devices filter it out
-      const delRef = doc(db, "deleted_employees", employeeId);
-      await setDoc(delRef, { id: employeeId, deletedAt: new Date().toISOString() });
-      console.log("✓ Deleted employee from Firebase Firestore:", employeeId);
+      // Track full data in deleted_employees collection so other devices filter it out & can restore anytime
+      const delRef = doc(db, "deleted_employees", empId);
+      await setDoc(delRef, { ...empData, id: empId, deletedAt: new Date().toISOString() }, { merge: true });
+      console.log("✓ Moved employee to recycle bin in Firebase Firestore:", empId);
       return true;
     } catch (err) {
       console.warn("Firebase deleteEmployee notice:", err.message);
       return false;
+    }
+  },
+  // Restore a deleted employee from Cloud Firestore
+  async restoreEmployee(employeeId) {
+    if (!db) return false;
+    try {
+      const delRef = doc(db, "deleted_employees", employeeId);
+      const snap = await getDoc(delRef);
+      if (snap.exists()) {
+        const empData = snap.data();
+        delete empData.deletedAt;
+        const empRef = doc(db, "employees", employeeId);
+        await setDoc(empRef, empData, { merge: true });
+      }
+      await deleteDoc(delRef);
+      console.log("✓ Restored employee from Firebase Firestore:", employeeId);
+      return true;
+    } catch (err) {
+      console.warn("Firebase restoreEmployee notice:", err.message);
+      return false;
+    }
+  },
+  // Get full list of deleted employees for Recycle Bin
+  async getDeletedEmployees() {
+    if (!db) return [];
+    try {
+      const colRef = collection(db, "deleted_employees");
+      const snap = await getDocs(colRef);
+      const list = [];
+      snap.forEach(d => list.push(d.data()));
+      return list;
+    } catch (e) {
+      return [];
     }
   },
   // Get list of deleted employee IDs from Firestore
