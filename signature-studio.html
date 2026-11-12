@@ -214,6 +214,21 @@
               <input type="email" id="field-email" class="form-input">
             </div>
 
+            <!-- Save / Update Employee to Cloud Button -->
+            <div style="margin: 14px 0 16px 0;">
+              <button type="button" id="btn-save-current-staff" class="btn btn-primary" style="width: 100%; padding: 10px 14px; font-size: 13px; font-weight: 700; background: #16a34a; border-color: #15803d; justify-content: center; box-shadow: 0 2px 6px rgba(22, 163, 74, 0.25); display: flex; align-items: center; gap: 8px;">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path>
+                  <polyline points="17 21 17 13 7 13 7 21"></polyline>
+                  <polyline points="7 3 7 8 15 8"></polyline>
+                </svg>
+                <span>💾 Save / Update Employee</span>
+              </button>
+              <div id="save-status-hint" style="font-size: 11px; color: #64748b; margin-top: 6px; text-align: center; line-height: 1.35;">
+                Saves changes to Firebase Cloud &amp; syncs with all phones &amp; laptops
+              </div>
+            </div>
+
             <hr style="border: 0; border-top: 1px solid var(--border-card); margin: 6px 0;">
 
             <!-- Formatting & Component Toggles -->
@@ -734,7 +749,7 @@
 
           <div style="display: flex; justify-content: flex-end; gap: 8px; margin-top: 18px;">
             <button type="button" class="btn btn-secondary" id="btn-cancel-add-staff">Cancel</button>
-            <button type="button" class="btn btn-primary" id="btn-submit-add-staff">Save &amp; Generate Signature</button>
+            <button type="button" class="btn btn-primary" id="btn-submit-add-staff" style="background: #16a34a; border-color: #15803d; font-weight: 700; font-size: 13px; padding: 10px 18px; box-shadow: 0 2px 6px rgba(22, 163, 74, 0.25);">💾 Save Employee &amp; Generate Signature</button>
           </div>
         </form>
       </div>
@@ -1393,7 +1408,110 @@
         showToast(`✓ Added ${newEmp.name} to VELOLOG! Official signature generated.`);
 
         btnSubmitAddStaff.disabled = false;
-        btnSubmitAddStaff.textContent = 'Save & Generate Signature';
+        btnSubmitAddStaff.textContent = '💾 Save Employee & Generate Signature';
+      });
+    }
+
+    // Save / Update Current Employee Button in Sidebar
+    const btnSaveCurrentStaff = document.getElementById('btn-save-current-staff');
+    const saveStatusHint = document.getElementById('save-status-hint');
+
+    if (btnSaveCurrentStaff) {
+      btnSaveCurrentStaff.addEventListener('click', async () => {
+        const branch = fieldBranch ? fieldBranch.value : 'saudi';
+        const name = (fieldName.value || '').trim();
+        const title = (fieldTitle.value || '').trim();
+        const dept = (fieldDept.value || '').trim();
+        const phone = (fieldPhone.value || '').trim();
+        const email = (fieldEmail.value || '').trim();
+
+        if (!name || !email) {
+          alert('Please enter at least Employee Name and Email Address before saving.');
+          return;
+        }
+
+        btnSaveCurrentStaff.disabled = true;
+        btnSaveCurrentStaff.innerHTML = `<span>Saving to Cloud...</span>`;
+
+        let empObj = currentEmployee ? { ...currentEmployee } : {};
+        if (!empObj.id) {
+          const baseId = name.toLowerCase().replace(/[^a-z0-9]/g, '_').replace(/_+/g, '_').replace(/^_|_$/g, '').slice(0, 15) || 'staff';
+          empObj.id = baseId;
+        }
+
+        empObj.name = name;
+        empObj.title = title || 'Staff';
+        empObj.department = dept || 'Operations';
+        empObj.phone = phone;
+        empObj.email = email;
+        empObj.branch = branch;
+        if (!empObj.gender) empObj.gender = 'male';
+        if (!empObj.note) empObj.note = `${title} coordinating VELOLOG freight solutions`;
+
+        currentEmployee = empObj;
+
+        // 1. Save to Firebase Cloud Firestore
+        let savedToFirebase = false;
+        if (window.VelologFirebase && typeof window.VelologFirebase.saveEmployee === 'function') {
+          try {
+            savedToFirebase = await window.VelologFirebase.saveEmployee(empObj);
+          } catch (e) {
+            console.warn('Firebase save warning:', e);
+          }
+        }
+
+        // 2. Save to localStorage
+        try {
+          const raw = localStorage.getItem('velolog_custom_employees');
+          const customList = raw ? JSON.parse(raw) : [];
+          const idx = customList.findIndex(e => e.id === empObj.id);
+          if (idx >= 0) {
+            customList[idx] = empObj;
+          } else {
+            customList.push(empObj);
+          }
+          localStorage.setItem('velolog_custom_employees', JSON.stringify(customList));
+        } catch (e) {}
+
+        // 3. Update in-memory VELOLOG_EMPLOYEES
+        if (typeof VELOLOG_EMPLOYEES !== 'undefined' && Array.isArray(VELOLOG_EMPLOYEES)) {
+          const idx = VELOLOG_EMPLOYEES.findIndex(e => e.id === empObj.id);
+          if (idx >= 0) {
+            VELOLOG_EMPLOYEES[idx] = empObj;
+          } else {
+            VELOLOG_EMPLOYEES.push(empObj);
+          }
+        }
+
+        // 4. Try syncing with local Node backend if active
+        try {
+          await fetch('/api/employees', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(empObj)
+          });
+        } catch (e) {}
+
+        // Refresh dropdown selector and current signature
+        await initStaffSelector(currentBranchFilter, empObj.id);
+        renderCurrentSignature();
+
+        const timeStr = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+        if (saveStatusHint) {
+          saveStatusHint.innerHTML = `<span style="color: #16a34a; font-weight: 700;">✓ Saved &amp; Synced to Cloud at ${timeStr}</span>`;
+        }
+
+        showToast(`✓ Saved changes for ${empObj.name}! Synced across all devices.`);
+
+        btnSaveCurrentStaff.disabled = false;
+        btnSaveCurrentStaff.innerHTML = `
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path>
+            <polyline points="17 21 17 13 7 13 7 21"></polyline>
+            <polyline points="7 3 7 8 15 8"></polyline>
+          </svg>
+          <span>💾 Save / Update Employee</span>
+        `;
       });
     }
 

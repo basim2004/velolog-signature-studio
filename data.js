@@ -145,6 +145,19 @@ const VELOLOG_EMPLOYEES = [
     "photo": "",
     "detailsImage": "",
     "note": "Operation executive coordinating VELOLOG Dubai & UAE freight forwarding"
+  },
+  {
+    "id": "saheer",
+    "name": "Saheer Anas",
+    "title": "Accountant",
+    "department": "Accounts",
+    "branch": "dubai",
+    "phone": "00971551369161",
+    "email": "saheer@velologuae.com",
+    "gender": "male",
+    "photo": "",
+    "detailsImage": "",
+    "note": "Accounts executive coordinating VELOLOG financial operations"
   }
 ];
 
