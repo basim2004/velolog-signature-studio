@@ -283,6 +283,32 @@ const server = http.createServer(async (req, res) => {
     return;
   }
 
+  // --- API: Delete Employee ---
+  const matchDeleteEmp = pathname.match(/^\/api\/employees\/([a-zA-Z0-9_-]+)$/);
+  if (req.method === 'DELETE' && matchDeleteEmp) {
+    const empId = matchDeleteEmp[1];
+    try {
+      const dataJsPath = path.join(__dirname, 'data.js');
+      const dataJsContent = fs.readFileSync(dataJsPath, 'utf8');
+      const matchEmployees = dataJsContent.match(/const VELOLOG_EMPLOYEES = (\[[\s\S]*?\]);\s*(const VELOLOG_BRANCHES|const VELOLOG_COMPANY)/);
+      if (matchEmployees) {
+        let employees = JSON.parse(matchEmployees[1]);
+        employees = employees.filter(e => e.id !== empId);
+        const updatedDataJs = dataJsContent.replace(
+          /const VELOLOG_EMPLOYEES = \[[\s\S]*?\];\s*(const VELOLOG_BRANCHES|const VELOLOG_COMPANY)/,
+          `const VELOLOG_EMPLOYEES = ${JSON.stringify(employees, null, 2)};\n\n$1`
+        );
+        fs.writeFileSync(dataJsPath, updatedDataJs, 'utf8');
+      }
+      res.writeHead(200, { 'Content-Type': 'application/json' });
+      res.end(JSON.stringify({ success: true }));
+    } catch (err) {
+      res.writeHead(500, { 'Content-Type': 'application/json' });
+      res.end(JSON.stringify({ success: false, error: err.message }));
+    }
+    return;
+  }
+
   // --- API: Get Employee Photos ---
   if (req.method === 'GET' && pathname === '/api/employee-photos') {
     try {

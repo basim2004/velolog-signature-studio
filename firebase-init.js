@@ -1,7 +1,7 @@
 // Firebase Web SDK Integration
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-app.js";
 import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-analytics.js";
-import { getFirestore, collection, getDocs, doc, setDoc } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-firestore.js";
+import { getFirestore, collection, getDocs, doc, setDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-firestore.js";
 
 // Your web app's Firebase configuration
 export const firebaseConfig = {
@@ -47,6 +47,35 @@ window.VelologFirebase = {
     } catch (err) {
       console.warn("Firebase saveEmployee notice:", err.message);
       return false;
+    }
+  },
+  // Delete an employee from Cloud Firestore
+  async deleteEmployee(employeeId) {
+    if (!db) return false;
+    try {
+      const empRef = doc(db, "employees", employeeId);
+      await deleteDoc(empRef);
+      // Track in deleted_employees collection so other devices filter it out
+      const delRef = doc(db, "deleted_employees", employeeId);
+      await setDoc(delRef, { id: employeeId, deletedAt: new Date().toISOString() });
+      console.log("✓ Deleted employee from Firebase Firestore:", employeeId);
+      return true;
+    } catch (err) {
+      console.warn("Firebase deleteEmployee notice:", err.message);
+      return false;
+    }
+  },
+  // Get list of deleted employee IDs from Firestore
+  async getDeletedEmployeeIds() {
+    if (!db) return [];
+    try {
+      const colRef = collection(db, "deleted_employees");
+      const snap = await getDocs(colRef);
+      const list = [];
+      snap.forEach(d => list.push(d.id));
+      return list;
+    } catch (e) {
+      return [];
     }
   },
   // Fetch employees from Cloud Firestore

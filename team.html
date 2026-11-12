@@ -448,6 +448,24 @@
         } catch (e) {}
       }
 
+      // Filter out deleted employees
+      let deletedIds = new Set();
+      try {
+        const rawDel = localStorage.getItem('velolog_deleted_employee_ids');
+        if (rawDel) JSON.parse(rawDel).forEach(id => deletedIds.add(id));
+      } catch (e) {}
+
+      if (window.VelologFirebase && typeof window.VelologFirebase.getDeletedEmployeeIds === 'function') {
+        try {
+          const fbDel = await window.VelologFirebase.getDeletedEmployeeIds();
+          if (Array.isArray(fbDel)) fbDel.forEach(id => deletedIds.add(id));
+        } catch (e) {}
+      }
+
+      if (deletedIds.size > 0 && typeof VELOLOG_EMPLOYEES !== 'undefined') {
+        window.VELOLOG_EMPLOYEES = VELOLOG_EMPLOYEES.filter(e => !deletedIds.has(e.id));
+      }
+
       renderTeamGrid();
     }
 

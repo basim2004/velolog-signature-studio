@@ -227,6 +227,15 @@
               <div id="save-status-hint" style="font-size: 11px; color: #64748b; margin-top: 6px; text-align: center; line-height: 1.35;">
                 Saves changes to Firebase Cloud &amp; syncs with all phones &amp; laptops
               </div>
+              <button type="button" id="btn-delete-current-staff" class="btn btn-outline" style="width: 100%; padding: 8px 12px; font-size: 12px; font-weight: 700; color: #dc2626; border-color: #fca5a5; background: #fff5f5; justify-content: center; margin-top: 10px; display: flex; align-items: center; gap: 6px; border-radius: 6px; cursor: pointer;">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                  <polyline points="3 6 5 6 21 6"></polyline>
+                  <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                  <line x1="10" y1="11" x2="10" y2="17"></line>
+                  <line x1="14" y1="11" x2="14" y2="17"></line>
+                </svg>
+                <span>🗑️ Delete Staff Member</span>
+              </button>
             </div>
 
             <hr style="border: 0; border-top: 1px solid var(--border-card); margin: 6px 0;">
@@ -1046,10 +1055,28 @@
         } catch (e) {}
       }
 
+      // Check deleted employee IDs (filtered from Cloud & Local)
+      let deletedIds = new Set();
+      try {
+        const rawDel = localStorage.getItem('velolog_deleted_employee_ids');
+        if (rawDel) JSON.parse(rawDel).forEach(id => deletedIds.add(id));
+      } catch (e) {}
+
+      if (window.VelologFirebase && typeof window.VelologFirebase.getDeletedEmployeeIds === 'function') {
+        try {
+          const fbDel = await window.VelologFirebase.getDeletedEmployeeIds();
+          if (Array.isArray(fbDel)) fbDel.forEach(id => deletedIds.add(id));
+        } catch (e) {}
+      }
+
       const allBase = (typeof VELOLOG_EMPLOYEES !== 'undefined' && Array.isArray(VELOLOG_EMPLOYEES)) ? VELOLOG_EMPLOYEES : [];
       const empMap = new Map();
-      allBase.forEach(e => empMap.set(e.id, e));
-      localCustom.forEach(e => empMap.set(e.id, e));
+      allBase.forEach(e => {
+        if (!deletedIds.has(e.id)) empMap.set(e.id, e);
+      });
+      localCustom.forEach(e => {
+        if (!deletedIds.has(e.id)) empMap.set(e.id, e);
+      });
       const allEmployees = Array.from(empMap.values());
       window.VELOLOG_EMPLOYEES = allEmployees;
 
@@ -1511,6 +1538,84 @@
             <polyline points="7 3 7 8 15 8"></polyline>
           </svg>
           <span>💾 Save / Update Employee</span>
+        `;
+      });
+    }
+
+    // Delete Current Staff Button
+    const btnDeleteCurrentStaff = document.getElementById('btn-delete-current-staff');
+    if (btnDeleteCurrentStaff) {
+      btnDeleteCurrentStaff.addEventListener('click', async () => {
+        if (!currentEmployee) return;
+        const empName = currentEmployee.name || 'this staff member';
+        const empId = currentEmployee.id;
+
+        if (!confirm(`Are you sure you want to permanently delete "${empName}" from the VELOLOG staff directory?`)) {
+          return;
+        }
+
+        btnDeleteCurrentStaff.disabled = true;
+        btnDeleteCurrentStaff.textContent = 'Deleting...';
+
+        // 1. Delete from Firebase Cloud Firestore
+        if (window.VelologFirebase && typeof window.VelologFirebase.deleteEmployee === 'function') {
+          try {
+            await window.VelologFirebase.deleteEmployee(empId);
+          } catch (e) {
+            console.warn('Firebase delete error:', e);
+          }
+        }
+
+        // 2. Track in deleted employee IDs (localStorage)
+        try {
+          const rawDel = localStorage.getItem('velolog_deleted_employee_ids');
+          const deletedList = rawDel ? JSON.parse(rawDel) : [];
+          if (!deletedList.includes(empId)) deletedList.push(empId);
+          localStorage.setItem('velolog_deleted_employee_ids', JSON.stringify(deletedList));
+        } catch (e) {}
+
+        // 3. Remove from velolog_custom_employees in localStorage
+        try {
+          const raw = localStorage.getItem('velolog_custom_employees');
+          if (raw) {
+            const list = JSON.parse(raw).filter(e => e.id !== empId);
+            localStorage.setItem('velolog_custom_employees', JSON.stringify(list));
+          }
+        } catch (e) {}
+
+        // 4. Remove from velolog_custom_photos in localStorage
+        try {
+          const rawPhotos = localStorage.getItem('velolog_custom_photos');
+          if (rawPhotos) {
+            const photos = JSON.parse(rawPhotos);
+            delete photos[empId];
+            localStorage.setItem('velolog_custom_photos', JSON.stringify(photos));
+          }
+        } catch (e) {}
+
+        // 5. Remove from in-memory VELOLOG_EMPLOYEES
+        if (typeof VELOLOG_EMPLOYEES !== 'undefined' && Array.isArray(VELOLOG_EMPLOYEES)) {
+          window.VELOLOG_EMPLOYEES = VELOLOG_EMPLOYEES.filter(e => e.id !== empId);
+        }
+
+        // 6. Try backend API delete if active
+        try {
+          await fetch(`/api/employees/${empId}`, { method: 'DELETE' });
+        } catch (e) {}
+
+        showToast(`✓ Removed ${empName} from staff directory.`);
+
+        // Re-initialize staff selector and load remaining staff
+        await initStaffSelector();
+        btnDeleteCurrentStaff.disabled = false;
+        btnDeleteCurrentStaff.innerHTML = `
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="3 6 5 6 21 6"></polyline>
+            <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+            <line x1="10" y1="11" x2="10" y2="17"></line>
+            <line x1="14" y1="11" x2="14" y2="17"></line>
+          </svg>
+          <span>🗑️ Delete Staff Member</span>
         `;
       });
     }
