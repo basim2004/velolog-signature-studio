@@ -1021,6 +1021,16 @@
         if (raw) localCustom = JSON.parse(raw);
       } catch (e) {}
 
+      // Check Firebase Cloud Firestore for employees
+      if (window.VelologFirebase && typeof window.VelologFirebase.getEmployees === 'function') {
+        try {
+          const fbEmps = await window.VelologFirebase.getEmployees();
+          if (Array.isArray(fbEmps) && fbEmps.length > 0) {
+            localCustom = [...localCustom, ...fbEmps];
+          }
+        } catch (e) {}
+      }
+
       const allBase = (typeof VELOLOG_EMPLOYEES !== 'undefined' && Array.isArray(VELOLOG_EMPLOYEES)) ? VELOLOG_EMPLOYEES : [];
       const empMap = new Map();
       allBase.forEach(e => empMap.set(e.id, e));
@@ -1365,6 +1375,15 @@
         if (typeof VELOLOG_EMPLOYEES !== 'undefined' && Array.isArray(VELOLOG_EMPLOYEES)) {
           if (!VELOLOG_EMPLOYEES.some(e => e.id === newEmp.id)) {
             VELOLOG_EMPLOYEES.push(newEmp);
+          }
+        }
+
+        // Save to Firebase Cloud Firestore if available
+        if (window.VelologFirebase && typeof window.VelologFirebase.saveEmployee === 'function') {
+          try {
+            await window.VelologFirebase.saveEmployee(newEmp);
+          } catch (e) {
+            console.warn('Firebase save skipped:', e);
           }
         }
 

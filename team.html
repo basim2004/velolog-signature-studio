@@ -434,6 +434,20 @@
         }
       } catch (e) {}
 
+      // Merge Firebase Cloud Firestore custom employees
+      if (window.VelologFirebase && typeof window.VelologFirebase.getEmployees === 'function') {
+        try {
+          const fbEmps = await window.VelologFirebase.getEmployees();
+          if (Array.isArray(fbEmps) && typeof VELOLOG_EMPLOYEES !== 'undefined') {
+            fbEmps.forEach(fe => {
+              if (!VELOLOG_EMPLOYEES.some(e => e.id === fe.id)) {
+                VELOLOG_EMPLOYEES.push(fe);
+              }
+            });
+          }
+        } catch (e) {}
+      }
+
       renderTeamGrid();
     }
 
