@@ -66,6 +66,19 @@ window.VelologFirebase = {
   }
 };
 
+// Auto-sync any existing local employees to Cloud Firestore
+try {
+  const localRaw = localStorage.getItem('velolog_custom_employees');
+  if (localRaw) {
+    const localList = JSON.parse(localRaw);
+    if (Array.isArray(localList) && localList.length > 0) {
+      localList.forEach(emp => {
+        window.VelologFirebase.saveEmployee(emp);
+      });
+    }
+  }
+} catch (e) {}
+
 // Notify other scripts that Firebase is initialized and ready
 window.dispatchEvent(new CustomEvent('velolog-firebase-ready', { detail: window.VelologFirebase }));
 
